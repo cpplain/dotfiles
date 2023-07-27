@@ -1,0 +1,49 @@
+{
+    "cSpell.enableFiletypes": ["ruby", "sql"],
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.fontFamily": "SF Mono, Menlo",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.lineNumbers": "relative",
+    "editor.minimap.enabled": false,
+    "editor.renderLineHighlight": "none",
+    "editor.renderWhitespace": "none",
+    "editor.rulers": [],
+    "editor.tabSize": 4,
+    "editor.wordWrapColumn": 80,
+    "editor.wrappingIndent": "deepIndent",
+    "explorer.confirmDelete": false,
+    "extensions.ignoreRecommendations": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "Lua.diagnostics.globals": ["vim"],
+    "now.theme.enableTheme": false,
+    "prettier.tabWidth": 4,
+    "python.languageServer": "Pylance",
+    "ruby.codeCompletion": "rcodetools",
+    "ruby.intellisense": "rubyLocate",
+    "ruby.lint": {
+        "useBundler": false
+    },
+    "ruby.useLanguageServer": true,
+    "update.mode": "default",
+    "window.nativeTabs": true,
+    "window.titleBarStyle": "native",
+    "workbench.activityBar.visible": false,
+    "workbench.colorCustomizations": {
+        "editor.background": "#252932",
+        "editorGutter.background": "#252932"
+    },
+    "workbench.colorTheme": "Nord",
+    "workbench.iconTheme": "macos-classic-icons",
+    "workbench.startupEditor": "none",
+    "workbench.tree.indent": 16,
+    "[lua]": {
+        "editor.defaultFormatter": "JohnnyMorganz.stylua"
+    },
+    "[markdown]": {
+        "editor.wordWrap": "bounded"
+    }
+}

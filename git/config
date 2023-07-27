@@ -1,0 +1,28 @@
+[color]
+    ui = auto
+
+[core]
+    editor = vim
+
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    process = git-lfs filter-process
+    required = true
+    smudge = git-lfs smudge -- %f
+
+[pull]
+	ff = only
+
+[user]
+
+# Customize for personal repos.
+[includeIf "gitdir/i:**/github.com/christopherplain/"]
+    path = private/config-personal
+
+# Customize for Lamp-Post Apps repos.
+[includeIf "gitdir/i:**/github.com/lamppostapps/"]
+    path = private/config-lamppostapps
+
+# Customize for work ServiceNow repos.
+[includeIf "gitdir/i:**/servicenow.net"]
+    path = private/config-servicenow
