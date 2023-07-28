@@ -1,6 +1,5 @@
 {
     "cSpell.enableFiletypes": ["ruby", "sql"],
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.fontFamily": "SF Mono, Menlo",
     "editor.formatOnPaste": true,
     "editor.formatOnSave": true,
@@ -40,10 +39,20 @@
     "workbench.iconTheme": "macos-classic-icons",
     "workbench.startupEditor": "none",
     "workbench.tree.indent": 16,
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
     "[lua]": {
         "editor.defaultFormatter": "JohnnyMorganz.stylua"
     },
     "[markdown]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.wordWrap": "bounded"
     }
 }
