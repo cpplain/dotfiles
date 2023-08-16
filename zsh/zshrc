@@ -1,7 +1,7 @@
 # Text Preferences
 # export PROMPT="%1~ %# "
 newline=$'\n'
-export PROMPT="%~${newline}%# "
+export PROMPT="%n@%m %~${newline}%# "
 export CLICOLOR=1
 
 # Aliases
