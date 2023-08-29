@@ -31,10 +31,10 @@
     "window.nativeTabs": true,
     "window.titleBarStyle": "native",
     "workbench.activityBar.visible": false,
-    "workbench.colorCustomizations": {
-        "editor.background": "#252932",
-        "editorGutter.background": "#252932"
-    },
+    // "workbench.colorCustomizations": {
+    //     "editor.background": "#252932",
+    //     "editorGutter.background": "#252932"
+    // },
     "workbench.colorTheme": "Nord",
     "workbench.iconTheme": "macos-classic-icons",
     "workbench.startupEditor": "none",
