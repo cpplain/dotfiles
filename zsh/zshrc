@@ -19,6 +19,10 @@ export XDG_CACHE_HOME="$HOME/.cache"
 # Homebrew
 export PATH="/usr/local/sbin:$PATH"
 
+# Go
+export GOPATH="$HOME/go"
+export PATH="$PATH:$GOPATH/bin"
+
 # nodenv
 if command -v nodenv > /dev/null; then
     export PATH="$HOME/.nodenv/bin:$PATH"
