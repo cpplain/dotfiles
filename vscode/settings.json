@@ -13,6 +13,9 @@
     "editor.wordWrapColumn": 80,
     "editor.wrappingIndent": "deepIndent",
     "explorer.confirmDelete": false,
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
     "extensions.ignoreRecommendations": true,
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
@@ -27,15 +30,11 @@
         "useBundler": false
     },
     "ruby.useLanguageServer": true,
-    "update.mode": "default",
+    "update.mode": "manual",
     "window.nativeTabs": true,
     "window.titleBarStyle": "native",
     "workbench.activityBar.visible": false,
-    // "workbench.colorCustomizations": {
-    //     "editor.background": "#252932",
-    //     "editorGutter.background": "#252932"
-    // },
-    "workbench.colorTheme": "Nord",
+    "workbench.colorTheme": "Catppuccin Mocha",
     "workbench.iconTheme": "macos-classic-icons",
     "workbench.startupEditor": "none",
     "workbench.tree.indent": 16,
@@ -54,5 +53,5 @@
     "[markdown]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.wordWrap": "bounded"
-    }
+    },
 }
