@@ -1,18 +1,26 @@
--- use default Neovim config if running in VS Code
+-- Use default Neovim config if running in VS Code
 if vim.g.vscode then
-    print("Neovim running in VS Code. Using default config.")
+    print("Neovim running in VS Code. Using default Neovim config.")
     return
 end
 
+-----------------------
+-- Editor Configuration
+-----------------------
+
 -- Set <space> as the leader key
--- See `:help mapleader`
--- NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- Install package manager
--- https://github.com/folke/lazy.nvim
--- See `:help lazy.nvim.txt`
+vim.opt.clipboard = "unnamedplus"
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.termguicolors = true
+
+----------
+-- Plugins
+----------
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 if not vim.loop.fs_stat(lazypath) then
@@ -28,14 +36,26 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
--- Install plugins
 require("lazy").setup({
+    { "catppuccin/nvim", name = "catppuccin" },
     {
-        "catppuccin/nvim",
-        name = "catppuccin",
-        priority = 1000,
-        config = function()
-            vim.cmd.colorscheme("catppuccin")
-        end,
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
     },
 }, {})
+
+-----------------------
+-- Plugin Configuration
+-----------------------
+
+vim.cmd.colorscheme("catppuccin")
+
+---
+-- Treesitter
+---
+-- `:help nvim-treesitter`
+require("nvim-treesitter.configs").setup({
+    ensure_installed = { "c", "go", "lua", "python", "javascript", "query", "vim", "vimdoc" },
+    highlight = { enable = true },
+})
