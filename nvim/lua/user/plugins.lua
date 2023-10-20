@@ -12,4 +12,25 @@ if not vim.loop.fs_stat(path) then
 end
 
 vim.opt.rtp:prepend(path)
-require("lazy").setup("plugins")
+
+local opts = {
+    ui = {
+        icons = {
+            cmd = "⌘",
+            config = "🛠",
+            event = "📅",
+            ft = "📂",
+            init = "⚙",
+            keys = "🗝",
+            plugin = "🔌",
+            runtime = "💻",
+            require = "🌙",
+            source = "📄",
+            start = "🚀",
+            task = "📌",
+            lazy = "💤 ",
+        },
+    },
+}
+
+require("lazy").setup("plugins", opts)
