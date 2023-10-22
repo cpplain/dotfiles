@@ -27,21 +27,15 @@ function M.config()
             move = {
                 enable = true,
                 set_jumps = true,
-                goto_next_start = {
+                goto_next = {
+                    ["]p"] = "@parameter.inner",
                     ["]m"] = "@function.outer",
                     ["]]"] = "@class.outer",
                 },
-                goto_next_end = {
-                    ["]M"] = "@function.outer",
-                    ["]["] = "@class.outer",
-                },
-                goto_previous_start = {
+                goto_previous = {
+                    ["[p"] = "@parameter.inner",
                     ["[m"] = "@function.outer",
                     ["[["] = "@class.outer",
-                },
-                goto_previous_end = {
-                    ["[M"] = "@function.outer",
-                    ["[]"] = "@class.outer",
                 },
             },
             select = {
@@ -58,9 +52,11 @@ function M.config()
                 enable = true,
                 swap_next = {
                     ["<leader>a"] = "@parameter.inner",
+                    ["<leader>f"] = "@function.outer",
                 },
                 swap_previous = {
                     ["<leader>A"] = "@parameter.inner",
+                    ["<leader>F"] = "@function.outer",
                 },
             },
         },
