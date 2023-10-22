@@ -1,3 +1,4 @@
+-- https://github.com/catppuccin/nvim
 local M = { "catppuccin/nvim" }
 
 M.name = "catppuccin"

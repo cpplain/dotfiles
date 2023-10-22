@@ -1,3 +1,6 @@
+-- https://github.com/folke/lazy.nvim#-structuring-your-plugins
+-- See `:help lazy.nvim`
+
 local path = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 if not vim.loop.fs_stat(path) then

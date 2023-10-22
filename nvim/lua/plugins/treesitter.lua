@@ -1,8 +1,10 @@
+-- https://github.com/nvim-treesitter/nvim-treesitter
 -- See `:help nvim-treesitter`
 local M = { "nvim-treesitter/nvim-treesitter" }
 
 M.build = ":TSUpdate"
 
+-- https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 -- See `:help nvim-treesitter-textobjects`
 M.dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" }
 
