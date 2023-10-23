@@ -17,6 +17,7 @@ end
 vim.opt.rtp:prepend(path)
 
 local opts = {
+    -- Replace Nerd Font icons with Unicode symbols
     ui = {
         icons = {
             cmd = "⌘",

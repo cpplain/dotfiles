@@ -1,8 +1,6 @@
 -- https://github.com/nvim-telescope/telescope.nvim
 -- See `:help telescope`
-local M = {
-    "nvim-telescope/telescope.nvim",
-}
+local M = { "nvim-telescope/telescope.nvim" }
 
 M.branch = "0.1.x"
 M.dependencies = {
@@ -12,7 +10,7 @@ M.dependencies = {
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 }
 
-function M.config()
+M.config = function()
     -- See `:help telescope.builtin`
     local builtin = require("telescope.builtin")
     vim.keymap.set("n", "<leader>ff", builtin.find_files, {})

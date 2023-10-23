@@ -8,7 +8,7 @@ M.build = ":TSUpdate"
 -- See `:help nvim-treesitter-textobjects`
 M.dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" }
 
-function M.config()
+M.config = function()
     require("nvim-treesitter.configs").setup({
         ensure_installed = {
             "c",

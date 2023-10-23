@@ -5,7 +5,7 @@ M.name = "catppuccin"
 M.lazy = false
 M.priority = 1000
 
-function M.config()
+M.config = function()
     vim.cmd.colorscheme("catppuccin")
 end
 
