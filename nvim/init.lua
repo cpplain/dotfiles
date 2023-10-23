@@ -4,6 +4,6 @@ if vim.g.vscode then
     return
 end
 
-require("user.settings")
-require("user.keymaps")
-require("user.plugins")
+require("config.settings")
+require("config.keymaps")
+require("config.plugins")
