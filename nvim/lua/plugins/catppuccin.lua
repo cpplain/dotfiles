@@ -1,12 +1,10 @@
 -- https://github.com/catppuccin/nvim
-local M = { "catppuccin/nvim" }
-
-M.name = "catppuccin"
-M.lazy = false
-M.priority = 1000
-
-M.config = function()
-    vim.cmd.colorscheme("catppuccin")
-end
-
-return M
+return {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    lazy = false,
+    priority = 1000,
+    config = function()
+        vim.cmd.colorscheme("catppuccin")
+    end,
+}
