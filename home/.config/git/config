@@ -17,12 +17,12 @@
 
 # Customize for personal repos.
 [includeIf "gitdir/i:**/github.com/christopherplain/"]
-    path = private/config-personal
+    path = ~/.config/git-private/config-personal
 
 # Customize for Lamp-Post Apps repos.
 [includeIf "gitdir/i:**/github.com/lamppostapps/"]
-    path = private/config-lamppostapps
+    path = ~/.config/git-private/config-lamppostapps
 
 # Customize for work ServiceNow repos.
 [includeIf "gitdir/i:**/servicenow.net/**"]
-    path = private/config-servicenow
+    path = ~/.config/git-private/config-servicenow
