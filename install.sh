@@ -18,6 +18,8 @@ repo=$parent/dotfiles/home
 dotfiles=(
     .config/git
     .config/nvim
+    .config/skhd
+    .config/yabai
     Library/Application\ Support/Code/User/settings.json
     Library/Application\ Support/iTerm2/DynamicProfiles/profiles.json
     .zshrc
