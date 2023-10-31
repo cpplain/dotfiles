@@ -6,15 +6,14 @@ directories=(
     Library/Application\ Support/iTerm2/DynamicProfiles
 )
 for directory in $directories; do
-    if [ ! -d ~/$directory ]; then
-        echo "Creating ~/$directory"
-        mkdir -p ~/$directory
+    directory=~/$directory
+    if [ ! -d $directory ]; then
+        echo "Creating $directory"
+        mkdir -p $directory
     fi
 done
 
-parent=$(dirname $(pwd))
-
-repo=$parent/dotfiles/home
+repo_dir=$(dirname $(pwd))/dotfiles/home
 dotfiles=(
     .config/git
     .config/nvim
@@ -25,21 +24,27 @@ dotfiles=(
     .zshrc
 )
 for file in $dotfiles; do
-    echo "Creating symlink ~/$file"
-    if [ -e ~/$file ]; then
-        rm ~/$file
+    source=$repo_dir/$file
+    target=~/$file
+    if [ -e $target ]; then
+        echo "Removing existing link $target"
+        rm $target
     fi
-    ln -s $repo/$file ~/$file
+    echo "Creating link $target"
+    ln -s $source $target
 done
 
-repo=$parent/dotfiles-private/home
+repo_dir=$(dirname $(pwd))/dotfiles-private/home
 dotfiles=(
     .config/git-private
 )
 for file in $dotfiles; do
-    echo "Creating symlink ~/$file"
-    if [ -e ~/$file ]; then
-        rm ~/$file
+    source=$repo_dir/$file
+    target=~/$file
+    if [ -e $target ]; then
+        echo "Removing existing link $target"
+        rm $target
     fi
-    ln -s $repo/$file ~/$file
+    echo "Creating link $target"
+    ln -s $source $target
 done
