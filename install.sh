@@ -18,6 +18,7 @@ dotfiles=(
     .config/git
     .config/nvim
     .config/skhd
+    .config/wezterm
     .config/yabai
     Library/Application\ Support/Code/User/settings.json
     Library/Application\ Support/iTerm2/DynamicProfiles/profiles.json
