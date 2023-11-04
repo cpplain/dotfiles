@@ -20,6 +20,7 @@ dotfiles=(
     .config/skhd
     .config/wezterm
     .config/yabai
+    .config/starship.toml
     Library/Application\ Support/Code/User/settings.json
     Library/Application\ Support/iTerm2/DynamicProfiles/profiles.json
     .zshrc

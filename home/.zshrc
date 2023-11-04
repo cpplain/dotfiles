@@ -1,17 +1,10 @@
-# Text Preferences
-export PROMPT="%# "
-# export PROMPT="%1~ %# "
-# newline=$'\n'
-# export PROMPT="%n@%m %~${newline}%# "
 export CLICOLOR=1
 
-# Aliases
 alias l1="ls -a1"
 alias ll="ls -al"
 alias python="python3"
 alias vim="nvim"
 
-# XDG Base Directories
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
@@ -42,3 +35,6 @@ if command -v rbenv > /dev/null; then
     export PATH="$HOME/.rbenv/bin:$PATH"
     eval "$(rbenv init -)"
 fi
+
+eval "$(starship init zsh)"
+

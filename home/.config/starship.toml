@@ -1,0 +1,6 @@
+format = """
+$directory$git_branch
+$character"""
+
+[directory]
+style = "bold blue"
