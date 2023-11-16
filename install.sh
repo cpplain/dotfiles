@@ -38,7 +38,7 @@ done
 
 repo_dir=$(dirname $(pwd))/dotfiles-private/home
 dotfiles=(
-    .config/git-private
+    .config/git/private
 )
 for file in $dotfiles; do
     source=$repo_dir/$file
