@@ -1,52 +1,33 @@
 #!/usr/bin/env zsh
 
-directories=(
-    .config
-    Library/Application\ Support/Code/User
-    Library/Application\ Support/iTerm2/DynamicProfiles
-)
-for directory in $directories; do
-    directory=~/$directory
-    if [ ! -d $directory ]; then
-        echo "Creating $directory"
-        mkdir -p $directory
-    fi
-done
+REPO_PUB=$(pwd)
+REPO_PRV=$(dirname $REPO_PUB)/dotfiles-private
 
-repo_dir=$(dirname $(pwd))/dotfiles/home
-dotfiles=(
-    .config/git
-    .config/nvim
-    .config/skhd
-    .config/wezterm
-    .config/yabai
-    .config/starship.toml
-    Library/Application\ Support/Code/User/settings.json
-    Library/Application\ Support/iTerm2/DynamicProfiles/profiles.json
-    .zshrc
-)
-for file in $dotfiles; do
-    source=$repo_dir/$file
-    target=~/$file
-    if [ -e $target ]; then
-        echo "Removing existing link $target"
-        rm $target
-    fi
-    echo "Creating link $target"
-    ln -s $source $target
-done
+cd ~
 
-repo_dir=$(dirname $(pwd))/dotfiles-private/home
-dotfiles=(
-    .config/git/private
-)
-for file in $dotfiles; do
-    source=$repo_dir/$file
-    target=~/$file
-    if [ -e $target ]; then
-        echo "Removing existing link $target"
-        rm $target
-    fi
-    echo "Creating link $target"
-    ln -s $source $target
-done
+mkdir -p .config
+mkdir -p Library/Application\ Support/Code/User
+mkdir -p Library/Application\ Support/iTerm2/DynamicProfiles
+
+rm .config/git/private
+rm .config/git
+rm .config/nvim
+rm .config/skhd
+rm .config/starship.toml
+rm .config/wezterm
+rm .config/yabai
+rm .zshrc
+rm Library/Application\ Support/Code/User/settings.json
+rm Library/Application\ Support/iTerm2/DynamicProfiles/profiles.json
+
+
+ln -s $REPO_PUB/.config/git .config/
+ln -s $REPO_PRV/.config/git/private .config/git/
+ln -s $REPO_PUB/.config/nvim .config/
+ln -s $REPO_PUB/.config/skhd .config/
+ln -s $REPO_PUB/.config/starship.toml .config/
+ln -s $REPO_PUB/.config/wezterm .config/
+ln -s $REPO_PUB/.config/yabai .config/
+ln -s $REPO_PUB/.zshrc ./
+ln -s $REPO_PUB/Library/Application\ Support/Code/User/settings.json Library/Application\ Support/Code/User/
+ln -s $REPO_PUB/Library/Application\ Support/iTerm2/DynamicProfiles/profiles.json Library/Application\ Support/iTerm2/DynamicProfiles/
