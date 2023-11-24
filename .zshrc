@@ -3,7 +3,6 @@ export CLICOLOR=1
 alias l1="ls -a1"
 alias ll="ls -al"
 alias python="python3"
-alias vim="nvim"
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
@@ -37,4 +36,7 @@ if command -v rbenv > /dev/null; then
 fi
 
 eval "$(starship init zsh)"
+
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
