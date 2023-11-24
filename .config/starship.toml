@@ -1,4 +1,5 @@
 format = """
+$jobs\
 $username\
 $hostname\
 $directory\
@@ -9,33 +10,62 @@ $cmd_duration\
 $line_break\
 $character"""
 
-[directory]
-style = "blue"
+[jobs]
+format = "[$symbol]($style) "
+style = "red"
+symbol = "✦"
 
-[character]
-success_symbol = "[❯](purple)"
-error_symbol = "[❯](red)"
-vimcmd_symbol = "[❮](green)"
+[username]
+format = "[$user@]($style)"
+style_user = "bright-black"
+
+[hostname]
+format = "[$hostname]($style) "
+style = "bright-black"
+
+[directory]
+format = "[$path]($style) "
+style = "blue"
+truncation_length = 0
+truncate_to_repo = false
+
+[git_state]
+format = "[$state]($style) "
+style = "bright-black"
+rebase="rebase"
+merge="merge"
+revert="revert"
+cherry_pick="cherry-pick"
+bisect="bisect"
+am=""
+am_or_rebase=""
 
 [git_branch]
-format = "[$branch]($style)"
+format = "[$branch]($style) "
 style = "bright-black"
 
 [git_status]
-format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)"
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted )](red)($ahead_behind )($stashed )]($style)"
 style = "cyan"
-conflicted = "​"
-untracked = "​"
-modified = "​"
-staged = "​"
-renamed = "​"
-deleted = "​"
+conflicted = "​" # zero-width space
+untracked = "​" # zero-width space
+modified = "​" # zero-width space
+staged = "​" # zero-width space
+renamed = "​" # zero-width space
+deleted = "​" # zero-width space
+ahead = "⇡"
+behind = "⇣"
+diverged = "⇡⇣"
 stashed = "≡"
-
-[git_state]
-format = '\([$state( $progress_current/$progress_total)]($style)\) '
-style = "bright-black"
 
 [cmd_duration]
 format = "[$duration]($style) "
 style = "yellow"
+
+[character]
+success_symbol = "[I ❯](green)" # insert
+error_symbol = "[I ❯](red)"
+vimcmd_symbol = "[N ❯](blue)" # normal
+vimcmd_replace_one_symbol = "[N ❯](blue)" # normal
+vimcmd_replace_symbol = "[N ❯](blue)" # normal
+vimcmd_visual_symbol = "[V ❯](purple)" # visual
