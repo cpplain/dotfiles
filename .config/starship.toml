@@ -63,9 +63,9 @@ format = "[$duration]($style) "
 style = "yellow"
 
 [character]
-success_symbol = "[❯](green)" # insert
-error_symbol = "[❯](red)"
-vimcmd_symbol = "[❮](blue)" # normal
-vimcmd_replace_one_symbol = "[❮](blue)" # normal
-vimcmd_replace_symbol = "[❮](blue)" # normal
-vimcmd_visual_symbol = "[❮](purple)" # visual
+success_symbol = '[\[I\]❯](green)' # insert
+error_symbol = '[\[I\]❯](red)'
+vimcmd_symbol = '[\[N\]❯](blue)' # normal
+vimcmd_replace_one_symbol = '[\[N\]❯](blue)' # normal
+vimcmd_replace_symbol = '[\[N\]❯](blue)' # normal
+vimcmd_visual_symbol = '[\[V\]❯](purple)' # visual
