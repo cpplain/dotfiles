@@ -16,8 +16,8 @@
 [user]
 
 # Customize for personal repos.
-[includeIf "gitdir/i:**/github.com/christopherplain/"]
-    path = private/config-personal
+[includeIf "gitdir/i:**/github.com/cpplain/"]
+    path = private/config-cpplain
 
 # Customize for Lamp-Post Apps repos.
 [includeIf "gitdir/i:**/github.com/lamppostapps/"]
