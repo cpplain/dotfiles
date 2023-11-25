@@ -9,9 +9,9 @@ mkdir -p .config
 mkdir -p Library/Application\ Support/Code/User
 mkdir -p Library/Application\ Support/iTerm2/DynamicProfiles
 
-
 ln -sf $REPO_PUB/.config/git .config/
 ln -sf $REPO_PRV/.config/git/private .config/git/
+ln -sf $REPO_PUB/.config/fish .config/
 ln -sf $REPO_PUB/.config/nvim .config/
 ln -sf $REPO_PUB/.config/skhd .config/
 ln -sf $REPO_PUB/.config/starship.toml .config/

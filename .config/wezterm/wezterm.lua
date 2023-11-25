@@ -2,13 +2,18 @@ local wezterm = require("wezterm")
 
 local config = {}
 
+--[[ Default Config ]]
+
 -- In newer versions of wezterm, use the config_builder which will
 -- help provide clearer error messages
 if wezterm.config_builder then
-    config = wezterm.config_builder()
+	config = wezterm.config_builder()
 end
 
--- User config
+--[[ User Config ]]
+
+-- Change default shell
+config.default_prog = { "/usr/local/bin/fish", "-l" }
 
 config.color_scheme = "Catppuccin Mocha"
 config.enable_tab_bar = false
