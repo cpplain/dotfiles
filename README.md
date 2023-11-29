@@ -1,4 +1,4 @@
-![screenshot](images/screenshot)
+![screenshot](./images/screenshot.png)
 
 # Christopher's Dotfiles
 
