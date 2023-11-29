@@ -1,3 +1,5 @@
+![screenshot](images/screenshot)
+
 # Christopher's Dotfiles
 
 - OS: [macOS](https://support.apple.com/macos)
