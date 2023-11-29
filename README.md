@@ -1,4 +1,4 @@
-# dotfiles
+# Christopher's Dotfiles
 
 - OS: [macOS](https://support.apple.com/macos)
 - Window Manger: [yabai](https://github.com/koekeishiya/yabai) with [skhd](https://github.com/koekeishiya/skhd) shortcuts
