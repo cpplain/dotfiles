@@ -25,5 +25,7 @@ nodenv init - | source
 pyenv init - | source
 rbenv init - | source
 
+kubectl completion fish | source
+
 starship init fish | source
 enable_transience
