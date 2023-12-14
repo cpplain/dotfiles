@@ -13,30 +13,28 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export PATH="/usr/local/sbin:$PATH"
 
 # Go
-export GOPATH="$HOME/go"
-export PATH="$PATH:$GOPATH/bin"
+if test $(which go); then
+    export GOPATH="$HOME/go"
+    export PATH="$PATH:$GOPATH/bin"
+fi
 
 # nodenv
-if command -v nodenv > /dev/null; then
+if test $(which nodenv); then
     export PATH="$HOME/.nodenv/bin:$PATH"
     eval "$(nodenv init -)"
 fi
 
 # pyenv
-if command -v pyenv > /dev/null; then
+if test $(which pyenv); then
     export PATH="$HOME/.pyenv/bin:$PATH"
     eval "$(pyenv init -)"
     # eval "$(pyenv virtualenv-init -)"
 fi
 
 # rbenv
-if command -v rbenv > /dev/null; then
+if test $(which rbenv); then
     export PATH="$HOME/.rbenv/bin:$PATH"
     eval "$(rbenv init -)"
 fi
 
 eval "$(starship init zsh)"
-
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
