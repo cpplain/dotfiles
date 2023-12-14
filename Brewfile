@@ -1,0 +1,15 @@
+tap "homebrew/cask-fonts"
+
+brew "fd"
+brew "fish"
+brew "neovim"
+brew "node@20"
+brew "nodenv"
+brew "pyenv"
+brew "python@3.12"
+brew "ripgrep"
+brew "starship"
+
+cask "font-symbols-only-nerd-font"
+cask "visual-studio-code"
+cask "wezterm"
