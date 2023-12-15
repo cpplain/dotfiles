@@ -10,6 +10,7 @@ brew "python@3.12"
 brew "ripgrep"
 brew "starship"
 
+cask "font-sf-mono"
 cask "font-symbols-only-nerd-font"
 cask "visual-studio-code"
 cask "wezterm"
