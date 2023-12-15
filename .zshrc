@@ -9,31 +9,28 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_CACHE_HOME="$HOME/.cache"
 
-# Homebrew
-export PATH="/usr/local/sbin:$PATH"
-
-# Go
-if test $(which go); then
-    export GOPATH="$HOME/go"
-    export PATH="$PATH:$GOPATH/bin"
+if which /usr/local/bin/brew > /dev/null; then
+    eval "$(/usr/local/bin/brew shellenv)"
 fi
 
-# nodenv
-if test $(which nodenv); then
-    export PATH="$HOME/.nodenv/bin:$PATH"
+if which /opt/homebrew/bin/brew > /dev/null; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+if which go > /dev/null; then
+    export GOPATH="$(go env GOPATH)"
+    export PATH="$GOPATH:$GOPATH/bin:$PATH"
+fi
+
+if which nodenv > /dev/null; then
     eval "$(nodenv init -)"
 fi
 
-# pyenv
-if test $(which pyenv); then
-    export PATH="$HOME/.pyenv/bin:$PATH"
+if which pyenv > /dev/null; then
     eval "$(pyenv init -)"
-    # eval "$(pyenv virtualenv-init -)"
 fi
 
-# rbenv
-if test $(which rbenv); then
-    export PATH="$HOME/.rbenv/bin:$PATH"
+if which rbenv > /dev/null; then
     eval "$(rbenv init -)"
 fi
 

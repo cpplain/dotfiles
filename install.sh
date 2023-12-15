@@ -1,8 +1,16 @@
 #!/bin/zsh
 
-if test ! $(which brew); then
+if ! which brew > /dev/null; then
   echo "Installing Homebrew"
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+  if which /usr/local/bin/brew > /dev/null; then
+    eval "$(/usr/local/brew shellenv)"
+  fi
+
+  if which /opt/homebrew/bin/brew > /dev/null; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  fi
 fi
 
 echo "Installing packages"
