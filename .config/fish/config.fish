@@ -17,15 +17,33 @@ set fish_cursor_visual block
 
 set -g fish_key_bindings fish_vi_key_bindings
 
-set -gx GOPATH (go env GOPATH)
-fish_add_path $GOPATH $GOPATH/bin
+set brew_path /opt/homebrew/bin
+if test (uname -m) = x86_64
+    set brew_path /usr/local/bin
+end
+$brew_path/brew shellenv | source
+set -e brew_path
 
-brew shellenv | source
-nodenv init - | source
-pyenv init - | source
-rbenv init - | source
+if which go >/dev/null
+    set -gx GOPATH (go env GOPATH)
+    fish_add_path $GOPATH $GOPATH/bin
+end
 
-kubectl completion fish | source
+if which nodenv >/dev/null
+    nodenv init - | source
+end
+
+if which pyenv >/dev/null
+    pyenv init - | source
+end
+
+if which rbenv >/dev/null
+    rbenv init - | source
+end
+
+if which kubectl >/dev/null
+    kubectl completion fish | source
+end
 
 starship init fish | source
 enable_transience

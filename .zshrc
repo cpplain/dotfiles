@@ -9,13 +9,12 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_CACHE_HOME="$HOME/.cache"
 
-if which /usr/local/bin/brew > /dev/null; then
-    eval "$(/usr/local/bin/brew shellenv)"
+brew_path=/opt/homebrew/bin
+if test $(uname -m) = "x86_64"; then
+    brew_path=/usr/local/bin
 fi
+eval "$($brew_path/brew shellenv)"
 
-if which /opt/homebrew/bin/brew > /dev/null; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-fi
 
 if which go > /dev/null; then
     export GOPATH="$(go env GOPATH)"

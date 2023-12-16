@@ -1,22 +1,27 @@
 #!/bin/zsh
 
+if test $# = 0 || ! (test $1 = "personal" || test $1 = "work"); then
+    echo "Usage: install.sh 'personal' | 'work'"
+    exit 1
+fi
+
 if ! which brew > /dev/null; then
   echo "Installing Homebrew"
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-  if which /usr/local/bin/brew > /dev/null; then
-    eval "$(/usr/local/brew shellenv)"
+  if test $(uname -m) = "arm64"; then
+      eval "$(/opt/homebrew/bin/brew shellenv)"
   fi
 
-  if which /opt/homebrew/bin/brew > /dev/null; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+  if test $(uname -m) = "x86_64"; then
+      eval "$(/usr/local/brew shellenv)"
   fi
 fi
 
 echo "Installing packages"
 
-brew update
-brew bundle
+ln -sf Brewfile-$1 Brewfile
+brew bundle --file Brewfile-$1
 
 echo "Creating symlinks"
 
@@ -38,6 +43,5 @@ ln -sf $REPO_PUB/.config/starship.toml .config/
 ln -sf $REPO_PUB/.config/wezterm .config/
 ln -sf $REPO_PUB/.config/yabai .config/
 ln -sf $REPO_PUB/.zshrc ./
-ln -sf $REPO_PUB/Brewfile ./
 ln -sf $REPO_PUB/Library/Application\ Support/Code/User/settings.json Library/Application\ Support/Code/User/
 ln -sf $REPO_PUB/Library/Application\ Support/iTerm2/DynamicProfiles/profiles.json Library/Application\ Support/iTerm2/DynamicProfiles/

@@ -13,7 +13,11 @@ end
 --[[ User Config ]]
 
 -- Change default shell
-config.default_prog = { "/usr/local/bin/fish", "-l" }
+if wezterm.target_triple == "aarch64-apple-darwin" then
+	config.default_prog = { "/opt/homebrew/bin/fish", "-l" }
+elseif wezterm.target_triple == "x86_64-apple-darwin" then
+	config.default_prog = { "/usr/local/bin/fish", "-l" }
+end
 
 config.color_scheme = "Catppuccin Mocha"
 config.enable_tab_bar = false
