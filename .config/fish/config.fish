@@ -1,4 +1,4 @@
-alias lvim='NVIM_APPNAME="lvim" nvim'
+alias lvim='NVIM_APPNAME="lazyvim" nvim'
 
 set -g fish_greeting # disable fish greeting
 
