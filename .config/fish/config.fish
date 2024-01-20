@@ -1,3 +1,5 @@
+alias lvim='NVIM_APPNAME="lvim" nvim'
+
 set -g fish_greeting # disable fish greeting
 
 set -gx EDITOR nvim

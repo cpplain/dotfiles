@@ -36,6 +36,7 @@ mkdir -p Library/Application\ Support/Code/User
 ln -sf $REPO_PUB/.config/git .config/
 ln -sf $REPO_PRV/.config/git/private .config/git/
 ln -sf $REPO_PUB/.config/fish .config/
+ln -sf $REPO_PUB/.config/lazyvim .config/
 ln -sf $REPO_PUB/.config/nvim .config/
 ln -sf $REPO_PUB/.config/starship.toml .config/
 ln -sf $REPO_PUB/.config/wezterm .config/
