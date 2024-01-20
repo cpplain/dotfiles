@@ -21,7 +21,7 @@ fi
 echo "Installing packages"
 
 ln -sf Brewfile-$1 Brewfile
-brew bundle --file Brewfile-$1
+brew bundle
 
 echo "Creating symlinks"
 
