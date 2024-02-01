@@ -1,4 +1,5 @@
 require("options")
+require("keymaps")
 
 -- Plugin manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
