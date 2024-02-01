@@ -1,6 +1,4 @@
-vim.opt.colorcolumn = "80"
-vim.opt.conceallevel = 0
-vim.opt.termguicolors = true
+require("options")
 
 -- Plugin manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
