@@ -16,4 +16,4 @@ vim.opt.splitbelow = true -- Split new window below current
 vim.opt.splitright = true -- Split new window right of current
 vim.opt.tabstop = 4 -- Number of spaces tab uses
 vim.opt.termguicolors = true -- Enable 24-bit RGB color
-vim.opt.wrap = true -- Long lines wrap to the next line
+vim.opt.wrap = false -- Long lines wrap to the next line
