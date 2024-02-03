@@ -19,5 +19,5 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 
--- Word wrap
+-- Wrap lines
 vim.keymap.set("n", "<Leader>w", ":set wrap!<CR>", { desc = "Toggle line wrap" })
