@@ -95,7 +95,7 @@ require("lazy").setup({
 			{ "nvim-treesitter/nvim-treesitter" },
 		},
 		opts = {
-			-- cmdline = { view = "cmdline" },
+			cmdline = { view = "cmdline" },
 			lsp = {
 				progress = { enabled = false },
 				override = {
@@ -104,10 +104,10 @@ require("lazy").setup({
 					["cmp.entry.get_documentation"] = true,
 				},
 			},
-			presets = {
-				bottom_search = true,
-				command_palette = true,
-			},
+			-- presets = {
+			-- 	bottom_search = true,
+			-- 	command_palette = true,
+			-- },
 		},
 	},
 
