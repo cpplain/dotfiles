@@ -128,14 +128,13 @@ require("lazy").setup({
 			{ "L3MON4D3/LuaSnip" },
 			{ "rafamadriz/friendly-snippets" },
 		},
-		opts = function()
+		config = function()
 			local cmp = require("cmp")
-			local luasnip = require("luasnip")
 
-			return {
+			cmp.setup({
 				snippet = {
 					expand = function(args)
-						luasnip.lsp_expand(args.body)
+						require("luasnip").lsp_expand(args.body)
 					end,
 				},
 				window = {
@@ -160,11 +159,7 @@ require("lazy").setup({
 				}, {
 					{ name = "buffer" },
 				}),
-			}
-		end,
-		config = function(_, opts)
-			local cmp = require("cmp")
-			cmp.setup(opts)
+			})
 
 			cmp.setup.cmdline({ "/", "?" }, {
 				mapping = cmp.mapping.preset.cmdline(),
