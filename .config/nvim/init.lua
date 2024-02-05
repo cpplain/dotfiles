@@ -67,7 +67,9 @@ require("lazy").setup({
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		main = "ibl",
-		opts = { scope = { enabled = false } },
+		opts = {
+			scope = { enabled = false },
+		},
 	},
 
 	-- Statusline
