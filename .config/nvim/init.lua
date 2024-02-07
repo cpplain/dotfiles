@@ -255,6 +255,8 @@ require("lazy").setup({
 
 				require("lspconfig")[server].setup(server_opts)
 			end
+
+			require("lspconfig.ui.windows").default_options.border = "rounded"
 		end,
 	},
 
