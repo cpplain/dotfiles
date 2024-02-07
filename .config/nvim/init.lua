@@ -222,16 +222,8 @@ require("lazy").setup({
 
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			local border = "rounded"
-			local handlers = {
-				["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
-				["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
-			}
-			require("lspconfig.ui.windows").default_options.border = border
-
 			for server, server_opts in pairs(servers) do
 				server_opts.capabilities = capabilities
-				server_opts.handlers = handlers
 
 				require("lspconfig")[server].setup(server_opts)
 			end
