@@ -104,10 +104,11 @@ require("lazy").setup({
 					["cmp.entry.get_documentation"] = true,
 				},
 			},
-			-- presets = {
-			-- 	bottom_search = true,
-			-- 	command_palette = true,
-			-- },
+			presets = {
+				-- bottom_search = true,
+				-- command_palette = true,
+				lsp_doc_border = true,
+			},
 		},
 	},
 
