@@ -218,7 +218,11 @@ require("lazy").setup({
 		},
 		config = function()
 			local servers = {
+				bashls = {},
+				cssls = {},
 				gopls = {},
+				html = {},
+				jsonls = {},
 				lua_ls = {
 					settings = {
 						Lua = {
@@ -228,7 +232,20 @@ require("lazy").setup({
 						},
 					},
 				},
-				tsserver = {},
+				pyright = {},
+				ruff_lsp = {
+					on_attach = function(client, _)
+						client.server_capabilities.hoverProvider = false
+					end,
+				},
+				tsserver = {
+					settings = {
+						completions = {
+							completeFunctionCalls = true,
+						},
+					},
+				},
+				yamlls = {},
 			}
 
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
