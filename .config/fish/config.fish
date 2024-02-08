@@ -48,4 +48,4 @@ if which kubectl >/dev/null
 end
 
 starship init fish | source
-enable_transience
+# enable_transience
