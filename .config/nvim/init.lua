@@ -116,6 +116,7 @@ require("lazy").setup({
 			require("catppuccin").setup({
 				integrations = {
 					lsp_trouble = true,
+					mason = true,
 					noice = true,
 					notify = true,
 					treesitter_context = true,
@@ -135,6 +136,8 @@ require("lazy").setup({
 	-- Formatting
 	{
 		"stevearc/conform.nvim",
+		dependencies = { "WhoIsSethDaniel/mason-tool-installer.nvim" },
+
 		opts = {
 			format_on_save = {
 				timeout_ms = 500,
@@ -181,6 +184,36 @@ require("lazy").setup({
 				theme = "catppuccin",
 				component_separators = "",
 				section_separators = "",
+			},
+		},
+	},
+
+	-- Language servers, linters, and formatters
+	{
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		dependencies = {
+			{
+				"williamboman/mason.nvim",
+				opts = { ui = { border = "rounded" } },
+			},
+		},
+		opts = {
+			ensure_installed = {
+				"bash-language-server",
+				"css-lsp",
+				"gopls",
+				"html-lsp",
+				"json-lsp",
+				"lua-language-server",
+				"prettierd",
+				"pyright",
+				"ruff",
+				"ruff-lsp",
+				"shfmt",
+				"stylua",
+				"typescript-language-server",
+				"vim-language-server",
+				"yaml-language-server",
 			},
 		},
 	},
@@ -301,6 +334,7 @@ require("lazy").setup({
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
+			{ "WhoIsSethDaniel/mason-tool-installer.nvim" },
 			{ "folke/neodev.nvim", opts = {} },
 			{ "hrsh7th/nvim-cmp" },
 		},
@@ -333,6 +367,7 @@ require("lazy").setup({
 						},
 					},
 				},
+				vimls = {},
 				yamlls = {},
 			}
 
