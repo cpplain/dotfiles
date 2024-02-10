@@ -267,7 +267,6 @@ require("lazy").setup({
 	{
 		"stevearc/conform.nvim",
 		dependencies = { "WhoIsSethDaniel/mason-tool-installer.nvim" },
-
 		opts = {
 			format_on_save = {
 				timeout_ms = 500,
@@ -455,7 +454,10 @@ require("lazy").setup({
 	-- Code parsing, highlighting, and navigation
 	{
 		"nvim-treesitter/nvim-treesitter",
-		dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
+		dependencies = {
+			{ "WhoIsSethDaniel/mason-tool-installer.nvim" },
+			{ "nvim-treesitter/nvim-treesitter-textobjects" },
+		},
 		build = ":TSUpdate",
 		opts = {
 			ensure_installed = language_settings("treesitter"),
