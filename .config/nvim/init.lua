@@ -90,6 +90,136 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 --
+--[[ Language Settings ]]
+--
+
+local languages = {
+	data_formats = {
+		conform = {
+			json = { "prettierd", "prettier" },
+			toml = { "taplo" },
+			yaml = { "prettierd", "prettier" },
+		},
+		lspconfig = { jsonls = {}, taplo = {}, yamlls = {} },
+		mason = { "json-lsp", "prettierd", "taplo", "yaml-language-server" },
+		treesitter = { "json", "toml", "yaml" },
+	},
+
+	git = {
+		conform = {},
+		lspconfig = {},
+		mason = {},
+		treesitter = { "git_config", "gitcommit", "gitignore" },
+	},
+
+	go = {
+		conform = { go = { "goimports", "gofmt" } },
+		lspconfig = { gopls = {} },
+		mason = { "gopls" },
+		treesitter = { "go" },
+	},
+
+	html_css = {
+		conform = {
+			css = { "prettierd", "prettier" },
+			html = { "prettierd", "prettier" },
+		},
+		lspconfig = { cssls = {}, html = {} },
+		mason = { "css-lsp", "html-lsp", "prettierd" },
+		treesitter = { "css", "html" },
+	},
+
+	javascript = {
+		conform = {
+			javascript = { "prettierd", "prettier" },
+			typescript = { "prettierd", "prettier" },
+		},
+		lspconfig = {
+			tsserver = {
+				settings = {
+					completions = {
+						completeFunctionCalls = true,
+					},
+				},
+			},
+		},
+		mason = { "prettierd", "typescript-language-server" },
+		treesitter = { "javascript", "jsdoc", "typescript" },
+	},
+
+	lua = {
+		conform = { lua = { "stylua" } },
+		lspconfig = {
+			lua_ls = {
+				settings = {
+					Lua = {
+						completion = {
+							callSnippet = "Replace",
+						},
+					},
+				},
+			},
+		},
+		mason = { "lua-language-server", "stylua" },
+		treesitter = { "lua", "luadoc" },
+	},
+
+	markdown = {
+		conform = { markdown = { "prettierd", "prettier" } },
+		lspconfig = { marksman = {} },
+		mason = { "marksman", "prettierd" },
+		treesitter = { "markdown", "markdown_inline" },
+	},
+
+	misc = {
+		conform = {},
+		lspconfig = {},
+		mason = {},
+		treesitter = { "c", "query", "regex" },
+	},
+
+	python = {
+		conform = { python = { "ruff_formatt" } },
+		lspconfig = {
+			pyright = {},
+			ruff_lsp = {
+				on_attach = function(client, _)
+					client.server_capabilities.hoverProvider = false
+				end,
+			},
+		},
+		mason = { "pyright", "ruff", "ruff-lsp" },
+		treesitter = { "python" },
+	},
+
+	shell = {
+		conform = { fish = { "fish_indent" }, sh = { "shfmt" } },
+		lspconfig = { bashls = {} },
+		mason = { "bash-language-server", "shfmt" },
+		treesitter = { "bash", "fish" },
+	},
+
+	vim = {
+		conform = {},
+		lspconfig = { vimls = {} },
+		mason = { "vim-language-server" },
+		treesitter = { "vim", "vimdoc" },
+	},
+}
+
+local function language_settings(plugin)
+	local merged = {}
+	for _, settings in pairs(languages) do
+		if "conform" == plugin or "lspconfig" == plugin then
+			merged = vim.tbl_extend("force", merged, settings[plugin])
+		else
+			merged = vim.list_extend(merged, settings[plugin])
+		end
+	end
+	return merged
+end
+
+--
 --[[ Plugins ]]
 --
 
@@ -142,20 +272,7 @@ require("lazy").setup({
 			format_on_save = {
 				timeout_ms = 500,
 			},
-			formatters_by_ft = {
-				css = { "prettierd", "prettier" },
-				fish = { "fish_indent" },
-				html = { "prettierd", "prettier" },
-				javascript = { "prettierd", "prettier" },
-				json = { "prettierd", "prettier" },
-				go = { "goimports", "gofmt" },
-				lua = { "stylua" },
-				markdown = { "prettierd", "prettier" },
-				python = { "ruff_formatt" },
-				sh = { "shfmt" },
-				typescript = { "prettierd", "prettier" },
-				yaml = { "prettierd", "prettier" },
-			},
+			formatters_by_ft = language_settings("conform"),
 		},
 	},
 
@@ -198,23 +315,7 @@ require("lazy").setup({
 			},
 		},
 		opts = {
-			ensure_installed = {
-				"bash-language-server",
-				"css-lsp",
-				"gopls",
-				"html-lsp",
-				"json-lsp",
-				"lua-language-server",
-				"prettierd",
-				"pyright",
-				"ruff",
-				"ruff-lsp",
-				"shfmt",
-				"stylua",
-				"typescript-language-server",
-				"vim-language-server",
-				"yaml-language-server",
-			},
+			ensure_installed = language_settings("mason"),
 		},
 	},
 
@@ -339,41 +440,9 @@ require("lazy").setup({
 			{ "hrsh7th/nvim-cmp" },
 		},
 		config = function()
-			local servers = {
-				bashls = {},
-				cssls = {},
-				gopls = {},
-				html = {},
-				jsonls = {},
-				lua_ls = {
-					settings = {
-						Lua = {
-							completion = {
-								callSnippet = "Replace",
-							},
-						},
-					},
-				},
-				pyright = {},
-				ruff_lsp = {
-					on_attach = function(client, _)
-						client.server_capabilities.hoverProvider = false
-					end,
-				},
-				tsserver = {
-					settings = {
-						completions = {
-							completeFunctionCalls = true,
-						},
-					},
-				},
-				vimls = {},
-				yamlls = {},
-			}
-
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			for server, server_opts in pairs(servers) do
+			for server, server_opts in pairs(language_settings("lspconfig")) do
 				server_opts.capabilities = capabilities
 
 				require("lspconfig")[server].setup(server_opts)
@@ -389,31 +458,7 @@ require("lazy").setup({
 		dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
 		build = ":TSUpdate",
 		opts = {
-			ensure_installed = {
-				"bash",
-				"c",
-				"fish",
-				"git_config",
-				"gitcommit",
-				"gitignore",
-				"go",
-				"html",
-				"javascript",
-				"jsdoc",
-				"json",
-				"lua",
-				"luadoc",
-				"markdown",
-				"markdown_inline",
-				"python",
-				"query",
-				"regex",
-				"toml",
-				"typescript",
-				"vim",
-				"vimdoc",
-				"yaml",
-			},
+			ensure_installed = language_settings("treesitter"),
 			highlight = { enabled = true },
 			indent = { enable = true },
 
