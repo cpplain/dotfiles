@@ -306,13 +306,14 @@ require("lazy").setup({
 
 	-- Language servers, linters, and formatters
 	{
+		"williamboman/mason.nvim",
+		build = ":MasonUpdate",
+		opts = { ui = { border = "rounded" } },
+	},
+	{
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
-		dependencies = {
-			{
-				"williamboman/mason.nvim",
-				opts = { ui = { border = "rounded" } },
-			},
-		},
+		dependencies = { "williamboman/mason.nvim" },
+		build = ":MasonToolsUpdate",
 		opts = {
 			ensure_installed = language_settings("mason"),
 		},
