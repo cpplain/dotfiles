@@ -205,16 +205,16 @@ local languages = {
 	},
 }
 
-local function language_settings(plugin)
-	local merged = {}
-	for _, settings in pairs(languages) do
-		if "conform" == plugin or "lspconfig" == plugin then
-			merged = vim.tbl_extend("force", merged, settings[plugin])
-		else
-			merged = vim.list_extend(merged, settings[plugin])
-		end
-	end
-	return merged
+local conform_formatters = {}
+local lsp_servers = {}
+local mason_packages = {}
+local treesitter_parsers = {}
+
+for _, settings in pairs(languages) do
+	conform_formatters = vim.tbl_extend("force", conform_formatters, settings.conform)
+	lsp_servers = vim.tbl_extend("force", lsp_servers, settings.lspconfig)
+	mason_packages = vim.list_extend(mason_packages, settings.mason)
+	treesitter_parsers = vim.list_extend(treesitter_parsers, settings.treesitter)
 end
 
 --
@@ -269,7 +269,7 @@ require("lazy").setup({
 			format_on_save = {
 				timeout_ms = 500,
 			},
-			formatters_by_ft = language_settings("conform"),
+			formatters_by_ft = conform_formatters,
 		},
 	},
 
@@ -313,7 +313,7 @@ require("lazy").setup({
 		dependencies = { "williamboman/mason.nvim" },
 		build = ":MasonToolsUpdate",
 		opts = {
-			ensure_installed = language_settings("mason"),
+			ensure_installed = mason_packages,
 		},
 	},
 
@@ -440,7 +440,7 @@ require("lazy").setup({
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			for server, server_opts in pairs(language_settings("lspconfig")) do
+			for server, server_opts in pairs(lsp_servers) do
 				server_opts.capabilities = capabilities
 
 				require("lspconfig")[server].setup(server_opts)
@@ -459,7 +459,7 @@ require("lazy").setup({
 		},
 		build = ":TSUpdate",
 		opts = {
-			ensure_installed = language_settings("treesitter"),
+			ensure_installed = treesitter_parsers,
 			highlight = { enabled = true },
 			indent = { enable = true },
 
