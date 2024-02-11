@@ -503,16 +503,15 @@ require("lazy").setup({
 			{ "nvim-telescope/telescope-file-browser.nvim" },
 			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 		},
-		opts = {
-			defaults = {
-				layout_config = { prompt_position = "top" },
-				sorting_strategy = "ascending",
-				wrap_results = true,
-			},
-		},
-		config = function(_, opts)
+		config = function()
 			local telescope = require("telescope")
-			telescope.setup(opts)
+			telescope.setup({
+				defaults = {
+					layout_config = { prompt_position = "top" },
+					sorting_strategy = "ascending",
+					wrap_results = true,
+				},
+			})
 			telescope.load_extension("file_browser")
 			telescope.load_extension("fzf")
 			telescope.load_extension("noice")
