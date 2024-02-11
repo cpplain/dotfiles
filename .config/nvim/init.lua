@@ -32,15 +32,6 @@ vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
 vim.keymap.set("n", "<Leader>e", vim.diagnostic.open_float)
 vim.keymap.set("n", "<Leader>q", vim.diagnostic.setloclist)
 
--- Fuzzy finder
-vim.keymap.set("n", "<Leader>fB", ":Telescope file_browser<CR>", { silent = true })
-vim.keymap.set("n", "<Leader>fb", ":Telescope buffers<CR>", { silent = true })
-vim.keymap.set("n", "<Leader>ff", ":Telescope find_files<CR>", { silent = true })
-vim.keymap.set("n", "<Leader>fg", ":Telescope live_grep<CR>", { silent = true })
-vim.keymap.set("n", "<Leader>fh", ":Telescope help_tags<CR>", { silent = true })
-vim.keymap.set("n", "<Leader>fk", ":Telescope keymaps<CR>", { silent = true })
-vim.keymap.set("n", "<Leader>fn", ":Telescope noice<CR>", { silent = true })
-
 -- Moving text
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { silent = true })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { silent = true })
@@ -530,6 +521,15 @@ require("lazy").setup({
 			telescope.load_extension("file_browser")
 			telescope.load_extension("fzf")
 			telescope.load_extension("noice")
+
+			local builtin = require("telescope.builtin")
+			vim.keymap.set("n", "<Leader>fB", ":Telescope file_browser<CR>", { silent = true })
+			vim.keymap.set("n", "<Leader>fb", builtin.buffers)
+			vim.keymap.set("n", "<Leader>ff", builtin.find_files)
+			vim.keymap.set("n", "<Leader>fg", builtin.live_grep)
+			vim.keymap.set("n", "<Leader>fh", builtin.help_tags)
+			vim.keymap.set("n", "<Leader>fk", builtin.keymaps)
+			vim.keymap.set("n", "<Leader>fn", ":Telescope noice<CR>", { silent = true })
 		end,
 	},
 
