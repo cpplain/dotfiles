@@ -531,17 +531,18 @@ require("lazy").setup({
 	-- Diagnostics
 	{
 		"folke/trouble.nvim",
-		opts = {
-			icons = false,
-			use_diagnostic_signs = true,
-		},
-		init = function()
+		config = function()
 			vim.diagnostic.config({
 				virtual_text = {
 					prefix = "●",
 				},
 				float = { border = "rounded" },
 				severity_sort = true,
+			})
+
+			require("trouble").setup({
+				icons = false,
+				use_diagnostic_signs = true,
 			})
 		end,
 	},
