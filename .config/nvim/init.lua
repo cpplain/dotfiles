@@ -27,47 +27,45 @@ vim.opt.wrap = false -- Long lines wrap to the next line
 --
 
 -- Diagnostics
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic message" })
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic message" })
-vim.keymap.set("n", "<Leader>e", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
-vim.keymap.set("n", "<Leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
+vim.keymap.set("n", "<Leader>e", vim.diagnostic.open_float)
+vim.keymap.set("n", "<Leader>q", vim.diagnostic.setloclist)
 
 -- Fuzzy finder
-vim.keymap.set("n", "<Leader>fB", ":Telescope file_browser<CR>", { desc = "Telescope file browser" })
-vim.keymap.set("n", "<Leader>fb", ":Telescope buffers<CR>", { desc = "Telescope find buffers" })
-vim.keymap.set("n", "<Leader>ff", ":Telescope find_files<CR>", { desc = "Telescope find files" })
-vim.keymap.set("n", "<Leader>fg", ":Telescope live_grep<CR>", { desc = "Telescope live grep" })
-vim.keymap.set("n", "<Leader>fh", ":Telescope help_tags<CR>", { desc = "Telescope find help tags" })
-vim.keymap.set("n", "<Leader>fk", ":Telescope keymaps<CR>", { desc = "Telescope keymaps" })
-vim.keymap.set("n", "<Leader>fn", ":Telescope noice<CR>", { desc = "Telescope noice" })
+vim.keymap.set("n", "<Leader>fB", ":Telescope file_browser<CR>", { silent = true })
+vim.keymap.set("n", "<Leader>fb", ":Telescope buffers<CR>", { silent = true })
+vim.keymap.set("n", "<Leader>ff", ":Telescope find_files<CR>", { silent = true })
+vim.keymap.set("n", "<Leader>fg", ":Telescope live_grep<CR>", { silent = true })
+vim.keymap.set("n", "<Leader>fh", ":Telescope help_tags<CR>", { silent = true })
+vim.keymap.set("n", "<Leader>fk", ":Telescope keymaps<CR>", { silent = true })
+vim.keymap.set("n", "<Leader>fn", ":Telescope noice<CR>", { silent = true })
 
 -- Language server
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 	callback = function(ev)
-		local function keymap(mode, lhs, rhs, desc)
-			vim.keymap.set(mode, lhs, rhs, { buffer = ev.buf, desc = desc })
-		end
+		local opts = { buffer = ev.buf }
 
-		keymap("n", "gd", vim.lsp.buf.definition, "Goto definition")
-		keymap("n", "gi", vim.lsp.buf.implementation, "Goto implementation")
-		keymap("n", "gr", vim.lsp.buf.references, "Goto references")
-		keymap("n", "gt", vim.lsp.buf.type_definition, "Goto type definition")
-		keymap("n", "K", vim.lsp.buf.hover, "Hover information")
-		keymap("i", "<C-k>", vim.lsp.buf.signature_help, "Signature information")
-		keymap({ "n", "v" }, "<Leader>ca", vim.lsp.buf.code_action, "Code action")
-		keymap("n", "<Leader>rn", vim.lsp.buf.rename, "Rename symbol")
+		vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+		vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+		vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+		vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, opts)
+		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+		vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, opts)
+		vim.keymap.set({ "n", "v" }, "<Leader>ca", vim.lsp.buf.code_action, opts)
+		vim.keymap.set("n", "<Leader>rn", vim.lsp.buf.rename, opts)
 	end,
 })
 
 -- Moving text
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down and reindent" })
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up and reindent" })
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { silent = true })
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { silent = true })
 
 -- Plugin manager
-vim.keymap.set("n", "<Leader>ll", ":Lazy<CR>", { desc = "Open plugin manager" })
-vim.keymap.set("n", "<Leader>lp", ":Lazy profile<CR>", { desc = "Run startup profile" })
-vim.keymap.set("n", "<Leader>lu", ":Lazy update<CR>", { desc = "Update plugins" })
+vim.keymap.set("n", "<Leader>ll", ":Lazy<CR>", { silent = true })
+vim.keymap.set("n", "<Leader>lp", ":Lazy profile<CR>", { silent = true })
+vim.keymap.set("n", "<Leader>lu", ":Lazy update<CR>", { silent = true })
 
 -- Scrolling
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
@@ -76,7 +74,7 @@ vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 
 -- Wrapping lines
-vim.keymap.set("n", "<Leader>w", ":set wrap!<CR>", { desc = "Toggle line wrap" })
+vim.keymap.set("n", "<Leader>w", ":set wrap!<CR>", { silent = true })
 
 --
 --[[ Commands ]]
