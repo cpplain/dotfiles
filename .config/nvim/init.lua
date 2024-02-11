@@ -39,11 +39,6 @@ vim.keymap.set("n", "<Leader>w", ":set wrap!<CR>", { silent = true })
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { silent = true })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { silent = true })
 
--- Plugin manager
-vim.keymap.set("n", "<Leader>ll", ":Lazy<CR>", { silent = true })
-vim.keymap.set("n", "<Leader>lp", ":Lazy profile<CR>", { silent = true })
-vim.keymap.set("n", "<Leader>lu", ":Lazy update<CR>", { silent = true })
-
 -- Scrolling
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
@@ -553,4 +548,5 @@ require("lazy").setup({
 }, {
 	install = { colorscheme = { "catppuccin" } },
 	ui = { border = "rounded" },
+	checker = { enabled = true },
 })
