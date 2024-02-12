@@ -508,14 +508,13 @@ require("lazy").setup({
 			telescope.load_extension("fzf")
 			telescope.load_extension("noice")
 
-			local builtin = require("telescope.builtin")
 			vim.keymap.set("n", "<Leader>fB", "<Cmd>Telescope file_browser<CR>")
-			vim.keymap.set("n", "<Leader>fb", builtin.buffers)
-			vim.keymap.set("n", "<Leader>ff", builtin.find_files)
-			vim.keymap.set("n", "<Leader>fg", builtin.live_grep)
-			vim.keymap.set("n", "<Leader>fh", builtin.help_tags)
-			vim.keymap.set("n", "<Leader>fk", builtin.keymaps)
-			vim.keymap.set("n", "<Leader>fn", "<Cmd>Telescope noice<CR>")
+			vim.keymap.set("n", "<Leader>fb", "<Cmd>Telescope buffers<CR>")
+			vim.keymap.set("n", "<Leader>ff", "<Cmd>Telescope find_files<CR>")
+			vim.keymap.set("n", "<Leader>ht", "<Cmd>Telescope help_tags<CR>")
+			vim.keymap.set("n", "<Leader>km", "<Cmd>Telescope keymaps<CR>")
+			vim.keymap.set("n", "<Leader>lg", "<Cmd>Telescope live_grep<CR>")
+			vim.keymap.set("n", "<Leader>tn", "<Cmd>Telescope noice<CR>")
 		end,
 	},
 
