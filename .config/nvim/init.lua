@@ -441,53 +441,57 @@ require("lazy").setup({
 			{ "nvim-treesitter/nvim-treesitter-textobjects" },
 		},
 		build = ":TSUpdate",
-		opts = {
-			ensure_installed = treesitter_parsers,
-			highlight = { enabled = true },
-			indent = { enable = true },
+		config = function()
+			require("nvim-treesitter.configs").setup({
+				ensure_installed = treesitter_parsers,
+				sync_install = false,
+				auto_install = false,
+				ignore_install = {},
 
-			textobjects = {
-				move = {
-					enable = true,
-					goto_next = {
-						["]a"] = "@parameter.inner",
-						["]b"] = "@block.outer",
-						["]c"] = "@class.outer",
-						["]f"] = "@function.outer",
-						["]i"] = "@conditional.outer",
-						["]l"] = "@loop.outer",
+				modules = {},
+				highlight = { enabled = true },
+				indent = { enable = true },
+
+				textobjects = {
+					move = {
+						enable = true,
+						goto_next = {
+							["]a"] = "@parameter.inner",
+							["]b"] = "@block.outer",
+							["]c"] = "@class.outer",
+							["]f"] = "@function.outer",
+							["]i"] = "@conditional.outer",
+							["]l"] = "@loop.outer",
+						},
+						goto_previous = {
+							["[a"] = "@parameter.inner",
+							["[b"] = "@block.outer",
+							["[c"] = "@class.outer",
+							["[f"] = "@function.outer",
+							["[i"] = "@conditional.outer",
+							["[l"] = "@loop.outer",
+						},
 					},
-					goto_previous = {
-						["[a"] = "@parameter.inner",
-						["[b"] = "@block.outer",
-						["[c"] = "@class.outer",
-						["[f"] = "@function.outer",
-						["[i"] = "@conditional.outer",
-						["[l"] = "@loop.outer",
+					select = {
+						enable = true,
+						lookahead = true,
+						keymaps = {
+							["aa"] = "@parameter.outer",
+							["ia"] = "@parameter.inner",
+							["ab"] = "@block.outer",
+							["ib"] = "@block.inner",
+							["ac"] = "@class.outer",
+							["ic"] = "@class.inner",
+							["af"] = "@function.outer",
+							["if"] = "@function.inner",
+							["ai"] = "@conditional.outer",
+							["ii"] = "@conditional.inner",
+							["al"] = "@loop.outer",
+							["il"] = "@loop.inner",
+						},
 					},
 				},
-				select = {
-					enable = true,
-					lookahead = true,
-					keymaps = {
-						["aa"] = "@parameter.outer",
-						["ia"] = "@parameter.inner",
-						["ab"] = "@block.outer",
-						["ib"] = "@block.inner",
-						["ac"] = "@class.outer",
-						["ic"] = "@class.inner",
-						["af"] = "@function.outer",
-						["if"] = "@function.inner",
-						["ai"] = "@conditional.outer",
-						["ii"] = "@conditional.inner",
-						["al"] = "@loop.outer",
-						["il"] = "@loop.inner",
-					},
-				},
-			},
-		},
-		config = function(_, opts)
-			require("nvim-treesitter.configs").setup(opts)
+			})
 		end,
 	},
 
