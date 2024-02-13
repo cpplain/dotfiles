@@ -5,21 +5,26 @@
 vim.g.mapleader = " " -- Set <Space> as <Leeader>
 vim.g.maplocalleader = " " -- Set <Space> as <LocalLeader>
 
-vim.opt.breakindent = true -- Wrapped line repeats indent
+vim.opt.termguicolors = true -- Enable 24-bit RGB color
+
 vim.opt.clipboard = "unnamedplus" -- Sync Neovim and OS clipboard
-vim.opt.completeopt = "menu,menuone,noselect" -- Options for Insert mode completion
-vim.opt.expandtab = true -- Use spaces when tab is inserted
-vim.opt.hlsearch = false -- Highlight matches with last search pattern
-vim.opt.ignorecase = true -- Ignore case in search patterns
-vim.opt.number = true -- Print the line numbers
-vim.opt.relativenumber = true -- Show relative line numbers
-vim.opt.shiftwidth = 4 -- Number of spaces for autoindent
-vim.opt.signcolumn = "yes" -- Always display the sign column
-vim.opt.smartcase = true -- Do not ignore case when pattern has uppercase
+
 vim.opt.splitbelow = true -- Split new window below current
 vim.opt.splitright = true -- Split new window right of current
+
+vim.opt.completeopt = "menu,menuone,noselect" -- Options for Insert mode completion
+vim.opt.number = true -- Print the line numbers
+vim.opt.relativenumber = true -- Show relative line numbers
+vim.opt.signcolumn = "yes" -- Always display the sign column
+
+vim.opt.hlsearch = false -- Highlight matches with last search pattern
+vim.opt.ignorecase = true -- Ignore case in search patterns
+vim.opt.smartcase = true -- Do not ignore case when pattern has uppercase
+
+vim.opt.breakindent = true -- Wrapped line repeats indent
+vim.opt.expandtab = true -- Use spaces when tab is inserted
+vim.opt.shiftwidth = 4 -- Number of spaces for autoindent
 vim.opt.tabstop = 4 -- Number of spaces tab uses
-vim.opt.termguicolors = true -- Enable 24-bit RGB color
 vim.opt.wrap = false -- Long lines wrap to the next line
 
 --
@@ -31,9 +36,6 @@ vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
 vim.keymap.set("n", "<Leader>e", vim.diagnostic.open_float)
 vim.keymap.set("n", "<Leader>q", vim.diagnostic.setloclist)
-
--- Line wrap
-vim.keymap.set("n", "<Leader>w", "<Cmd>set wrap!<CR>")
 
 -- LSP
 vim.keymap.set("n", "gd", vim.lsp.buf.definition)
@@ -54,6 +56,9 @@ vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+
+-- Wrap
+vim.keymap.set("n", "<Leader>w", "<Cmd>set wrap!<CR>")
 
 --
 --[[ Commands ]]
