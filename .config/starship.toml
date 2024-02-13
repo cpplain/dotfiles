@@ -27,18 +27,18 @@ style = "bright-black"
 format = "[$path]($style) "
 style = "blue"
 truncation_length = 0
-truncate_to_repo = false
+# truncate_to_repo = false
 
 [git_state]
 format = "[$state]($style) "
 style = "bright-black"
-rebase="rebase"
-merge="merge"
-revert="revert"
-cherry_pick="cherry-pick"
-bisect="bisect"
-am=""
-am_or_rebase=""
+rebase = "rebase"
+merge = "merge"
+revert = "revert"
+cherry_pick = "cherry-pick"
+bisect = "bisect"
+am = ""
+am_or_rebase = ""
 
 [git_branch]
 format = "[$branch]($style) "
@@ -47,12 +47,13 @@ style = "bright-black"
 [git_status]
 format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted )](red)($ahead_behind )($stashed )]($style)"
 style = "cyan"
-conflicted = "​" # zero-width space
-untracked = "​" # zero-width space
-modified = "​" # zero-width space
-staged = "​" # zero-width space
-renamed = "​" # zero-width space
-deleted = "​" # zero-width space
+# ​ - zero-width space
+conflicted = "​"
+untracked = "​"
+modified = "​"
+staged = "​"
+renamed = "​"
+deleted = "​"
 ahead = "⇡"
 behind = "⇣"
 diverged = "⇡⇣"
@@ -63,9 +64,12 @@ format = "[$duration]($style) "
 style = "yellow"
 
 [character]
-success_symbol = '[INSERT❯](green)' # insert
-error_symbol = '[INSERT❯](red)' # insert
-vimcmd_symbol = '[NORMAL❯](blue)' # normal
-vimcmd_replace_one_symbol = '[NORMAL❯](blue)' # normal
-vimcmd_replace_symbol = '[NORMAL❯](blue)' # normal
-vimcmd_visual_symbol = '[VISUAL❯](purple)' # visual
+# insert mode
+success_symbol = '[INSERT❯](green)'
+error_symbol = '[INSERT❯](red)'
+# normal mode
+vimcmd_symbol = '[NORMAL❯](blue)'
+vimcmd_replace_one_symbol = '[NORMAL❯](blue)'
+vimcmd_replace_symbol = '[NORMAL❯](blue)'
+# visual mode
+vimcmd_visual_symbol = '[VISUAL❯](purple)'
