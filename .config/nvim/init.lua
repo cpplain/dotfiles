@@ -2,30 +2,33 @@
 --[[ Options ]]
 --
 
+-- Leader
 vim.g.mapleader = " " -- Set <Space> as <Leeader>
 vim.g.maplocalleader = " " -- Set <Space> as <LocalLeader>
 
-vim.opt.termguicolors = true -- Enable 24-bit RGB color
-
-vim.opt.clipboard = "unnamedplus" -- Sync Neovim and OS clipboard
-
-vim.opt.splitbelow = true -- Split new window below current
-vim.opt.splitright = true -- Split new window right of current
-
-vim.opt.completeopt = "menu,menuone,noselect" -- Options for Insert mode completion
-vim.opt.number = true -- Print the line numbers
-vim.opt.relativenumber = true -- Show relative line numbers
-vim.opt.signcolumn = "yes" -- Always display the sign column
-
-vim.opt.hlsearch = false -- Highlight matches with last search pattern
-vim.opt.ignorecase = true -- Ignore case in search patterns
-vim.opt.smartcase = true -- Do not ignore case when pattern has uppercase
-
+-- Indentation and wrapping
 vim.opt.breakindent = true -- Wrapped line repeats indent
 vim.opt.expandtab = true -- Use spaces when tab is inserted
 vim.opt.shiftwidth = 4 -- Number of spaces for autoindent
 vim.opt.tabstop = 4 -- Number of spaces tab uses
 vim.opt.wrap = false -- Long lines wrap to the next line
+
+-- OS integration
+vim.opt.clipboard = "unnamedplus" -- Sync Neovim and OS clipboard
+
+-- Search
+vim.opt.hlsearch = false -- Highlight matches with last search pattern
+vim.opt.ignorecase = true -- Ignore case in search patterns
+vim.opt.smartcase = true -- Do not ignore case when pattern has uppercase
+
+-- UI
+vim.opt.completeopt = "menu,menuone,noselect" -- Options for Insert mode completion
+vim.opt.number = true -- Print the line numbers
+vim.opt.relativenumber = true -- Show relative line numbers
+vim.opt.signcolumn = "yes" -- Always display the sign column
+vim.opt.splitbelow = true -- Split new window below current
+vim.opt.splitright = true -- Split new window right of current
+vim.opt.termguicolors = true -- Enable 24-bit RGB color
 
 --
 --[[ Keymaps ]]
@@ -47,7 +50,7 @@ vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help)
 vim.keymap.set({ "n", "v" }, "<Leader>ca", vim.lsp.buf.code_action)
 vim.keymap.set("n", "<Leader>rn", vim.lsp.buf.rename)
 
--- Move text
+-- Moving text
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { silent = true })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { silent = true })
 
@@ -57,7 +60,7 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 
--- Wrap
+-- Wrapping lines
 vim.keymap.set("n", "<Leader>w", "<Cmd>set wrap!<CR>")
 
 --
@@ -239,7 +242,7 @@ require("lazy").setup({
 		end,
 	},
 
-	-- Code commenting
+	-- Code comments
 	{ "numToStr/Comment.nvim", config = true },
 
 	-- Formatting
