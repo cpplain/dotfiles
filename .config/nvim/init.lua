@@ -225,65 +225,71 @@ require("lazy").setup({
 	},
 
 	-- Code commenting
-	{
-		"numToStr/Comment.nvim",
-		opts = {},
-	},
+	{ "numToStr/Comment.nvim", config = true },
 
 	-- Formatting
 	{
 		"stevearc/conform.nvim",
 		dependencies = { "WhoIsSethDaniel/mason-tool-installer.nvim" },
-		opts = {
-			format_on_save = {
-				timeout_ms = 500,
-			},
-			formatters_by_ft = conform_formatters,
-		},
+		config = function()
+			require("conform").setup({
+				format_on_save = {
+					timeout_ms = 500,
+				},
+				formatters_by_ft = conform_formatters,
+			})
+		end,
 	},
 
 	-- Git decorations
-	{
-		"lewis6991/gitsigns.nvim",
-		opts = {},
-	},
+	{ "lewis6991/gitsigns.nvim", config = true },
 
 	-- Indentation guides
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		main = "ibl",
-		opts = {
-			scope = { enabled = false },
-		},
+		config = function()
+			require("ibl").setup({
+				scope = { enabled = false },
+			})
+		end,
 	},
 
 	-- Statusline
 	{
 		"nvim-lualine/lualine.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
-		opts = {
-			options = {
-				icons_enabled = false,
-				theme = "catppuccin",
-				component_separators = "",
-				section_separators = "",
-			},
-		},
+		config = function()
+			require("lualine").setup({
+				options = {
+					icons_enabled = false,
+					theme = "catppuccin",
+					component_separators = "",
+					section_separators = "",
+				},
+			})
+		end,
 	},
 
 	-- Language servers, linters, and formatters
 	{
 		"williamboman/mason.nvim",
 		build = ":MasonUpdate",
-		opts = { ui = { border = "rounded" } },
+		config = function()
+			require("mason").setup({
+				ui = { border = "rounded" },
+			})
+		end,
 	},
 	{
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		dependencies = { "williamboman/mason.nvim" },
 		build = ":MasonToolsUpdate",
-		opts = {
-			ensure_installed = mason_packages,
-		},
+		config = function()
+			require("mason-tool-installer").setup({
+				ensure_installed = mason_packages,
+			})
+		end,
 	},
 
 	-- Command line and notifications
@@ -294,29 +300,31 @@ require("lazy").setup({
 			{ "rcarriga/nvim-notify" },
 			{ "nvim-treesitter/nvim-treesitter" },
 		},
-		opts = {
-			cmdline = { view = "cmdline" },
-			lsp = {
-				progress = { enabled = false },
-				override = {
-					["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-					["vim.lsp.util.stylize_markdown"] = true,
-					["cmp.entry.get_documentation"] = true,
+		config = function()
+			require("noice").setup({
+				cmdline = { view = "cmdline" },
+				lsp = {
+					progress = { enabled = false },
+					override = {
+						["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+						["vim.lsp.util.stylize_markdown"] = true,
+						["cmp.entry.get_documentation"] = true,
+					},
 				},
-			},
-			presets = {
-				-- bottom_search = true,
-				-- command_palette = true,
-				lsp_doc_border = true,
-			},
-		},
+				presets = {
+					-- bottom_search = true,
+					-- command_palette = true,
+					lsp_doc_border = true,
+				},
+			})
+		end,
 	},
 
 	-- Autocompletion
 	{
 		"hrsh7th/nvim-cmp",
 		dependencies = {
-			{ "windwp/nvim-autopairs", opts = {} },
+			{ "windwp/nvim-autopairs", config = true },
 
 			-- Sources
 			{ "hrsh7th/cmp-buffer" },
@@ -391,7 +399,7 @@ require("lazy").setup({
 		"neovim/nvim-lspconfig",
 		dependencies = {
 			{ "WhoIsSethDaniel/mason-tool-installer.nvim" },
-			{ "folke/neodev.nvim", opts = {} },
+			{ "folke/neodev.nvim", config = true },
 			{ "hrsh7th/nvim-cmp" },
 		},
 		config = function()
