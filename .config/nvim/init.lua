@@ -35,6 +35,16 @@ vim.keymap.set("n", "<Leader>q", vim.diagnostic.setloclist)
 -- Line wrap
 vim.keymap.set("n", "<Leader>w", "<Cmd>set wrap!<CR>")
 
+-- LSP
+vim.keymap.set("n", "gd", vim.lsp.buf.definition)
+vim.keymap.set("n", "gi", vim.lsp.buf.implementation)
+vim.keymap.set("n", "gr", vim.lsp.buf.references)
+vim.keymap.set("n", "gt", vim.lsp.buf.type_definition)
+vim.keymap.set("n", "K", vim.lsp.buf.hover)
+vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help)
+vim.keymap.set({ "n", "v" }, "<Leader>ca", vim.lsp.buf.code_action)
+vim.keymap.set("n", "<Leader>rn", vim.lsp.buf.rename)
+
 -- Move text
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { silent = true })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { silent = true })
@@ -405,22 +415,8 @@ require("lazy").setup({
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			local on_attach = function(_, bufnr)
-				local opts = { buffer = bufnr }
-
-				vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-				vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-				vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-				vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, opts)
-				vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-				vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, opts)
-				vim.keymap.set({ "n", "v" }, "<Leader>ca", vim.lsp.buf.code_action, opts)
-				vim.keymap.set("n", "<Leader>rn", vim.lsp.buf.rename, opts)
-			end
-
 			for server, server_opts in pairs(lsp_servers) do
 				server_opts.capabilities = capabilities
-				server_opts.on_attach = on_attach
 
 				require("lspconfig")[server].setup(server_opts)
 			end
