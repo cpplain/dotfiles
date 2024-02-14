@@ -192,16 +192,16 @@ local languages = {
 	},
 }
 
-local conform_formatters = {}
-local lsp_servers = {}
-local mason_packages = {}
-local treesitter_parsers = {}
+local formatters = {}
+local servers = {}
+local packages = {}
+local parsers = {}
 
 for _, settings in pairs(languages) do
-	conform_formatters = vim.tbl_extend("force", conform_formatters, settings.conform)
-	lsp_servers = vim.tbl_extend("force", lsp_servers, settings.lspconfig)
-	mason_packages = vim.list_extend(mason_packages, settings.mason)
-	treesitter_parsers = vim.list_extend(treesitter_parsers, settings.treesitter)
+	formatters = vim.tbl_extend("force", formatters, settings.conform)
+	servers = vim.tbl_extend("force", servers, settings.lspconfig)
+	packages = vim.list_extend(packages, settings.mason)
+	parsers = vim.list_extend(parsers, settings.treesitter)
 end
 
 --
@@ -254,7 +254,7 @@ require("lazy").setup({
 				format_on_save = {
 					timeout_ms = 500,
 				},
-				formatters_by_ft = conform_formatters,
+				formatters_by_ft = formatters,
 			})
 		end,
 	},
@@ -305,7 +305,7 @@ require("lazy").setup({
 		build = ":MasonToolsUpdate",
 		config = function()
 			require("mason-tool-installer").setup({
-				ensure_installed = mason_packages,
+				ensure_installed = packages,
 			})
 		end,
 	},
@@ -423,10 +423,10 @@ require("lazy").setup({
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			for server, server_opts in pairs(lsp_servers) do
-				server_opts.capabilities = capabilities
+			for name, opts in pairs(servers) do
+				opts.capabilities = capabilities
 
-				require("lspconfig")[server].setup(server_opts)
+				require("lspconfig")[name].setup(opts)
 			end
 
 			require("lspconfig.ui.windows").default_options.border = "rounded"
@@ -443,7 +443,7 @@ require("lazy").setup({
 		build = ":TSUpdate",
 		config = function()
 			require("nvim-treesitter.configs").setup({
-				ensure_installed = treesitter_parsers,
+				ensure_installed = parsers,
 				sync_install = false,
 				auto_install = false,
 				ignore_install = {},
