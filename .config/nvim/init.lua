@@ -319,6 +319,12 @@ require("lazy").setup({
 		end,
 	},
 
+	-- Neovim config and plugin development
+	{
+		"folke/neodev.nvim",
+		config = true,
+	},
+
 	-- Command line and notifications
 	{
 		"folke/noice.nvim",
@@ -351,11 +357,17 @@ require("lazy").setup({
 		end,
 	},
 
+	-- Autopair completion
+	{
+		"windwp/nvim-autopairs",
+		config = true,
+	},
+
 	-- Autocompletion
 	{
 		"hrsh7th/nvim-cmp",
 		dependencies = {
-			{ "windwp/nvim-autopairs", config = true },
+			{ "windwp/nvim-autopairs" },
 
 			-- Sources
 			{ "hrsh7th/cmp-buffer" },
@@ -430,7 +442,7 @@ require("lazy").setup({
 		"neovim/nvim-lspconfig",
 		dependencies = {
 			{ "WhoIsSethDaniel/mason-tool-installer.nvim" },
-			{ "folke/neodev.nvim", config = true },
+			{ "folke/neodev.nvim" },
 			{ "hrsh7th/nvim-cmp" },
 		},
 		config = function()
@@ -522,7 +534,7 @@ require("lazy").setup({
 			{ "nvim-tree/nvim-web-devicons" },
 			{ "nvim-lua/plenary.nvim" },
 			{ "nvim-telescope/telescope-file-browser.nvim" },
-			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+			{ "nvim-telescope/telescope-fzf-native.nvim" },
 		},
 		config = function()
 			local telescope = require("telescope")
@@ -547,6 +559,12 @@ require("lazy").setup({
 			vim.keymap.set("n", "<Leader>lg", "<Cmd>Telescope live_grep<CR>")
 			vim.keymap.set("n", "<Leader>tn", "<Cmd>Telescope noice<CR>")
 		end,
+	},
+
+	-- Fuzzy finder sorter
+	{
+		"nvim-telescope/telescope-fzf-native.nvim",
+		build = "make",
 	},
 
 	-- Diagnostics
