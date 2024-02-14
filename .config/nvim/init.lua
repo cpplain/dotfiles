@@ -319,19 +319,13 @@ require("lazy").setup({
 		end,
 	},
 
-	-- Neovim config and plugin development
-	{
-		"folke/neodev.nvim",
-		config = true,
-	},
-
 	-- Command line and notifications
 	{
 		"folke/noice.nvim",
 		dependencies = {
-			{ "MunifTanjim/nui.nvim" },
-			{ "rcarriga/nvim-notify" },
-			{ "nvim-treesitter/nvim-treesitter" },
+			"MunifTanjim/nui.nvim",
+			"rcarriga/nvim-notify",
+			"nvim-treesitter/nvim-treesitter",
 		},
 		config = function()
 			require("noice").setup({
@@ -367,18 +361,18 @@ require("lazy").setup({
 	{
 		"hrsh7th/nvim-cmp",
 		dependencies = {
-			{ "windwp/nvim-autopairs" },
+			"windwp/nvim-autopairs",
 
 			-- Sources
-			{ "hrsh7th/cmp-buffer" },
-			{ "hrsh7th/cmp-cmdline" },
-			{ "saadparwaiz1/cmp_luasnip" },
-			{ "hrsh7th/cmp-nvim-lsp" },
-			{ "hrsh7th/cmp-path" },
+			"hrsh7th/cmp-buffer",
+			"hrsh7th/cmp-cmdline",
+			"saadparwaiz1/cmp_luasnip",
+			"hrsh7th/cmp-nvim-lsp",
+			"hrsh7th/cmp-path",
 
 			-- Snippets
-			{ "L3MON4D3/LuaSnip" },
-			{ "rafamadriz/friendly-snippets" },
+			"L3MON4D3/LuaSnip",
+			"rafamadriz/friendly-snippets",
 		},
 		config = function()
 			local cmp = require("cmp")
@@ -441,17 +435,20 @@ require("lazy").setup({
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			{ "WhoIsSethDaniel/mason-tool-installer.nvim" },
-			{ "folke/neodev.nvim" },
-			{ "hrsh7th/nvim-cmp" },
+			"WhoIsSethDaniel/mason-tool-installer.nvim",
+			"folke/neodev.nvim",
+			"hrsh7th/nvim-cmp",
 		},
 		config = function()
+			require("neodev").setup()
+
+			local lspconfig = require("lspconfig")
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 			for name, opts in pairs(servers) do
 				opts.capabilities = capabilities
 
-				require("lspconfig")[name].setup(opts)
+				lspconfig[name].setup(opts)
 			end
 
 			require("lspconfig.ui.windows").default_options.border = "rounded"
@@ -462,8 +459,8 @@ require("lazy").setup({
 	{
 		"nvim-treesitter/nvim-treesitter",
 		dependencies = {
-			{ "WhoIsSethDaniel/mason-tool-installer.nvim" },
-			{ "nvim-treesitter/nvim-treesitter-textobjects" },
+			"WhoIsSethDaniel/mason-tool-installer.nvim",
+			"nvim-treesitter/nvim-treesitter-textobjects",
 		},
 		build = ":TSUpdate",
 		config = function()
@@ -529,12 +526,12 @@ require("lazy").setup({
 		"nvim-telescope/telescope.nvim",
 		branch = "0.1.x",
 		dependencies = {
-			{ "folke/noice.nvim" },
-			{ "nvim-treesitter/nvim-treesitter" },
-			{ "nvim-tree/nvim-web-devicons" },
-			{ "nvim-lua/plenary.nvim" },
-			{ "nvim-telescope/telescope-file-browser.nvim" },
-			{ "nvim-telescope/telescope-fzf-native.nvim" },
+			"folke/noice.nvim",
+			"nvim-treesitter/nvim-treesitter",
+			"nvim-tree/nvim-web-devicons",
+			"nvim-lua/plenary.nvim",
+			"nvim-telescope/telescope-file-browser.nvim",
+			"nvim-telescope/telescope-fzf-native.nvim",
 		},
 		config = function()
 			local telescope = require("telescope")
