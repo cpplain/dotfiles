@@ -462,8 +462,12 @@ require("lazy").setup({
 				ignore_install = {},
 
 				modules = {},
-				highlight = { enabled = true },
-				indent = { enable = true },
+				highlight = {
+					enable = true,
+				},
+				indent = {
+					enable = true,
+				},
 
 				textobjects = {
 					move = {
@@ -524,7 +528,9 @@ require("lazy").setup({
 			local telescope = require("telescope")
 			telescope.setup({
 				defaults = {
-					layout_config = { prompt_position = "top" },
+					layout_config = {
+						prompt_position = "top",
+					},
 					sorting_strategy = "ascending",
 					wrap_results = true,
 				},
@@ -551,7 +557,9 @@ require("lazy").setup({
 				virtual_text = {
 					prefix = "●",
 				},
-				float = { border = "rounded" },
+				float = {
+					border = "rounded",
+				},
 				severity_sort = true,
 			})
 
