@@ -262,7 +262,10 @@ require("lazy").setup({
 	},
 
 	-- Git decorations
-	{ "lewis6991/gitsigns.nvim", config = true },
+	{
+		"lewis6991/gitsigns.nvim",
+		config = true,
+	},
 
 	-- Indentation guides
 	{
