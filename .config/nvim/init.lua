@@ -243,7 +243,10 @@ require("lazy").setup({
 	},
 
 	-- Code comments
-	{ "numToStr/Comment.nvim", config = true },
+	{
+		"numToStr/Comment.nvim",
+		config = true,
+	},
 
 	-- Formatting
 	{
