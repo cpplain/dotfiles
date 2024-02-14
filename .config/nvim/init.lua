@@ -251,7 +251,6 @@ require("lazy").setup({
 	-- Formatting
 	{
 		"stevearc/conform.nvim",
-		dependencies = { "WhoIsSethDaniel/mason-tool-installer.nvim" },
 		config = function()
 			require("conform").setup({
 				format_on_save = {
