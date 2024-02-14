@@ -302,7 +302,9 @@ require("lazy").setup({
 		build = ":MasonUpdate",
 		config = function()
 			require("mason").setup({
-				ui = { border = "rounded" },
+				ui = {
+					border = "rounded",
+				},
 			})
 		end,
 	},
