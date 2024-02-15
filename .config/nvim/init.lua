@@ -164,7 +164,7 @@ local languages = {
 	},
 
 	python = {
-		conform = { python = { "ruff_formatt" } },
+		conform = { python = { "ruff_format" } },
 		lspconfig = {
 			pyright = {},
 			ruff_lsp = {
