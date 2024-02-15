@@ -525,6 +525,15 @@ require("lazy").setup({
 							["il"] = "@loop.inner",
 						},
 					},
+					swap = {
+						enable = true,
+						swap_next = {
+							["<leader>a"] = "@parameter.inner",
+						},
+						swap_previous = {
+							["<leader>A"] = "@parameter.inner",
+						},
+					},
 				},
 			})
 		end,
