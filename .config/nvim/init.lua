@@ -81,9 +81,9 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 local languages = {
 	data_formats = {
 		conform = {
-			json = { "prettierd", "prettier" },
+			json = { "prettierd" },
 			toml = { "taplo" },
-			yaml = { "prettierd", "prettier" },
+			yaml = { "prettierd" },
 		},
 		lspconfig = { jsonls = {}, taplo = {}, yamlls = {} },
 		mason = { "json-lsp", "prettierd", "taplo", "yaml-language-server" },
@@ -106,8 +106,8 @@ local languages = {
 
 	html_css = {
 		conform = {
-			css = { "prettierd", "prettier" },
-			html = { "prettierd", "prettier" },
+			css = { "prettierd" },
+			html = { "prettierd" },
 		},
 		lspconfig = { cssls = {}, html = {} },
 		mason = { "css-lsp", "html-lsp", "prettierd" },
@@ -116,8 +116,8 @@ local languages = {
 
 	javascript = {
 		conform = {
-			javascript = { "prettierd", "prettier" },
-			typescript = { "prettierd", "prettier" },
+			javascript = { "prettierd" },
+			typescript = { "prettierd" },
 		},
 		lspconfig = {
 			tsserver = {
@@ -150,7 +150,7 @@ local languages = {
 	},
 
 	markdown = {
-		conform = { markdown = { "prettierd", "prettier" } },
+		conform = { markdown = { "prettierd" } },
 		lspconfig = { marksman = {} },
 		mason = { "marksman", "prettierd" },
 		treesitter = { "markdown", "markdown_inline" },
