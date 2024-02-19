@@ -1,33 +1,43 @@
 tap "homebrew/bundle"
 tap "homebrew/cask-fonts"
 
-brew "fd"
-brew "fish"
-brew "fisher"
-brew "go"
-brew "minikube"
-brew "neovim"
-brew "node@20"
-brew "nodenv"
-brew "pyenv"
-brew "python-tk@3.12"
-brew "python@3.12"
-brew "rbenv"
-brew "ripgrep"
-brew "starship"
-brew "tree"
-brew "wget"
+# Apps
 
 cask "1password"
 cask "arq"
 cask "docker"
 cask "firefox"
 cask "fission"
+
+# Programming Languages
+
+brew "go"
+brew "node@20"
+brew "nodenv"
+brew "pyenv"
+brew "python-tk@3.12"
+brew "python@3.12"
+brew "rbenv"
+
+# Terminal / Shell
+
+brew "fd" # telescope.nvim dependency
+brew "fish"
+brew "fisher"
 cask "font-sf-mono"
 cask "font-symbols-only-nerd-font"
-cask "visual-studio-code"
+brew "lazygit"
+brew "minikube"
+brew "neovim"
+brew "ripgrep" # telescope.nvim dependency
+brew "starship"
+brew "tree"
+brew "wget"
 cask "wezterm"
 
+# VS Code
+
+cask "visual-studio-code"
 vscode "asvetliakov.vscode-neovim"
 vscode "Catppuccin.catppuccin-vsc"
 vscode "dbaeumer.vscode-eslint"
