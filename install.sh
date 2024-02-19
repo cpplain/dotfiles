@@ -30,6 +30,7 @@ mkdir -p ~/Library/Application\ Support/Code/User
 ln -sF $(pwd)/brew-$1/.Brewfile ~/
 ln -sF $(pwd)/fish/.config/fish ~/.config
 ln -sF $(pwd)/git/.config/git ~/.config
+ln -sF $(pwd)/git-private/.config/git-private ~/.config
 ln -sF $(pwd)/lazyvim/.config/lazyvim ~/.config
 ln -sF $(pwd)/nvim/.config/nvim ~/.config
 ln -sF $(pwd)/starship/.config/starship.toml ~/.config
