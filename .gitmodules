@@ -1,0 +1,3 @@
+[submodule "git-private"]
+	path = git-private
+	url = https://github.com/cpplain/dotfiles-git-private.git
