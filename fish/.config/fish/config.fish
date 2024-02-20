@@ -11,6 +11,8 @@ set -gx XDG_DATA_HOME ~/.local/share
 set -gx XDG_STATE_HOME ~/.local/state
 set -gx XDG_CACHE_HOME ~/.cache
 
+set -gx HOMEBREW_BUNDLE_NO_LOCK 1
+
 set fish_vi_force_cursor 1
 set fish_cursor_default block
 set fish_cursor_insert line
