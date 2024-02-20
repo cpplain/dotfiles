@@ -9,13 +9,11 @@ if ! which brew >/dev/null; then
 	echo "Installing Homebrew"
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-	if test $(uname -m) = "arm64"; then
-		eval "$(/opt/homebrew/bin/brew shellenv)"
-	fi
-
+	brew_prefix=/opt/homebrew/bin
 	if test $(uname -m) = "x86_64"; then
-		eval "$(/usr/local/brew shellenv)"
+		brew_prefix=/usr/local
 	fi
+	eval "$($brew_prefix/brew shellenv)"
 fi
 
 echo "Installing packages"
