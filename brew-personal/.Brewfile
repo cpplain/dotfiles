@@ -31,6 +31,7 @@ brew "minikube"
 brew "neovim"
 brew "ripgrep" # telescope.nvim dependency
 brew "starship"
+brew "stow"
 brew "tree"
 brew "wget"
 cask "wezterm"

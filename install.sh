@@ -9,11 +9,11 @@ if ! which brew >/dev/null; then
 	echo "Installing Homebrew"
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-	brew_prefix=/opt/homebrew/bin
+	BREW_PREFIX=/opt/homebrew/bin
 	if test $(uname -m) = "x86_64"; then
-		brew_prefix=/usr/local
+		BREW_PREFIX=/usr/local
 	fi
-	eval "$($brew_prefix/brew shellenv)"
+	eval "$($BREW_PREFIX/brew shellenv)"
 fi
 
 echo "Installing packages"
@@ -25,13 +25,19 @@ echo "Creating symlinks"
 mkdir -p ~/.config
 mkdir -p ~/Library/Application\ Support/Code/User
 
-ln -sF $(pwd)/brew-$1/.Brewfile ~/
-ln -sF $(pwd)/fish/.config/fish ~/.config
-ln -sF $(pwd)/git/.config/git ~/.config
-ln -sF $(pwd)/git-private/.config/git-private ~/.config
-ln -sF $(pwd)/lazyvim/.config/lazyvim ~/.config
-ln -sF $(pwd)/nvim/.config/nvim ~/.config
-ln -sF $(pwd)/starship/.config/starship.toml ~/.config
-ln -sF $(pwd)/vscode/Library/Application\ Support/Code/User/settings.json ~/Library/Application\ Support/Code/User
-ln -sF $(pwd)/wezterm/.config/wezterm ~/.config
-ln -sF $(pwd)/zsh/.zshrc ~/
+STOW_PKGS=(
+	brew-$1
+	fish
+	git
+	git-private
+	lazyvim
+	nvim
+	starship
+	vscode
+	wezterm
+	zsh
+)
+
+for PKG in "${STOW_PKGS[@]}"; do
+	stow -t $HOME $PKG
+done
