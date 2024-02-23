@@ -164,6 +164,18 @@ require("lazy").setup({
 		end,
 	},
 
+	-- Snippets
+	{
+		"L3MON4D3/LuaSnip",
+		dependencies = { "rafamadriz/friendly-snippets" },
+		config = function()
+			require("luasnip.loaders.from_vscode").lazy_load()
+
+			vim.keymap.set({ "i", "s" }, "<Tab>", "<Cmd>lua require('luasnip').jump(1)<CR>")
+			vim.keymap.set({ "i", "s" }, "<S-Tab>", "<Cmd>lua require('luasnip').jump(-1)<CR>")
+		end,
+	},
+
 	-- Statusline
 	{
 		"nvim-lualine/lualine.nvim",
@@ -257,29 +269,31 @@ require("lazy").setup({
 	-- Autopair completion
 	{
 		"windwp/nvim-autopairs",
-		config = true,
+		dependencies = { "hrsh7th/nvim-cmp" },
+		config = function()
+			require("nvim-autopairs").setup()
+
+			local cmp = require("cmp")
+			local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+			cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+		end,
 	},
 
 	-- Autocompletion
 	{
 		"hrsh7th/nvim-cmp",
 		dependencies = {
-			"windwp/nvim-autopairs",
-
 			-- Sources
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-cmdline",
 			"saadparwaiz1/cmp_luasnip",
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-path",
-
 			-- Snippets
 			"L3MON4D3/LuaSnip",
-			"rafamadriz/friendly-snippets",
 		},
 		config = function()
 			local cmp = require("cmp")
-			local select = { behavior = cmp.SelectBehavior.Select }
 
 			cmp.setup({
 				snippet = {
@@ -291,12 +305,7 @@ require("lazy").setup({
 					completion = cmp.config.window.bordered(),
 					documentation = cmp.config.window.bordered(),
 				},
-				mapping = cmp.mapping.preset.insert({
-					["<C-n>"] = cmp.mapping.select_next_item(select),
-					["<C-p>"] = cmp.mapping.select_prev_item(select),
-					["<C-y>"] = cmp.mapping.confirm({ select = true }),
-					["<C-Space>"] = cmp.mapping.complete(),
-				}),
+				mapping = cmp.mapping.preset.insert(),
 				sources = cmp.config.sources({
 					{ name = "buffer" },
 					{ name = "cmdline" },
@@ -323,14 +332,6 @@ require("lazy").setup({
 					{ name = "cmdline" },
 				}),
 			})
-
-			require("luasnip.loaders.from_vscode").lazy_load()
-
-			vim.keymap.set({ "i", "s" }, "<C-h>", "<Cmd>lua require('luasnip').jump(-1)<CR>")
-			vim.keymap.set({ "i", "s" }, "<C-l>", "<Cmd>lua require('luasnip').jump(1)<CR>")
-
-			local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-			cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 		end,
 	},
 
