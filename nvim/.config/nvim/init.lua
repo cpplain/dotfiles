@@ -363,8 +363,6 @@ require("lazy").setup({
 			"hrsh7th/nvim-cmp",
 		},
 		config = function()
-			require("neodev").setup()
-
 			local servers = {
 				bashls = {},
 				cssls = {},
@@ -398,6 +396,8 @@ require("lazy").setup({
 				vimls = {},
 				yamlls = {},
 			}
+
+			require("neodev").setup()
 
 			local lspconfig = require("lspconfig")
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
