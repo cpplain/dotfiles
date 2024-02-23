@@ -12,6 +12,7 @@ cask "fission"
 # Programming Languages
 
 brew "go"
+brew "luarocks"
 brew "node@20"
 brew "nodenv"
 brew "pyenv"

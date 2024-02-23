@@ -75,136 +75,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 --
---[[ Language Settings ]]
---
-
-local languages = {
-	data_formats = {
-		conform = {
-			json = { "prettierd" },
-			toml = { "taplo" },
-			yaml = { "prettierd" },
-		},
-		lspconfig = { jsonls = {}, taplo = {}, yamlls = {} },
-		mason = { "json-lsp", "prettierd", "taplo", "yaml-language-server" },
-		treesitter = { "json", "toml", "yaml" },
-	},
-
-	git = {
-		conform = {},
-		lspconfig = {},
-		mason = {},
-		treesitter = { "git_config", "gitcommit", "gitignore" },
-	},
-
-	go = {
-		conform = { go = { "goimports", "gofmt" } },
-		lspconfig = { gopls = {} },
-		mason = { "gopls" },
-		treesitter = { "go" },
-	},
-
-	html_css = {
-		conform = {
-			css = { "prettierd" },
-			html = { "prettierd" },
-		},
-		lspconfig = { cssls = {}, html = {} },
-		mason = { "css-lsp", "html-lsp", "prettierd" },
-		treesitter = { "css", "html" },
-	},
-
-	javascript = {
-		conform = {
-			javascript = { "prettierd" },
-			typescript = { "prettierd" },
-		},
-		lspconfig = {
-			tsserver = {
-				settings = {
-					completions = {
-						completeFunctionCalls = true,
-					},
-				},
-			},
-		},
-		mason = { "prettierd", "typescript-language-server" },
-		treesitter = { "javascript", "jsdoc", "typescript" },
-	},
-
-	lua = {
-		conform = { lua = { "stylua" } },
-		lspconfig = {
-			lua_ls = {
-				settings = {
-					Lua = {
-						completion = {
-							callSnippet = "Replace",
-						},
-					},
-				},
-			},
-		},
-		mason = { "lua-language-server", "stylua" },
-		treesitter = { "lua", "luadoc" },
-	},
-
-	markdown = {
-		conform = { markdown = { "prettierd" } },
-		lspconfig = { marksman = {} },
-		mason = { "marksman", "prettierd" },
-		treesitter = { "markdown", "markdown_inline" },
-	},
-
-	misc = {
-		conform = {},
-		lspconfig = {},
-		mason = {},
-		treesitter = { "c", "query", "regex" },
-	},
-
-	python = {
-		conform = { python = { "ruff_format" } },
-		lspconfig = {
-			pyright = {},
-			ruff_lsp = {
-				on_attach = function(client, _)
-					client.server_capabilities.hoverProvider = false
-				end,
-			},
-		},
-		mason = { "pyright", "ruff", "ruff-lsp" },
-		treesitter = { "python" },
-	},
-
-	shell = {
-		conform = { fish = { "fish_indent" }, sh = { "shfmt" } },
-		lspconfig = { bashls = {} },
-		mason = { "bash-language-server", "shfmt" },
-		treesitter = { "bash", "fish" },
-	},
-
-	vim = {
-		conform = {},
-		lspconfig = { vimls = {} },
-		mason = { "vim-language-server" },
-		treesitter = { "vim", "vimdoc" },
-	},
-}
-
-local formatters = {}
-local servers = {}
-local packages = {}
-local parsers = {}
-
-for _, settings in pairs(languages) do
-	formatters = vim.tbl_extend("force", formatters, settings.conform)
-	servers = vim.tbl_extend("force", servers, settings.lspconfig)
-	packages = vim.list_extend(packages, settings.mason)
-	parsers = vim.list_extend(parsers, settings.treesitter)
-end
-
---
 --[[ Plugins ]]
 --
 
@@ -256,7 +126,21 @@ require("lazy").setup({
 				format_on_save = {
 					timeout_ms = 500,
 				},
-				formatters_by_ft = formatters,
+				formatters_by_ft = {
+					css = { "prettierd" },
+					fish = { "fish_indent" },
+					go = { "goimports", "gofmt" },
+					html = { "prettierd" },
+					javascript = { "prettierd" },
+					json = { "prettierd" },
+					lua = { "stylua" },
+					markdown = { "prettierd" },
+					python = { "ruff_format" },
+					sh = { "shfmt" },
+					toml = { "taplo" },
+					typescript = { "prettierd" },
+					yaml = { "prettierd" },
+				},
 			})
 		end,
 	},
@@ -314,7 +198,26 @@ require("lazy").setup({
 		build = ":MasonToolsUpdate",
 		config = function()
 			require("mason-tool-installer").setup({
-				ensure_installed = packages,
+				ensure_installed = {
+					"bash-language-server",
+					"css-lsp",
+					"eslint_d",
+					"gopls",
+					"html-lsp",
+					"json-lsp",
+					"lua-language-server",
+					"marksman",
+					"prettierd",
+					"pyright",
+					"ruff",
+					"ruff-lsp",
+					"shfmt",
+					"stylua",
+					"taplo",
+					"typescript-language-server",
+					"vim-language-server",
+					"yaml-language-server",
+				},
 			})
 		end,
 	},
@@ -431,6 +334,25 @@ require("lazy").setup({
 		end,
 	},
 
+	-- Linting
+	{
+		"mfussenegger/nvim-lint",
+		config = function()
+			require("lint").linters_by_ft = {
+				fish = { "fish" },
+				javascript = { "eslint_d" },
+				typescript = { "eslint_d" },
+			}
+
+			vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
+				group = vim.api.nvim_create_augroup("Lint", { clear = true }),
+				callback = function()
+					require("lint").try_lint()
+				end,
+			})
+		end,
+	},
+
 	-- Language server
 	{
 		"neovim/nvim-lspconfig",
@@ -441,6 +363,40 @@ require("lazy").setup({
 		},
 		config = function()
 			require("neodev").setup()
+
+			local servers = {
+				bashls = {},
+				cssls = {},
+				gopls = {},
+				html = {},
+				lua_ls = {
+					settings = {
+						Lua = {
+							completion = {
+								callSnippet = "Replace",
+							},
+						},
+					},
+				},
+				jsonls = {},
+				marksman = {},
+				pyright = {},
+				ruff_lsp = {
+					on_attach = function(client, _)
+						client.server_capabilities.hoverProvider = false
+					end,
+				},
+				taplo = {},
+				tsserver = {
+					settings = {
+						completions = {
+							completeFunctionCalls = true,
+						},
+					},
+				},
+				vimls = {},
+				yamlls = {},
+			}
 
 			local lspconfig = require("lspconfig")
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -465,7 +421,33 @@ require("lazy").setup({
 		build = ":TSUpdate",
 		config = function()
 			require("nvim-treesitter.configs").setup({
-				ensure_installed = parsers,
+				ensure_installed = {
+					"bash",
+					"c",
+					"css",
+					"fish",
+					"git_config",
+					"gitcommit",
+					"gitignore",
+					"go",
+					"html",
+					"javascript",
+					"jsdoc",
+					"json",
+					"lua",
+					"luadoc",
+					"markdown",
+					"markdown_inline",
+					"python",
+					"query",
+					"regex",
+					"toml",
+					"typescript",
+					"vim",
+					"vimdoc",
+					"yaml",
+				},
+
 				sync_install = false,
 				auto_install = false,
 				ignore_install = {},
