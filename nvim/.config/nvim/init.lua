@@ -180,7 +180,7 @@ require("lazy").setup({
 		end,
 	},
 
-	-- Language servers, linters, and formatters
+	-- Server, linter, and formatter package manager
 	{
 		"williamboman/mason.nvim",
 		build = ":MasonUpdate",
@@ -353,7 +353,7 @@ require("lazy").setup({
 		end,
 	},
 
-	-- Language server
+	-- Language server configuration
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -411,7 +411,7 @@ require("lazy").setup({
 		end,
 	},
 
-	-- Code parsing, highlighting, and navigation
+	-- Parsing, highlighting, and navigation
 	{
 		"nvim-treesitter/nvim-treesitter",
 		dependencies = {
@@ -558,7 +558,7 @@ require("lazy").setup({
 		end,
 	},
 
-	-- Fuzzy finder sorter
+	-- Sorter
 	{
 		"nvim-telescope/telescope-fzf-native.nvim",
 		build = "make",
