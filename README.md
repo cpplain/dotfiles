@@ -2,7 +2,7 @@
 
 # Christopher's Dotfiles
 
-You are free to use my dotfiles as you wish. However, I strongly encourage you not to copy the files as is. Instead, take time to understand the configurations, take what you like, and create your own dotfiles from scratch. You will be much happier with the end result and will be capable of maintining/improving your configuration in the future.
+You are free to use my dotfiles as you wish. However, I strongly encourage you not to copy the files as is. Instead, take time to understand the configurations, take what you like, and create your own dotfiles from scratch. You will be much happier with the end result and will be capable of maintaining/improving your configuration moving forward.
 
 ## Usage
 
