@@ -15,6 +15,7 @@ vim.g.maplocalleader = " " -- Set <Space> as <LocalLeader>
 -- Indentation and wrapping
 vim.opt.breakindent = true -- Wrapped line repeats indent
 vim.opt.expandtab = true -- Use spaces when tab is inserted
+vim.opt.linebreak = true -- Wrap lines are word boundary
 vim.opt.shiftwidth = 4 -- Number of spaces for autoindent
 vim.opt.tabstop = 4 -- Number of spaces tab uses
 vim.opt.wrap = false -- Long lines wrap to the next line
@@ -30,6 +31,7 @@ vim.opt.smartcase = true -- Do not ignore case when pattern has uppercase
 -- Spelling
 vim.opt.spell = true
 vim.opt.spelllang = "en_us"
+
 -- UI
 vim.opt.completeopt = "menu,menuone,noselect" -- Options for Insert mode completion
 vim.opt.number = true -- Print the line numbers
