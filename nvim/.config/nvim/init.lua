@@ -9,7 +9,7 @@ end
 --
 
 -- Leader
-vim.g.mapleader = " " -- Set <Space> as <Leeader>
+vim.g.mapleader = " " -- Set <Space> as <Leader>
 vim.g.maplocalleader = " " -- Set <Space> as <LocalLeader>
 
 -- Indentation and wrapping
@@ -27,6 +27,9 @@ vim.opt.hlsearch = false -- Highlight matches with last search pattern
 vim.opt.ignorecase = true -- Ignore case in search patterns
 vim.opt.smartcase = true -- Do not ignore case when pattern has uppercase
 
+-- Spelling
+vim.opt.spell = true
+vim.opt.spelllang = "en_us"
 -- UI
 vim.opt.completeopt = "menu,menuone,noselect" -- Options for Insert mode completion
 vim.opt.number = true -- Print the line numbers
