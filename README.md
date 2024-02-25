@@ -2,7 +2,7 @@
 
 # Christopher's Dotfiles
 
-You are free to use my dotfiles as you wish. However, I strongly encourage you not to copy the files as is. Instead, take time to understand the configurations, take what you like, and create your own dotfiles from scratch. You will be much happier with the end result and will be capable of maintaining/improving your configuration moving forward.
+You are free to use my dotfiles as you wish. However, I strongly encourage you not to copy the files as is. Instead, take time to understand the configurations, take what works for you, leave what doesn't, and create your own dofiles from scratch. You will be much happier with the end result and will be capable of maintaining/improving your configuration moving forward.
 
 ## Usage
 
@@ -12,10 +12,10 @@ git clone https://github.com/cpplain/dotfiles.git && cd dotfiles && ./install.sh
 
 ## Goals
 
+- Strive for simplicity
 - Prefer single-file configs
-- Strive for simplicity (not simplistic or minimalistic)
 - Prefer default settings
-- Add plugins only for significant functional or aesthetic improvement
+- Add plugins only for significant functional improvement
 
 ## Packages and Settings
 
