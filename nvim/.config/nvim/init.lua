@@ -173,19 +173,6 @@ require("lazy").setup({
 		config = true,
 	},
 
-	-- Indentation guides
-	{
-		"lukas-reineke/indent-blankline.nvim",
-		main = "ibl",
-		config = function()
-			require("ibl").setup({
-				scope = {
-					enabled = false,
-				},
-			})
-		end,
-	},
-
 	-- Snippets
 	{
 		"L3MON4D3/LuaSnip",
