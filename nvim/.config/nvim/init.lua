@@ -61,9 +61,6 @@ vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help)
 vim.keymap.set({ "n", "v" }, "<Leader>ca", vim.lsp.buf.code_action)
 vim.keymap.set("n", "<Leader>rn", vim.lsp.buf.rename)
 
--- Markdown preview
-vim.keymap.set({ "n", "i" }, "<Leader>mp", "<Cmd>MarkdownPreviewToggle<CR>")
-
 -- Moving text
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { silent = true })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { silent = true })
@@ -198,14 +195,6 @@ require("lazy").setup({
 					section_separators = "",
 				},
 			})
-		end,
-	},
-
-	-- Markdown preview
-	{
-		"iamcco/markdown-preview.nvim",
-		build = function()
-			vim.fn["mkdp#util#install"]()
 		end,
 	},
 
