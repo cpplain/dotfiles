@@ -3,8 +3,13 @@ tap "homebrew/cask-fonts"
 
 # Apps
 
+cask "1password"
+cask "docker"
+cask "slack"
+
 # Programming Lanaguages
 
+brew "go"
 brew "node@20"
 brew "nodenv"
 brew "pyenv"
@@ -12,6 +17,7 @@ brew "python@3.12"
 
 # Terminal / Shell
 
+brew "bash"
 brew "fd" # telescope.nvim dependency
 brew "fish"
 brew "fisher"
