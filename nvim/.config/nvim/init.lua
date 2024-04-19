@@ -170,18 +170,6 @@ require("lazy").setup({
 		config = true,
 	},
 
-	-- Snippets
-	{
-		"L3MON4D3/LuaSnip",
-		dependencies = { "rafamadriz/friendly-snippets" },
-		config = function()
-			require("luasnip.loaders.from_vscode").lazy_load()
-
-			vim.keymap.set({ "i", "s" }, "<Tab>", "<Cmd>lua require('luasnip').jump(1)<CR>")
-			vim.keymap.set({ "i", "s" }, "<S-Tab>", "<Cmd>lua require('luasnip').jump(-1)<CR>")
-		end,
-	},
-
 	-- Statusline
 	{
 		"nvim-lualine/lualine.nvim",
@@ -297,9 +285,13 @@ require("lazy").setup({
 			"hrsh7th/cmp-path",
 			-- Snippets
 			"L3MON4D3/LuaSnip",
+			"rafamadriz/friendly-snippets",
 		},
 		config = function()
 			local cmp = require("cmp")
+			local luasnip = require("luasnip")
+
+			require("luasnip.loaders.from_vscode").lazy_load()
 
 			cmp.setup({
 				completion = {
@@ -307,14 +299,29 @@ require("lazy").setup({
 				},
 				snippet = {
 					expand = function(args)
-						require("luasnip").lsp_expand(args.body)
+						luasnip.lsp_expand(args.body)
 					end,
 				},
 				window = {
 					completion = cmp.config.window.bordered(),
 					documentation = cmp.config.window.bordered(),
 				},
-				mapping = cmp.mapping.preset.insert(),
+				mapping = cmp.mapping.preset.insert({
+					["Tab"] = cmp.mapping(function(fallback)
+						if luasnip.expand_or_jumpable() then
+							luasnip.expand_or_jump()
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+					["S-Tab"] = cmp.mapping(function(fallback)
+						if luasnip.jumpable(-1) then
+							luasnip.jump(-1)
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+				}),
 				sources = cmp.config.sources({
 					{ name = "buffer" },
 					{ name = "cmdline" },
