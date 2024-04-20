@@ -28,7 +28,6 @@ git clone https://github.com/cpplain/dotfiles.git && cd dotfiles && ./install.sh
 - Font: [SF Mono](https://developer.apple.com/fonts/)
 - Symbols: [Symbols Nerd Font](https://www.nerdfonts.com)
 - Theme: [Catppuccin](https://github.com/wez/wezterm)
-- Crutch: [Visual Studio Code](https://github.com/microsoft/vscode)
 
 ## My Inspirations
 

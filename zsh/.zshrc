@@ -2,7 +2,6 @@ export CLICOLOR=1
 
 alias l1="ls -a1"
 alias ll="ls -al"
-alias python="python3"
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
@@ -17,21 +16,11 @@ if test $(uname -m) = "x86_64"; then
 fi
 eval "$($brew_path/brew shellenv)"
 
-if which go > /dev/null; then
-    export GOPATH="$(go env GOPATH)"
-    export PATH="$GOPATH:$GOPATH/bin:$PATH"
-fi
+export GOPATH="$(go env GOPATH)"
+export PATH="$GOPATH/bin:$PATH"
 
-if which nodenv > /dev/null; then
-    eval "$(nodenv init -)"
-fi
-
-if which pyenv > /dev/null; then
-    eval "$(pyenv init -)"
-fi
-
-if which rbenv > /dev/null; then
-    eval "$(rbenv init -)"
-fi
+eval "$(nodenv init -)"
+eval "$(pyenv init -)"
+eval "$(rbenv init -)"
 
 eval "$(starship init zsh)"

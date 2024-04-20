@@ -22,7 +22,3 @@
 # Customize for Lamp-Post Apps repos.
 [includeIf "gitdir/i:**/github.com/lamppostapps/"]
     path = ~/.config/git-private/config-lamppostapps
-
-# Customize for work ServiceNow repos.
-[includeIf "gitdir/i:**/github.com/lightstep/"]
-    path = ~/.config/git-private/config-servicenow
