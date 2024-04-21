@@ -14,22 +14,3 @@ fi
 echo "Installing packages"
 
 brew bundle --file brew/.Brewfile --no-lock
-
-echo "Creating symlinks"
-
-mkdir -p ~/.config
-
-STOW_PKGS=(
-	brew
-	fish
-	git
-	git-private
-	nvim
-	starship
-	wezterm
-	zsh
-)
-
-for PKG in "${STOW_PKGS[@]}"; do
-	stow -t $HOME $PKG
-done
