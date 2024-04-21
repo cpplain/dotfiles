@@ -2,4 +2,3 @@ Brewfile
 Brewfile.lock.json
 fish_variables
 lazy-lock.json
-private

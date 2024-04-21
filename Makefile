@@ -5,12 +5,14 @@ REPO = $(shell pwd)
 dirs:
 	mkdir -p ~/.config
 
-links:
-	ln -sf $(REPO)/brew/.Brewfile ~/
-	ln -sf $(REPO)/fish ~/.config/
-	ln -sf $(REPO)/git ~/.config/
-	# ln -sf $(REPO)/private/git-private ~/.config/
-	ln -sf $(REPO)/nvim ~/.config/
-	ln -sf $(REPO)/starship/starship.toml ~/.config/
-	ln -sf $(REPO)/wezterm ~/.config/
-	ln -sf $(REPO)/zsh/.zshrc ~/
+links: dirs
+	# directories
+	ln -sfn $(REPO)/fish ~/.config/fish
+	ln -sfn $(REPO)/git ~/.config/git
+	ln -sfn $(REPO)/nvim ~/.config/nvim
+	ln -sfn $(REPO)/private/git ~/.config/git-private
+	ln -sfn $(REPO)/wezterm ~/.config/wezterm
+	# files
+	ln -sf $(REPO)/brew/.Brewfile ~/.Brewfile
+	ln -sf $(REPO)/starship/starship.toml ~/.config/starship.toml
+	ln -sf $(REPO)/zsh/.zshrc ~/.zshrc
