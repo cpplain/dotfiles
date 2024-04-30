@@ -7,7 +7,7 @@ You are free to use my dotfiles as you wish. However, I strongly encourage you n
 ## Usage
 
 ```bash
-git clone https://github.com/cpplain/dotfiles.git && cd dotfiles && ./install.sh
+git clone https://github.com/cpplain/dotfiles.git && cd dotfiles && make install
 ```
 
 ## Goals
