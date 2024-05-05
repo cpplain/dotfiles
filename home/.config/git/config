@@ -13,12 +13,14 @@
 [pull]
 	ff = only
 
-[user]
-
 # Customize for personal repos.
 [includeIf "gitdir/i:**/github.com/cpplain/"]
-    path = ~/.config/git-private/config-cpplain
+    path = ~/.config/git/config-cpplain
 
 # Customize for Lamp-Post Apps repos.
 [includeIf "gitdir/i:**/github.com/lamppostapps/"]
-    path = ~/.config/git-private/config-lamppostapps
+    path = ~/.config/git/config-lamppostapps
+
+# Customize for ServiceNow repos.
+[includeIf "gitdir/i:**/github.com/lightstep/"]
+    path = ~/.config/git/config-servicenow
