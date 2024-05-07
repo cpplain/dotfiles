@@ -1,38 +1,30 @@
 tap "homebrew/bundle"
 tap "homebrew/cask-fonts"
 
-# Apps
-
-cask "1password"
-cask "arq"
-cask "docker"
-cask "firefox"
-cask "fission"
-
-# Programming Languages
-
+brew "fd" # telescope.nvim dependency
+brew "fish"
+brew "fisher"
 brew "go"
+brew "lazygit"
 brew "luarocks"
+brew "minikube"
+brew "neovim"
 brew "node@20"
 brew "nodenv"
 brew "pyenv"
 brew "python-tk@3.12"
 brew "python@3.12"
 brew "rbenv"
-
-# Terminal / Shell
-
-brew "fd" # telescope.nvim dependency
-brew "fish"
-brew "fisher"
-cask "font-sf-mono"
-cask "font-symbols-only-nerd-font"
-brew "lazygit"
-brew "minikube"
-brew "neovim"
 brew "ripgrep" # telescope.nvim dependency
 brew "starship"
-brew "stow"
 brew "tree"
 brew "wget"
+
+cask "1password"
+cask "arq"
+cask "docker"
+cask "firefox"
+cask "fission"
+cask "font-sf-mono"
+cask "font-symbols-only-nerd-font"
 cask "wezterm"
