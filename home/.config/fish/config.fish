@@ -9,12 +9,12 @@ set -gx XDG_CACHE_HOME ~/.cache
 
 set -gx HOMEBREW_BUNDLE_NO_LOCK 1
 
-set brew_path /opt/homebrew/bin
+set brew /opt/homebrew/bin/brew
 if test (uname -m) = x86_64
-    set brew_path /usr/local/bin
+    set brew /usr/local/bin/brew
 end
-$brew_path/brew shellenv | source
-set -e brew_path
+$brew shellenv | source
+set -e brew
 
 set -gx GOPATH (go env GOPATH)
 fish_add_path $GOPATH/bin
