@@ -14,13 +14,13 @@
 	ff = only
 
 # Customize for personal repos.
-[includeIf "gitdir/i:**/github.com/cpplain/"]
+[includeIf "hasconfig:remote.*.url:**https://github.com/cpplain/**"]
     path = ~/.config/git/config-cpplain
 
 # Customize for Lamp-Post Apps repos.
-[includeIf "gitdir/i:**/github.com/lamppostapps/"]
+[includeIf "hasconfig:remote.*.url:https://github.com/lamppostapps/**"]
     path = ~/.config/git/config-lamppostapps
 
 # Customize for ServiceNow repos.
-[includeIf "gitdir/i:**/github.com/lightstep/"]
+[includeIf "hasconfig:remote.*.url:https://github.com/lightstep/**"]
     path = ~/.config/git/config-servicenow
