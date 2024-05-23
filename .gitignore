@@ -1,9 +1,9 @@
-Brewfile
-Brewfile.lock.json
-fish_variables
-lazy-lock.json
-
-# Ignore private dotfile links
-*_cpplain
-*_lamppostapps
-*_servicenow
+home/.config/fish/fish_variables
+home/.config/gcloud/
+home/.config/git/config_cpplain
+home/.config/git/config_lamppostapps
+home/.config/git/config_servicenow
+home/.config/nvim/lazy-lock.json
+home/.config/zsh/.zcompdump
+home/.config/zsh/.zsh_history
+home/.config/zsh/.zsh_sessions/
