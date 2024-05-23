@@ -5,6 +5,6 @@ alias la="ls -al"
 
 eval "$(starship init zsh)"
 
-if [ -f ~/.zshrc_servicenow ]; then
-    source ~/.zshrc_servicenow
+if [ -f $ZDOTDIR/.zshrc_servicenow ]; then
+    source $ZDOTDIR/.zshrc_servicenow
 fi
