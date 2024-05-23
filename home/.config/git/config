@@ -1,3 +1,12 @@
+[includeIf "hasconfig:remote.*.url:**https://github.com/cpplain/**"]
+    path = config_cpplain
+
+[includeIf "hasconfig:remote.*.url:https://github.com/lamppostapps/**"]
+    path = config_lamppostapps
+
+[includeIf "hasconfig:remote.*.url:https://github.com/lightstep/**"]
+    path = config_servicenow
+
 [color]
     ui = auto
 
@@ -12,15 +21,3 @@
 
 [pull]
 	ff = only
-
-# Customize for personal repos.
-[includeIf "hasconfig:remote.*.url:**https://github.com/cpplain/**"]
-    path = ~/.config/git/config-cpplain
-
-# Customize for Lamp-Post Apps repos.
-[includeIf "hasconfig:remote.*.url:https://github.com/lamppostapps/**"]
-    path = ~/.config/git/config-lamppostapps
-
-# Customize for ServiceNow repos.
-[includeIf "hasconfig:remote.*.url:https://github.com/lightstep/**"]
-    path = ~/.config/git/config-servicenow
