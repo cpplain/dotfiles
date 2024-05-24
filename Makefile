@@ -2,7 +2,7 @@ SHELL := /bin/bash
 
 arch := $(shell uname -m)
 brew := /usr/local/bin/brew
-ifeq ($(arch), "arm64")
+ifeq ($(arch), arm64)
 brew := /opt/homebrew/bin/brew
 endif
 
