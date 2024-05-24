@@ -6,11 +6,11 @@ ifeq ($(arch), "arm64")
 brew := /opt/homebrew/bin/brew
 endif
 
-dotfiles := $(shell find home -type f | sed 's|home|$(HOME)|')
-dotfiles_private := $(shell find private/home -type f | sed 's|private/home|$(HOME)|')
+dotfiles := $(shell find home -depth 1 | sed 's|home/||')
+dotfiles_private := $(shell find private/home -type f | sed 's|private/home/||')
 
 .PHONY: install
-install: link-dotfiles install-packages 
+install: link install-packages 
 
 .PHONY: install-packages
 install-packages: install-brew
@@ -19,25 +19,18 @@ install-packages: install-brew
 
 .PHONY: install-brew
 install-brew: $(brew)
-
 $(brew):
 	@echo "Installing Homebrew"
 	curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
 
-.PHONY: link-dotfiles
-link-dotfiles: $(dotfiles) $(dotfiles_private) 
+.PHONY: link
+link: 
+	@echo "Linking dotfiles"
+	@for f in $(dotfiles); do ln -svF $(PWD)/home/$$f ~/$$f; done
+	@for f in $(dotfiles_private); do ln -svF $(PWD)/private/home/$$f ~/$$f; done
 
-$(HOME)/%: $(PWD)/home/%
-	mkdir -p $(dir $@)
-	ln -sf $< $@
-
-$(HOME)/%: $(PWD)/private/home/%
-	mkdir -p $(dir $@)
-	ln -sf $< $@
-
-.PHONY: unlink-dotfiles
-unlink-dotfiles:
-	@echo "Removing dotfile links"
-	@for f in $(dotfiles); do if [ -L $$f ]; then rm -fv $$f; fi; done
-	@for f in $(dotfiles_private); do if [ -L $$f ]; then rm -fv $$f; fi; done
-
+.PHONY: unlink
+unlink:
+	@echo "Unlinking dotfiles"
+	@for f in $(dotfiles_private); do if [ -L ~/$$f ]; then rm -fv ~/$$f; fi; done
+	@for f in $(dotfiles); do if [ -L ~/$$f ]; then rm -fv ~/$$f; fi; done
