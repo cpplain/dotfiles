@@ -13,7 +13,6 @@ git clone https://github.com/cpplain/dotfiles.git && cd dotfiles && make install
 ## Goals
 
 - Strive for simplicity
-- Prefer single-file configs
 - Prefer default settings
 - Add plugins only for significant functional improvement
 
