@@ -20,27 +20,7 @@ return {
 		build = ":MasonToolsUpdate",
 		config = function()
 			require("mason-tool-installer").setup({
-				ensure_installed = require("utils.lang").packages(),
-				-- ensure_installed = {
-				-- 	"bash-language-server",
-				-- 	"css-lsp",
-				-- 	"eslint_d",
-				-- 	"gopls",
-				-- 	"html-lsp",
-				-- 	"json-lsp",
-				-- 	"lua-language-server",
-				-- 	"marksman",
-				-- 	"prettierd",
-				-- 	"pyright",
-				-- 	"ruff",
-				-- 	"ruff-lsp",
-				-- 	"shfmt",
-				-- 	"stylua",
-				-- 	"taplo",
-				-- 	"typescript-language-server",
-				-- 	"vim-language-server",
-				-- 	"yaml-language-server",
-				-- },
+				ensure_installed = require("config.lang_tools").packages(),
 			})
 		end,
 	},

@@ -10,40 +10,7 @@ return {
 		"hrsh7th/nvim-cmp",
 	},
 	config = function()
-		local servers = require("utils.lang").lsp_servers()
-		-- local servers = {
-		-- 	bashls = {},
-		-- 	cssls = {},
-		-- 	gopls = {},
-		-- 	html = {},
-		-- 	lua_ls = {
-		-- 		settings = {
-		-- 			Lua = {
-		-- 				completion = {
-		-- 					callSnippet = "Replace",
-		-- 				},
-		-- 			},
-		-- 		},
-		-- 	},
-		-- 	jsonls = {},
-		-- 	marksman = {},
-		-- 	pyright = {},
-		-- 	ruff_lsp = {
-		-- 		on_attach = function(client, _)
-		-- 			client.server_capabilities.hoverProvider = false
-		-- 		end,
-		-- 	},
-		-- 	taplo = {},
-		-- 	tsserver = {
-		-- 		settings = {
-		-- 			completions = {
-		-- 				completeFunctionCalls = true,
-		-- 			},
-		-- 		},
-		-- 	},
-		-- 	vimls = {},
-		-- 	yamlls = {},
-		-- }
+		local servers = require("config.lang_tools").lsp_servers()
 
 		require("neodev").setup()
 

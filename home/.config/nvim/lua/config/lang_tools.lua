@@ -1,11 +1,10 @@
---
---[[ Language Utility ]]
---
+-- LSP servers, formatters, parsers, and packages
 
-local M = {}
-
-M.languages = {
+local languages = {
 	c = {
+		formatters = { c = { "clang-format" } },
+		lsp_servers = { clangd = {} },
+		packages = { "clangd", "clang-format" },
 		parsers = { "c" },
 	},
 
@@ -142,11 +141,13 @@ M.languages = {
 	},
 }
 
+local M = {}
+
 function M.formatters()
 	local formatters = {}
 
-	for _, language in pairs(M.languages) do
-		formatters = vim.tbl_extend("force", formatters, language.formatters or {})
+	for _, tools in pairs(languages) do
+		formatters = vim.tbl_extend("force", formatters, tools.formatters or {})
 	end
 
 	return formatters
@@ -155,8 +156,8 @@ end
 function M.lsp_servers()
 	local servers = {}
 
-	for _, language in pairs(M.languages) do
-		servers = vim.tbl_extend("force", servers, language.lsp_servers or {})
+	for _, tools in pairs(languages) do
+		servers = vim.tbl_extend("force", servers, tools.lsp_servers or {})
 	end
 
 	return servers
@@ -165,8 +166,8 @@ end
 function M.packages()
 	local packages = {}
 
-	for _, language in pairs(M.languages) do
-		packages = vim.list_extend(packages, language.packages or {})
+	for _, tools in pairs(languages) do
+		packages = vim.list_extend(packages, tools.packages or {})
 	end
 
 	return packages
@@ -175,8 +176,8 @@ end
 function M.parsers()
 	local parsers = {}
 
-	for _, language in pairs(M.languages) do
-		parsers = vim.list_extend(parsers, language.parsers or {})
+	for _, tools in pairs(languages) do
+		parsers = vim.list_extend(parsers, tools.parsers or {})
 	end
 
 	return parsers
