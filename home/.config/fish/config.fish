@@ -16,13 +16,26 @@ end
 $brew shellenv | source
 set -e brew
 
-set -gx GOPATH (go env GOPATH)
-fish_add_path $GOPATH/bin
+if type -fq go
+    set -gx GOPATH (go env GOPATH)
+    fish_add_path $GOPATH/bin
+end
 
-kubectl completion fish | source
-nodenv init - | source
-pyenv init - | source
-rbenv init - | source
+if type -fq kubectl
+    kubectl completion fish | source
+end
+
+if type -fq nodenv
+    nodenv init - | source
+end
+
+if type -fq pyenv
+    pyenv init - | source
+end
+
+if type -fq rbenv
+    rbenv init - | source
+end
 
 set -g fish_greeting # disable fish greeting
 set -g fish_key_bindings fish_vi_key_bindings
@@ -34,4 +47,3 @@ set fish_cursor_replace_one underscore
 set fish_cursor_visual block
 
 starship init fish | source
-# enable_transience
