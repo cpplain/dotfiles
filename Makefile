@@ -28,23 +28,23 @@ $(brew):
 .PHONY: link-personal
 link-personal: link
 	@echo "Linking personal dotfiles"
-	@for f in $(dotfiles_personal); do ln -svF $(PWD)/private/personal/$$f ~/$$f; done
+	@for f in $(dotfiles_personal); do ln -sf $(PWD)/private/personal/$$f ~/$$f; done
 
 .PHONY: link-work
 link-work: link
 	@echo "Linking work dotfiles"
-	@for f in $(dotfiles_work); do ln -svF $(PWD)/private/work/$$f ~/$$f; done
+	@for f in $(dotfiles_work); do ln -sf $(PWD)/private/work/$$f ~/$$f; done
 
 .PHONY: link
 link: 
 	@echo "Linking dotfiles"
-	@for f in $(dotfiles); do ln -svF $(PWD)/home/$$f ~/$$f; done
-	@for f in $(dotfiles_private); do ln -svF $(PWD)/private/home/$$f ~/$$f; done
+	@for f in $(dotfiles); do ln -sf $(PWD)/home/$$f ~/$$f; done
+	@for f in $(dotfiles_private); do ln -sf $(PWD)/private/home/$$f ~/$$f; done
 
 .PHONY: unlink
 unlink:
 	@echo "Unlinking dotfiles"
-	@for f in $(dotfiles_work); do if [ -L ~/$$f ]; then rm -fv ~/$$f; fi; done
-	@for f in $(dotfiles_personal); do if [ -L ~/$$f ]; then rm -fv ~/$$f; fi; done
-	@for f in $(dotfiles_private); do if [ -L ~/$$f ]; then rm -fv ~/$$f; fi; done
-	@for f in $(dotfiles); do if [ -L ~/$$f ]; then rm -fv ~/$$f; fi; done
+	@for f in $(dotfiles_work); do if [ -L ~/$$f ]; then rm -f ~/$$f; fi; done
+	@for f in $(dotfiles_personal); do if [ -L ~/$$f ]; then rm -f ~/$$f; fi; done
+	@for f in $(dotfiles_private); do if [ -L ~/$$f ]; then rm -f ~/$$f; fi; done
+	@for f in $(dotfiles); do if [ -L ~/$$f ]; then rm -f ~/$$f; fi; done
