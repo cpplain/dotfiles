@@ -1,3 +1,6 @@
+[user]
+    name = Christopher Plain
+
 [includeIf "hasconfig:remote.*.url:**https://github.com/cpplain/**"]
     path = config_cpplain
 

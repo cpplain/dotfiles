@@ -8,6 +8,8 @@ endif
 
 dotfiles := $(shell find home -depth 1 | sed 's|home/||')
 dotfiles_private := $(shell find private/home -type f | sed 's|private/home/||')
+dotfiles_personal := $(shell find private/personal -type f | sed 's|private/personal/||')
+dotfiles_work := $(shell find private/work -type f | sed 's|private/work/||')
 
 .PHONY: install
 install: link install-packages 
@@ -23,6 +25,16 @@ $(brew):
 	@echo "Installing Homebrew"
 	curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
 
+.PHONY: link-personal
+link-personal: link
+	@echo "Linking personal dotfiles"
+	@for f in $(dotfiles_personal); do ln -svF $(PWD)/private/personal/$$f ~/$$f; done
+
+.PHONY: link-work
+link-work: link
+	@echo "Linking work dotfiles"
+	@for f in $(dotfiles_work); do ln -svF $(PWD)/private/work/$$f ~/$$f; done
+
 .PHONY: link
 link: 
 	@echo "Linking dotfiles"
@@ -32,5 +44,7 @@ link:
 .PHONY: unlink
 unlink:
 	@echo "Unlinking dotfiles"
+	@for f in $(dotfiles_work); do if [ -L ~/$$f ]; then rm -fv ~/$$f; fi; done
+	@for f in $(dotfiles_personal); do if [ -L ~/$$f ]; then rm -fv ~/$$f; fi; done
 	@for f in $(dotfiles_private); do if [ -L ~/$$f ]; then rm -fv ~/$$f; fi; done
 	@for f in $(dotfiles); do if [ -L ~/$$f ]; then rm -fv ~/$$f; fi; done
