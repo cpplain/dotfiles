@@ -6,10 +6,12 @@ ifeq ($(arch), arm64)
 brew := /opt/homebrew/bin/brew
 endif
 
+privatedir := $(PWD)/private
+
 dotfiles := $(shell find home -depth 1 | sed 's|home/||')
-dotfiles_private := $(shell find private/home -type f | sed 's|private/home/||')
-dotfiles_personal := $(shell find private/personal -type f | sed 's|private/personal/||')
-dotfiles_work := $(shell find private/work -type f | sed 's|private/work/||')
+dotfiles_private := $(shell cd $(privatedir) && find home_private -type f | sed 's|home_private/||')
+dotfiles_personal := $(shell cd $(privatedir) &&  find home_personal -type f | sed 's|home_personal/||')
+dotfiles_work := $(shell cd $(privatedir) &&  find home_work -type f | sed 's|home_work/||')
 
 .PHONY: install
 install: link install-packages 
@@ -28,18 +30,18 @@ $(brew):
 .PHONY: link-personal
 link-personal: link
 	@echo "Linking personal dotfiles"
-	@for f in $(dotfiles_personal); do ln -sf $(PWD)/private/personal/$$f ~/$$f; done
+	@for f in $(dotfiles_personal); do ln -sf $(privatedir)/home_personal/$$f ~/$$f; done
 
 .PHONY: link-work
 link-work: link
 	@echo "Linking work dotfiles"
-	@for f in $(dotfiles_work); do ln -sf $(PWD)/private/work/$$f ~/$$f; done
+	@for f in $(dotfiles_work); do ln -sf $(privatedir)/home_work/$$f ~/$$f; done
 
 .PHONY: link
 link: 
 	@echo "Linking dotfiles"
 	@for f in $(dotfiles); do ln -sf $(PWD)/home/$$f ~/$$f; done
-	@for f in $(dotfiles_private); do ln -sf $(PWD)/private/home/$$f ~/$$f; done
+	@for f in $(dotfiles_private); do ln -sf $(privatedir)/home_private/$$f ~/$$f; done
 
 .PHONY: unlink
 unlink:
