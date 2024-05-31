@@ -25,13 +25,13 @@ config.font = wezterm.font("SF Mono")
 config.font_size = 12
 -- config.macos_window_background_blur = 100
 -- config.window_background_opacity = 0.9
--- config.window_decorations = "RESIZE"
-config.window_padding = {
-	left = 20,
-	right = 20,
-	top = 20,
-	bottom = 20,
-}
+config.window_decorations = "RESIZE"
+-- config.window_padding = {
+-- 	left = 20,
+-- 	right = 20,
+-- 	top = 20,
+-- 	bottom = 20,
+-- }
 
 wezterm.on("gui-startup", function(cmd)
 	local _, _, window = mux.spawn_window(cmd or {})
