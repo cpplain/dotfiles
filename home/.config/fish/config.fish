@@ -21,20 +21,13 @@ if type -fq go
     fish_add_path $GOPATH/bin
 end
 
-if type -fq kubectl
-    kubectl completion fish | source
-end
+type -fq kubectl && kubectl completion fish | source
+type -fq nodenv && nodenv init - | source
+type -fq pyenv && pyenv init - | source
+type -fq rbenv && rbenv init - | source
 
-if type -fq nodenv
-    nodenv init - | source
-end
-
-if type -fq pyenv
-    pyenv init - | source
-end
-
-if type -fq rbenv
-    rbenv init - | source
+if test -e ~/.config/fish/config_work.fish
+    source ~/.config/fish/config_work.fish
 end
 
 set -g fish_greeting # disable fish greeting
