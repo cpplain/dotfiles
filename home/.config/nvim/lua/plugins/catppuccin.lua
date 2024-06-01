@@ -10,9 +10,9 @@ return {
 		require("catppuccin").setup({
 			integrations = {
 				lsp_trouble = true,
-				mason = true,
-				noice = true,
-				notify = true,
+				-- mason = true,
+				-- noice = true,
+				-- notify = true,
 				treesitter_context = true,
 			},
 		})

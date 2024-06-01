@@ -5,12 +5,45 @@
 return {
 	"neovim/nvim-lspconfig",
 	dependencies = {
-		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		-- "WhoIsSethDaniel/mason-tool-installer.nvim",
 		"folke/neodev.nvim",
 		"hrsh7th/nvim-cmp",
 	},
 	config = function()
-		local servers = require("config.lang_tools").lsp_servers()
+		local servers = {
+			bashls = {},
+			clangd = {},
+			cssls = {},
+			gopls = {},
+			html = {},
+			jsonls = {},
+			lua_ls = {
+				settings = {
+					Lua = {
+						completion = {
+							callSnippet = "Replace",
+						},
+					},
+				},
+			},
+			marksman = {},
+			pyright = {},
+			ruff_lsp = {
+				on_attach = function(client, _)
+					client.server_capabilities.hoverProvider = false
+				end,
+			},
+			taplo = {},
+			tsserver = {
+				settings = {
+					completions = {
+						completeFunctionCalls = true,
+					},
+				},
+			},
+			vimls = {},
+			yamlls = {},
+		}
 
 		require("neodev").setup()
 
