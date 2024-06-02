@@ -27,21 +27,9 @@ $(brew):
 	@echo "Installing Homebrew"
 	curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
 
-.PHONY: link-personal
-link-personal: link
-	@echo "Linking personal dotfiles"
-	@for f in $(dotfiles_personal); do ln -sf $(privatedir)/home_personal/$$f ~/$$f; done
-
-.PHONY: link-work
-link-work: link
-	@echo "Linking work dotfiles"
-	@for f in $(dotfiles_work); do ln -sf $(privatedir)/home_work/$$f ~/$$f; done
-
 .PHONY: link
 link: 
-	@echo "Linking dotfiles"
-	@for f in $(dotfiles); do ln -sf $(PWD)/home/$$f ~/$$f; done
-	@for f in $(dotfiles_private); do ln -sf $(privatedir)/home_private/$$f ~/$$f; done
+	@scripts/link.sh
 
 .PHONY: unlink
 unlink:
