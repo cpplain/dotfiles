@@ -15,10 +15,8 @@ install-packages: install-brew
 	eval "$$($(brew) shellenv)" && $(brew) bundle --file home/.Brewfile --force --no-lock
 
 .PHONY: install-brew
-install-brew: $(brew)
-$(brew):
-	@echo "Installing Homebrew"
-	curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
+install-brew:
+	scripts/install-brew.sh
 
 .PHONY: link
 link: 
