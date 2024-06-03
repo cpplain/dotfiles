@@ -1,1 +1,1 @@
-test -e ~/.cargo/env.fish && source ~/.cargo/env.fish
+test -e ~/.cargo && source ~/.cargo/env.fish
