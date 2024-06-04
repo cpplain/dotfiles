@@ -51,12 +51,14 @@ return {
 				end, { "i", "s" }),
 			}),
 			sources = cmp.config.sources({
-				{ name = "buffer" },
-				{ name = "cmdline" },
-				{ name = "luasnip" },
-				{ name = "nvim_lsp" },
-				{ name = "path" },
+				-- group 1
+				{ name = "lazydev" },
 			}, {
+				-- group 2
+				{ name = "nvim_lsp" },
+				{ name = "luasnip" },
+			}, {
+				--group 3
 				{ name = "buffer" },
 			}),
 		})
@@ -71,8 +73,10 @@ return {
 		cmp.setup.cmdline(":", {
 			mapping = cmp.mapping.preset.cmdline(),
 			sources = cmp.config.sources({
+				-- group 1
 				{ name = "path" },
 			}, {
+				-- group 2
 				{ name = "cmdline" },
 			}),
 		})

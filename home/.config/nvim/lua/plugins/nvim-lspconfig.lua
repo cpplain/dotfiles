@@ -4,11 +4,7 @@
 
 return {
 	"neovim/nvim-lspconfig",
-	dependencies = {
-		-- "WhoIsSethDaniel/mason-tool-installer.nvim",
-		"folke/neodev.nvim",
-		"hrsh7th/nvim-cmp",
-	},
+	dependencies = { "hrsh7th/nvim-cmp" },
 	config = function()
 		local servers = {
 			bashls = {},
@@ -45,13 +41,12 @@ return {
 			yamlls = {},
 		}
 
-		require("neodev").setup()
-
 		local border = "rounded"
 		local handlers = {
 			["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
 			["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
 		}
+		require("lspconfig.ui.windows").default_options.border = border
 
 		local lspconfig = require("lspconfig")
 		local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -62,7 +57,5 @@ return {
 
 			lspconfig[name].setup(opts)
 		end
-
-		require("lspconfig.ui.windows").default_options.border = border
 	end,
 }
