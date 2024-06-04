@@ -4,6 +4,7 @@
 
 return {
 	"folke/trouble.nvim",
+	enabled = false,
 	config = function()
 		vim.diagnostic.config({
 			virtual_text = {
