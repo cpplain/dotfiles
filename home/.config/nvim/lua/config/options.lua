@@ -2,10 +2,6 @@
 --[[ Options ]]
 --
 
--- Leader
-vim.g.mapleader = " " -- Set <Space> as <Leader>
-vim.g.maplocalleader = " " -- Set <Space> as <LocalLeader>
-
 -- Indentation and wrapping
 vim.opt.breakindent = true -- Wrapped line repeats indent
 vim.opt.expandtab = true -- Use spaces when tab is inserted
