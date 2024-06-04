@@ -4,7 +4,9 @@ set -e
 
 arch=$(uname -m)
 brew=/opt/homebrew/bin/brew
-test "x86_64" == $arch && brew=/usr/local/bin/brew
+if test "x86_64" == $arch; then
+	brew=/usr/local/bin/brew
+fi
 
 if test -e $brew; then
 	echo "Homebrew already installed"
