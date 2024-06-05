@@ -7,7 +7,6 @@ return {
 		"nvim-telescope/telescope.nvim",
 		branch = "0.1.x",
 		dependencies = {
-			-- "folke/noice.nvim",
 			"nvim-treesitter/nvim-treesitter",
 			"nvim-tree/nvim-web-devicons",
 			"nvim-lua/plenary.nvim",
@@ -27,7 +26,6 @@ return {
 			})
 			telescope.load_extension("file_browser")
 			telescope.load_extension("fzf")
-			-- telescope.load_extension("noice")
 
 			vim.keymap.set("n", "<Leader>fB", "<Cmd>Telescope file_browser<CR>")
 			vim.keymap.set("n", "<Leader>fb", "<Cmd>Telescope buffers<CR>")
@@ -35,7 +33,6 @@ return {
 			vim.keymap.set("n", "<Leader>ht", "<Cmd>Telescope help_tags<CR>")
 			vim.keymap.set("n", "<Leader>km", "<Cmd>Telescope keymaps<CR>")
 			vim.keymap.set("n", "<Leader>lg", "<Cmd>Telescope live_grep<CR>")
-			-- vim.keymap.set("n", "<Leader>tn", "<Cmd>Telescope noice<CR>")
 		end,
 	},
 	{

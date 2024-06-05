@@ -5,7 +5,6 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
 	dependencies = {
-		-- "WhoIsSethDaniel/mason-tool-installer.nvim",
 		"nvim-treesitter/nvim-treesitter-textobjects",
 	},
 	build = ":TSUpdate",
