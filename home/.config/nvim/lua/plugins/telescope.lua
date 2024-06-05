@@ -1,6 +1,4 @@
---
---[[ Fuzzy finder and file browser ]]
---
+-- Fuzzy Finder
 
 return {
 	{
@@ -10,7 +8,6 @@ return {
 			"nvim-treesitter/nvim-treesitter",
 			"nvim-tree/nvim-web-devicons",
 			"nvim-lua/plenary.nvim",
-			"nvim-telescope/telescope-file-browser.nvim",
 			"nvim-telescope/telescope-fzf-native.nvim",
 		},
 		config = function()
@@ -24,10 +21,8 @@ return {
 					wrap_results = true,
 				},
 			})
-			telescope.load_extension("file_browser")
 			telescope.load_extension("fzf")
 
-			vim.keymap.set("n", "<Leader>fB", "<Cmd>Telescope file_browser<CR>")
 			vim.keymap.set("n", "<Leader>fb", "<Cmd>Telescope buffers<CR>")
 			vim.keymap.set("n", "<Leader>ff", "<Cmd>Telescope find_files<CR>")
 			vim.keymap.set("n", "<Leader>ht", "<Cmd>Telescope help_tags<CR>")
