@@ -1,6 +1,4 @@
---
---[[ Options ]]
---
+-- Custom Options
 
 -- Indentation and wrapping
 vim.opt.breakindent = true -- Wrapped line repeats indent

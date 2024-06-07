@@ -23,7 +23,7 @@ require("lazy").setup("plugins", {
 })
 
 -- Load modules not loaded by lazy
-require("config.options")
-require("config.keymaps")
-require("config.commands")
-require("config.diagnostic")
+-- require("config.options")
+-- require("config.keymaps")
+-- require("config.commands")
+-- require("config.diagnostic")

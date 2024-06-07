@@ -1,6 +1,4 @@
---
---[[ Keymaps ]]
---
+-- Custom Mappings
 
 -- Diagnostics
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
