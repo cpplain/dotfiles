@@ -148,11 +148,11 @@ type = "status"
 style = "plain"
 foreground = "p:text"
 foreground_templates = ["{{ if gt .Code 0 }}p:red{{ end }}"]
-template = "> "
+template = ": "
 
 [blocks.segments.properties]
 always_enabled = true
 
 [transient_prompt]
 foreground = "p:text"
-template = "> "
+template = ": "
