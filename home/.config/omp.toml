@@ -100,29 +100,19 @@ type = "prompt"
 alignment = "right"
 filler = "<,p:mantle> </>"
 
-# Execution Time
-
-[[blocks.segments]]
-type = "executiontime"
-style = "plain"
-foreground_templates = [
-  "{{ if eq \"default\" .Env.OMP_MODE }}p:blue{{ end }}",
-  "{{ if eq \"insert\" .Env.OMP_MODE }}p:green{{ end }}",
-  "{{ if eq \"replace\" .Env.OMP_MODE }}p:red{{ end }}",
-  "{{ if eq \"replace_one\" .Env.OMP_MODE }}p:blue{{ end }}",
-  "{{ if eq \"visual\" .Env.OMP_MODE }}p:mauve{{ end }}",
-]
-background = "p:surface0"
-template = " {{ .FormattedMs }} "
-
-[blocks.segments.properties]
-style = "round"
-always_enabled = true
-
 # Shell
 
 [[blocks.segments]]
 type = "text"
+style = "plain"
+foreground = "p:text"
+background = "p:mantle"
+template = " {{ .Shell }} "
+
+# Execution Time
+
+[[blocks.segments]]
+type = "executiontime"
 style = "plain"
 foreground = "p:base"
 background_templates = [
@@ -132,7 +122,11 @@ background_templates = [
   "{{ if eq \"replace_one\" .Env.OMP_MODE }}p:blue{{ end }}",
   "{{ if eq \"visual\" .Env.OMP_MODE }}p:mauve{{ end }}",
 ]
-template = " <b>{{ .Shell }}</b> "
+template = " <b>{{ .FormattedMs }}</b> "
+
+[blocks.segments.properties]
+style = "round"
+always_enabled = true
 
 #
 # Prompt
