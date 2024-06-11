@@ -1,5 +1,5 @@
 home/.config/Brewfile_work
-home/.config/fish/conf.d/90_config_work.fish
+home/.config/fish/conf.d/config_work.fish
 home/.config/fish/fish_variables
 home/.config/gcloud/
 home/.config/git/config_cpplain
