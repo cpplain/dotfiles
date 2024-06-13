@@ -7,9 +7,7 @@ You are free to use my dotfiles as you wish. However, I strongly encourage you n
 ## Usage
 
 ```bash
-git clone https://github.com/cpplain/dotfiles.git &&
-    cd dotfiles/scripts &&
-    ./install.sh -p
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/cpplain/dotfiles/main/config-manager.sh)"
 ```
 
 ## Goals
