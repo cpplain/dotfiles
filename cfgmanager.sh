@@ -2,6 +2,8 @@
 
 set -e
 
+[ -f ~/.env ] && source ~/.env
+
 set_env() {
 	while true; do
 		echo "Confgure environement for:"
@@ -68,4 +70,12 @@ bootstrap() {
 	brew_bundle
 }
 
-bootstrap
+case $1 in
+--brew-bundle)
+	source $DOTFILES_REPO_DIR/scripts/brew.sh
+	brew_bundle
+	;;
+*)
+	bootstrap
+	;;
+esac
