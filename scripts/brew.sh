@@ -2,18 +2,21 @@
 
 set -e
 
+source ~/.env || { echo "Unable to source .env" && exit 1; }
+
 if ! which brew >/dev/null; then
 	case $(uname -sm) in
 	"Darwin arm64")
-		eval "$(/opt/homebrew/bin/brew shellenv)"
+		brew=/opt/homebrew/bin/brew
 		;;
 	*)
-		eval "$(/usr/local/bin/brew shellenv)"
+		brew=/usr/local/bin/brew
 		;;
 	esac
-fi
 
-source ~/.env || echo "Unable to source .env"
+	! [ -x $brew ] && echo "Unable to find brew" && exit 1
+	eval "$($brew shellenv)"
+fi
 
 case $CONFIG_ENV in
 personal)

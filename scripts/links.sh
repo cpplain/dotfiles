@@ -2,7 +2,7 @@
 
 set -e
 
-test -f ~/.env && source ~/.env
+source ~/.env || { echo "Unable to source .env" && exit 1; }
 
 find_dotfiles() {
 	case $1 in

@@ -2,8 +2,6 @@
 
 set -e
 
-test -f ~/.env && source ~/.env
-
 set_env() {
 	while true; do
 		echo "Confgure environement for:"
@@ -22,8 +20,8 @@ set_env() {
 		read -p "Target repo directory: " REPO_DIR
 		REPO_DIR="${REPO_DIR/#\~/$HOME}"
 
-		echo "Configuring environment for $ENV"
-		echo "Cloning dotfiles repo into $REPO_DIR"
+		echo "Configuration environment: $ENV"
+		echo "Dotfiles repo: $REPO_DIR"
 		read -p "Continue? [Y/n]: " YN
 		case $YN in
 		n)
