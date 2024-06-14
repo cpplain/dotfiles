@@ -1,3 +1,3 @@
-if type -fq pyenv
-    pyenv init - | source
-end
+command -q pyenv || exit
+
+pyenv init - | source

@@ -1,3 +1,3 @@
-if type -fq nodenv
-    nodenv init - | source
-end
+command -q nodenv || exit
+
+nodenv init - | source

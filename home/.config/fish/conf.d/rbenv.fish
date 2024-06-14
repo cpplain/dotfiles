@@ -1,3 +1,3 @@
-if type -fq rbenv
-    rbenv init - | source
-end
+command -q rbenv || exit
+
+rbenv init - | source
