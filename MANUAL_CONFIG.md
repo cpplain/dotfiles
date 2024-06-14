@@ -28,3 +28,9 @@ Following are configurations that I determined are best done manually or must be
 ### Wallpaper
 
 - System Settings > Wallpaper > Color > Black
+
+## Safari
+
+### Search
+
+- Settings > Search > Search engine > DuckDuckGo
