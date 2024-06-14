@@ -4,22 +4,27 @@ Following are configurations that I determined are best done manually or must be
 
 ## macOS
 
-### Apperance
+### Accessibility
 
-System Settings > Appearance > Dark
+- System Settings > Accessibility > Motor > Pointer Control > Trackpad Options > Use trackpad for dragging > On
+- System Settings > Accessibility > Motor > Pointer Control > Trackpad Options > Dragging style > Three Finger Drag
+
+### Appearance
+
+- System Settings > Appearance > Dark
 
 ### Dock
 
-System Settings > Desktop & Dock > Automatically hide and show the Dock > On
+- System Settings > Desktop & Dock > Automatically hide and show the Dock > On
 
 ### Keyboard
 
-System Settings > Keyboard > Keyboard Shortcuts > Modifier Keys > Caps Lock key > Control
+- System Settings > Keyboard > Keyboard Shortcuts > Modifier Keys > Caps Lock key > Control
 
 ### Trackpad
 
-System Settings > Trackpad > Tap to click > On
+- System Settings > Trackpad > Tap to click > On
 
 ### Wallpaper
 
-System Settings > Wallpaper > Color > Black
+- System Settings > Wallpaper > Color > Black
