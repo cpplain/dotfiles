@@ -8,6 +8,10 @@ Following are configurations that I determined are best done manually or must be
 
 System Settings > Appearance > Dark
 
+### Dock
+
+System Settings > Desktop & Dock > Automatically hide and show the Dock > On
+
 ### Keyboard
 
 System Settings > Keyboard > Keyboard Shortcuts > Modifier Keys > Caps Lock key > Control
