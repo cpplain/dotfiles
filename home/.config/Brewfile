@@ -35,10 +35,13 @@ brew "jandedobbeleer/oh-my-posh/oh-my-posh"
 cask "1password"
 cask "arq"
 cask "docker"
+cask "dropbox"
 cask "firefox"
 cask "fission"
 cask "font-sf-mono"
 cask "font-symbols-only-nerd-font"
+cask "powerphotos"
+cask "sf-symbols"
 cask "wezterm"
 mas "1Password for Safari", id: 1569813296
 mas "Audiobook Builder", id: 1437681957
