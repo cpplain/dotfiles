@@ -1,4 +1,5 @@
 tap "homebrew/bundle"
+tap "jandedobbeleer/oh-my-posh"
 brew "bash-language-server"
 brew "clang-format"
 brew "fd"
@@ -7,17 +8,16 @@ brew "go"
 brew "gopls"
 brew "lua-language-server"
 brew "marksman"
+brew "mas"
 brew "minikube"
 brew "neovim"
 brew "node@20"
 brew "nodenv"
-brew "oh-my-posh"
 brew "prettierd"
 brew "pyenv"
 brew "pyright"
 brew "python@3.12"
 brew "python-tk@3.12"
-brew "ruby-build"
 brew "rbenv"
 brew "ripgrep"
 brew "ruff"
@@ -31,6 +31,7 @@ brew "typescript-language-server"
 brew "vscode-langservers-extracted"
 brew "wget"
 brew "yaml-language-server"
+brew "jandedobbeleer/oh-my-posh/oh-my-posh"
 cask "1password"
 cask "arq"
 cask "docker"
@@ -39,3 +40,15 @@ cask "fission"
 cask "font-sf-mono"
 cask "font-symbols-only-nerd-font"
 cask "wezterm"
+mas "1Password for Safari", id: 1569813296
+mas "Audiobook Builder", id: 1437681957
+mas "Developer", id: 640199958
+mas "GarageBand", id: 682658836
+mas "iMovie", id: 408981434
+mas "Keynote", id: 409183694
+mas "Microsoft Excel", id: 462058435
+mas "Microsoft Word", id: 462054704
+mas "Numbers", id: 409203825
+mas "Outread", id: 778846279
+mas "Pages", id: 409201541
+mas "Xcode", id: 497799835
