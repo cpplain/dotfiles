@@ -2,9 +2,7 @@
 
 # Christopher's Dotfiles
 
-This repo contains the configuration files (aka dotfiles) and scripts I use to setup and manage my personal and work computers. I'm constantly looking to improve my setup for better efficiency and feel (very subjective, I know). As such, this repo is under constant revision.
-
-You are free to use the repo as you wish. However, I strongly encourage you to refrain from using it as is. Instead, take time to understand the configurations I use. Then create your own configuration files from scratch using what you learned. You will be much happier with the end result and will be better prepared to improve and maintain your configuration moving forward. See the [Inspirations](#inspirations) section for repos that continue to inspire my configuration.
+This repo contains my configuration files (aka dotfiles) and scripts. Feel free to use whatever works for you. You may also find inspiration from [repos that have inspired me](#inspirations).
 
 ## Installation
 
@@ -12,7 +10,7 @@ You are free to use the repo as you wish. However, I strongly encourage you to r
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/cpplain/dotfiles/main/cfgmanager.sh)"
 ```
 
-## Packages and Settings
+## Setup
 
 - OS: [macOS](https://support.apple.com/macos)
 - Package manager: [Homebrew](https://brew.sh)
@@ -24,9 +22,10 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/cpplain/dotfiles/main/cf
 - Symbols: [Symbols Nerd Font](https://www.nerdfonts.com)
 - Theme: [Catppuccin](https://github.com/wez/wezterm)
 
-## Inspirations
+## Inspiration
 
 - [branchvincent / dotfiles](https://github.com/branchvincent/dotfiles)
+- [cgsdev0 / dotfiles](https://github.com/cgsdev0/dotfiles)
 - [craftzdog / dotfiles-public](https://github.com/craftzdog/dotfiles-public)
 - [fatih / dotfiles](https://github.com/fatih/dotfiles)
 - [GeekMasher / .dotfiles](https://github.com/GeekMasher/.dotfiles)
