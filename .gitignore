@@ -1,9 +1,0 @@
-home/.config/Brewfile_work
-home/.config/fish/conf.d/config_work.fish
-home/.config/fish/fish_variables
-home/.config/gcloud/
-home/.config/git/config_cpplain
-home/.config/git/config_lamppostapps
-home/.config/git/config_servicenow
-home/.config/helm/
-home/.config/nvim/lazy-lock.json

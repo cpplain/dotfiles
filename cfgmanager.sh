@@ -71,9 +71,17 @@ bootstrap() {
 }
 
 case $1 in
+--create-links)
+	source $DOTFILES_REPO_DIR/scripts/links.sh
+	create_links
+	;;
 --brew-bundle)
 	source $DOTFILES_REPO_DIR/scripts/brew.sh
 	brew_bundle
+	;;
+--remove-links)
+	source $DOTFILES_REPO_DIR/scripts/links.sh
+	remove_links
 	;;
 *)
 	bootstrap
