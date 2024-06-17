@@ -6,6 +6,7 @@ Following are configurations that I determined are best done manually or must be
 
 ### Accessibility
 
+- System Settings > Accessibility > Display > Reduce motion > On
 - System Settings > Accessibility > Motor > Pointer Control > Trackpad Options > Use trackpad for dragging > On
 - System Settings > Accessibility > Motor > Pointer Control > Trackpad Options > Dragging style > Three Finger Drag
 
@@ -33,4 +34,5 @@ Following are configurations that I determined are best done manually or must be
 
 ### Search
 
+- Settings > AutoFill > AutoFill web forms > User names and passwords > Unchecked
 - Settings > Search > Search engine > DuckDuckGo
