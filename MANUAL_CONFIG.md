@@ -22,6 +22,10 @@ Following are configurations that I determined are best done manually or must be
 
 - System Settings > Keyboard > Keyboard Shortcuts > Modifier Keys > Caps Lock key > Control
 
+### Spotlight
+
+- System Settings > Siri & Spotlight > Spotlight Privacy > (add git directory)
+
 ### Trackpad
 
 - System Settings > Trackpad > Tap to click > On
