@@ -36,7 +36,10 @@ Following are configurations that I determined are best done manually or must be
 
 ## Safari
 
-### Search
+### AutoFill
 
 - Settings > AutoFill > AutoFill web forms > User names and passwords > Unchecked
+
+### Search
+
 - Settings > Search > Search engine > DuckDuckGo
