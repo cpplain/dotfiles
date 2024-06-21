@@ -2,7 +2,7 @@
 
 # Christopher's Dotfiles
 
-This repo contains my configuration files (aka dotfiles) and related scripts. Feel free to use whatever works for you. You may also find inspiration from [repos that have inspired me](#inspirations).
+This repo contains my configuration files (aka dotfiles) and related scripts. Feel free to use whatever works for you. You may also find inspiration from [repos that have inspired me](#inspiration).
 
 ## Installation
 
