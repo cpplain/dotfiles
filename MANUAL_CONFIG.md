@@ -28,7 +28,8 @@ Following are configurations that I determined are best done manually or must be
 
 ### Trackpad
 
-- System Settings > Trackpad > Tap to click > On
+- System Settings > Trackpad > More Gestures > App Exposé > Swipe Down with Four Fingers
+- System Settings > Trackpad > Point & Click > Tap to click > On
 
 ### Wallpaper
 
