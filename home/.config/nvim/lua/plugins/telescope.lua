@@ -19,15 +19,29 @@ return {
 					},
 					sorting_strategy = "ascending",
 					wrap_results = true,
+					file_ignore_patterns = {
+						".git",
+					},
+				},
+				pickers = {
+					find_files = {
+						hidden = true,
+					},
+					live_grep = {
+						additional_args = {
+							"--hidden",
+						},
+					},
 				},
 			})
 			telescope.load_extension("fzf")
 
-			vim.keymap.set("n", "<Leader>fb", "<Cmd>Telescope buffers<CR>")
-			vim.keymap.set("n", "<Leader>ff", "<Cmd>Telescope find_files<CR>")
-			vim.keymap.set("n", "<Leader>ht", "<Cmd>Telescope help_tags<CR>")
-			vim.keymap.set("n", "<Leader>km", "<Cmd>Telescope keymaps<CR>")
-			vim.keymap.set("n", "<Leader>lg", "<Cmd>Telescope live_grep<CR>")
+			local builtin = require("telescope.builtin")
+			vim.keymap.set("n", "<Leader>fb", builtin.buffers)
+			vim.keymap.set("n", "<Leader>ff", builtin.find_files)
+			vim.keymap.set("n", "<Leader>ht", builtin.help_tags)
+			vim.keymap.set("n", "<Leader>km", builtin.keymaps)
+			vim.keymap.set("n", "<Leader>lg", builtin.live_grep)
 		end,
 	},
 	{
