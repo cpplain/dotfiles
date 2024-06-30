@@ -79,6 +79,10 @@ case $1 in
 	source $DOTFILES_REPO_DIR/scripts/brew.sh
 	brew_bundle
 	;;
+--prune-links)
+	source $DOTFILES_REPO_DIR/scripts/links.sh
+	prune_links
+	;;
 --remove-links)
 	source $DOTFILES_REPO_DIR/scripts/links.sh
 	remove_links

@@ -23,6 +23,11 @@ create_links() {
 	find_files $prv_home | xargs -I % bash -c "ln -sf $prv_home/% ~/%; echo ~/%"
 }
 
+prune_links() {
+	echo "Pruning links"
+	find -L ~ -path ~/Library -prune -o -lname $DOTFILES_REPO_DIR/\* -print | xargs rm -f
+}
+
 remove_links() {
 	echo "Removing links"
 	{ find_files $pub_home && find_files $prv_home; } |
