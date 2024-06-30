@@ -1,5 +1,3 @@
--- Setup lua_ls for Neovim
-
 return {
 	{
 		"folke/lazydev.nvim",

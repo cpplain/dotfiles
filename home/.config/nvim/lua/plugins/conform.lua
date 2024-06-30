@@ -1,7 +1,3 @@
---
---[[ Formatting ]]
---
-
 return {
 	"stevearc/conform.nvim",
 	config = function()

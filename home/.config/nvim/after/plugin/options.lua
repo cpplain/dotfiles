@@ -1,5 +1,3 @@
--- Custom Options
-
 -- Indentation and wrapping
 vim.opt.breakindent = true -- Wrapped line repeats indent
 vim.opt.expandtab = true -- Use spaces when tab is inserted
