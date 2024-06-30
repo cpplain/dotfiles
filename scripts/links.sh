@@ -6,11 +6,11 @@ pub_home=$DOTFILES_REPO_DIR/home
 prv_home=$DOTFILES_REPO_DIR/private/home
 
 find_dirs() {
-	{ cd $1 && find .config -type d -mindepth 1; }
+	find $1 -type d -mindepth 1 | sed "s|$1/||" | sort
 }
 
 find_files() {
-	{ cd $1 && find .config -type f; } | sort
+	find $1 -type f | sed "s|$1/||" | sort
 }
 
 create_links() {
