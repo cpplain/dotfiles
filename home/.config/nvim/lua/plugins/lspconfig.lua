@@ -1,42 +1,42 @@
+local servers = {
+	bashls = {},
+	clangd = {},
+	cssls = {},
+	gopls = {},
+	html = {},
+	jsonls = {},
+	lua_ls = {
+		settings = {
+			Lua = {
+				completion = {
+					callSnippet = "Replace",
+				},
+			},
+		},
+	},
+	marksman = {},
+	pyright = {},
+	ruff_lsp = {
+		on_attach = function(client, _)
+			client.server_capabilities.hoverProvider = false
+		end,
+	},
+	taplo = {},
+	tsserver = {
+		settings = {
+			completions = {
+				completeFunctionCalls = true,
+			},
+		},
+	},
+	vimls = {},
+	yamlls = {},
+}
+
 return {
 	"neovim/nvim-lspconfig",
 	dependencies = { "hrsh7th/nvim-cmp" },
 	config = function()
-		local servers = {
-			bashls = {},
-			clangd = {},
-			cssls = {},
-			gopls = {},
-			html = {},
-			jsonls = {},
-			lua_ls = {
-				settings = {
-					Lua = {
-						completion = {
-							callSnippet = "Replace",
-						},
-					},
-				},
-			},
-			marksman = {},
-			pyright = {},
-			ruff_lsp = {
-				on_attach = function(client, _)
-					client.server_capabilities.hoverProvider = false
-				end,
-			},
-			taplo = {},
-			tsserver = {
-				settings = {
-					completions = {
-						completeFunctionCalls = true,
-					},
-				},
-			},
-			vimls = {},
-			yamlls = {},
-		}
-
 		local border = "rounded"
 		local handlers = {
 			["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
