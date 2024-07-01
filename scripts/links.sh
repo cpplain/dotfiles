@@ -24,8 +24,8 @@ create_links() {
 }
 
 prune_links() {
-	echo "Pruning links"
-	find -L ~ -path ~/Library -prune -o -lname $DOTFILES_REPO_DIR/\* -print | xargs rm -f
+	echo "Pruning broken links"
+	find -L ~ -path ~/Library -prune -o -lname $DOTFILES_REPO_DIR/\* -exec rm -f {} \; -print 2>/dev/null
 }
 
 remove_links() {
