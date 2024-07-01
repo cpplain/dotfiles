@@ -8,6 +8,7 @@ Following are configurations that I determined are best done manually or must be
 - System Settings > Accessibility > Motor > Pointer Control > Trackpad Options > Use trackpad for dragging > On
 - System Settings > Accessibility > Motor > Pointer Control > Trackpad Options > Dragging style > Three Finger Drag
 - System Settings > Appearance > Dark
+- System Settings > Battery > Options > Slightly dim the display on battery > Off
 - System Settings > Displays > Automatically adjust brightness > Off
 - System Settings > Desktop & Dock > Automatically hide and show the Dock > On
 - System Settings > Keyboard > Keyboard Shortcuts > Modifier Keys > Caps Lock key > Control
