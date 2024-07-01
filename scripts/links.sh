@@ -30,6 +30,5 @@ prune_links() {
 
 remove_links() {
 	echo "Removing links"
-	{ find_files $pub_home && find_files $prv_home; } |
-		xargs -I % bash -c '[ -L ~/% ] && rm -f ~/% && echo ~/%'
+	find ~ -path ~/Library -prune -o -lname $DOTFILES_REPO_DIR/\* -exec rm -f {} \; -print 2>/dev/null
 }
