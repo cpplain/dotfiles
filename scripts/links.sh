@@ -29,6 +29,6 @@ prune_links() {
 }
 
 remove_links() {
-	echo "Removing links"
+	echo "Removing all links"
 	find ~ -path ~/Library -prune -o -lname $DOTFILES_REPO_DIR/\* -exec rm -f {} \; -print 2>/dev/null
 }
