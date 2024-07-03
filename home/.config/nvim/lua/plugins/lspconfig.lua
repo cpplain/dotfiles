@@ -35,7 +35,9 @@ local servers = {
 
 return {
 	"neovim/nvim-lspconfig",
-	dependencies = { "hrsh7th/nvim-cmp" },
+	dependencies = {
+		"hrsh7th/cmp-nvim-lsp",
+	},
 	config = function()
 		local border = "rounded"
 		local handlers = {
