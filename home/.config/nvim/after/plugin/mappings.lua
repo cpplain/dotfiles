@@ -24,13 +24,5 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 
--- Telescope
-local builtin = require("telescope.builtin")
-vim.keymap.set("n", "<Leader>fb", builtin.buffers)
-vim.keymap.set("n", "<Leader>ff", builtin.find_files)
-vim.keymap.set("n", "<Leader>ht", builtin.help_tags)
-vim.keymap.set("n", "<Leader>km", builtin.keymaps)
-vim.keymap.set("n", "<Leader>lg", builtin.live_grep)
-
 -- Wrapping lines
 vim.keymap.set("n", "<Leader>w", "<Cmd>set wrap!<CR>")
