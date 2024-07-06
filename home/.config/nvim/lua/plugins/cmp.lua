@@ -25,12 +25,7 @@ return {
 				documentation = cmp.config.window.bordered(),
 			},
 			mapping = {
-				["<C-n>"] = cmp.mapping(function()
-					if cmp.visible() then
-						return cmp.select_next_item()
-					end
-					cmp.complete()
-				end, { "i", "c" }),
+				["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),
 				["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
 				["<C-y>"] = cmp.mapping(cmp.mapping.confirm({ select = true }), { "i", "c" }),
 				["<C-e>"] = cmp.mapping(cmp.mapping.abort(), { "i", "c" }),
