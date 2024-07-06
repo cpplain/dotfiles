@@ -35,9 +35,7 @@ local servers = {
 
 return {
 	"neovim/nvim-lspconfig",
-	dependencies = {
-		"hrsh7th/cmp-nvim-lsp",
-	},
+	event = { "BufNewFile", "BufReadPost", "BufWritePre" },
 	config = function()
 		local border = "rounded"
 		local handlers = {
