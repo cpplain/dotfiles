@@ -1,82 +1,20 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
-	dependencies = {
-		"nvim-treesitter/nvim-treesitter-textobjects",
-	},
 	build = ":TSUpdate",
+	branch = "main",
+	lazy = false,
 	config = function()
-		require("nvim-treesitter.configs").setup({
-			ensure_installed = {},
-			ignore_install = {},
-
-			sync_install = false,
+		require("nvim-treesitter").setup({
 			auto_install = true,
+		})
 
-			modules = {},
-			highlight = {
-				enable = true,
-			},
-			incremental_selection = {
-				enable = true,
-				keymaps = {
-					init_selection = "<Tab>",
-					node_incremental = "<Tab>",
-					scope_incremental = false,
-					node_decremental = "<BS>",
-				},
-			},
-			indent = {
-				enable = true,
-			},
-
-			textobjects = {
-				move = {
-					enable = true,
-					goto_next = {
-						["]a"] = "@parameter.inner",
-						["]b"] = "@block.outer",
-						["]c"] = "@class.outer",
-						["]f"] = "@function.outer",
-						["]i"] = "@conditional.outer",
-						["]l"] = "@loop.outer",
-					},
-					goto_previous = {
-						["[a"] = "@parameter.inner",
-						["[b"] = "@block.outer",
-						["[c"] = "@class.outer",
-						["[f"] = "@function.outer",
-						["[i"] = "@conditional.outer",
-						["[l"] = "@loop.outer",
-					},
-				},
-				select = {
-					enable = true,
-					lookahead = true,
-					keymaps = {
-						["aa"] = "@parameter.outer",
-						["ia"] = "@parameter.inner",
-						["ab"] = "@block.outer",
-						["ib"] = "@block.inner",
-						["ac"] = "@class.outer",
-						["ic"] = "@class.inner",
-						["af"] = "@function.outer",
-						["if"] = "@function.inner",
-						["ai"] = "@conditional.outer",
-						["ii"] = "@conditional.inner",
-						["al"] = "@loop.outer",
-						["il"] = "@loop.inner",
-					},
-				},
-				swap = {
-					enable = true,
-					swap_next = {
-						["<leader>a"] = "@parameter.inner",
-					},
-					swap_previous = {
-						["<leader>A"] = "@parameter.inner",
-					},
-				},
-			},
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = "<filetype>",
+			group = vim.api.nvim_create_augroup("TreesitterStart", { clear = true }),
+			callback = function()
+				vim.treesitter.start()
+				vim.bo.indentexpr = "v:lua.require('nvim-treesitter').indentexpr()"
+			end,
 		})
 	end,
 }
