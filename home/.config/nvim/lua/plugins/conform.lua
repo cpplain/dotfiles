@@ -17,6 +17,8 @@ local formatters = {
 
 return {
 	"stevearc/conform.nvim",
+	event = "BufWritePre",
+	cmd = "ConformInfo",
 	config = function()
 		require("conform").setup({
 			format_on_save = {
