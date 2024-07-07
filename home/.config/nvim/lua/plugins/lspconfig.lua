@@ -35,7 +35,7 @@ local servers = {
 
 return {
 	"neovim/nvim-lspconfig",
-	event = { "BufNewFile", "BufReadPost", "BufWritePre" },
+	event = { "BufReadPre", "BufNewFile" },
 	config = function()
 		local border = "rounded"
 		local handlers = {
