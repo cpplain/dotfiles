@@ -16,4 +16,12 @@ require("lazy").setup({
 	},
 	install = { colorscheme = { "catppuccin" } },
 	ui = { border = "rounded" },
+	performance = {
+		rtp = {
+			disabled_plugins = {
+				"netrwPlugin",
+				"tutor",
+			},
+		},
+	},
 })
