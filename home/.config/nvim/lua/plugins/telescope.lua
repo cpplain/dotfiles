@@ -16,7 +16,7 @@ return {
 				sorting_strategy = "ascending",
 				wrap_results = true,
 				file_ignore_patterns = {
-					".git",
+					".git/",
 				},
 			},
 			pickers = {
