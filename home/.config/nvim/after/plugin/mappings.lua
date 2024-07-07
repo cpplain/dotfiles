@@ -4,16 +4,6 @@ vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
 vim.keymap.set("n", "<Leader>e", vim.diagnostic.open_float)
 vim.keymap.set("n", "<Leader>q", vim.diagnostic.setloclist)
 
--- LSP
-vim.keymap.set("n", "gd", vim.lsp.buf.definition)
-vim.keymap.set("n", "gi", vim.lsp.buf.implementation)
-vim.keymap.set("n", "gr", vim.lsp.buf.references)
-vim.keymap.set("n", "gt", vim.lsp.buf.type_definition)
-vim.keymap.set("n", "K", vim.lsp.buf.hover)
-vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help)
-vim.keymap.set({ "n", "v" }, "<Leader>ca", vim.lsp.buf.code_action)
-vim.keymap.set("n", "<Leader>rn", vim.lsp.buf.rename)
-
 -- Moving text
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { silent = true })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { silent = true })
