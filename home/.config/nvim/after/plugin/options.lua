@@ -18,7 +18,7 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 vim.opt.number = true
-vim.opt.relativenumber = true
+-- vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes"
 
 vim.opt.spelllang = "en_us"
