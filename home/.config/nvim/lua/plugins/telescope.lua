@@ -14,7 +14,7 @@ return {
 					prompt_position = "top",
 				},
 				sorting_strategy = "ascending",
-				wrap_results = true,
+				-- wrap_results = true,
 				file_ignore_patterns = {
 					".git/",
 				},
