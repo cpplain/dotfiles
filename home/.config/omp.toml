@@ -49,11 +49,11 @@ style = "plain"
 foreground = "p:base"
 template = """\
     <b>\
-    {{ if eq \"default\" .Env.OMP_MODE }}<,p:blue> NORMAL </>{{ end }}\
-    {{ if eq \"insert\" .Env.OMP_MODE }}<,p:green> INSERT </>{{ end }}\
-    {{ if eq \"replace\" .Env.OMP_MODE }}<,p:red> REPLACE </>{{ end }}\
-    {{ if eq \"replace_one\" .Env.OMP_MODE }}<,p:blue> NORMAL </>{{ end }}\
-    {{ if eq \"visual\" .Env.OMP_MODE }}<,p:mauve> VISUAL </>{{ end }}\
+    {{ if eq \"default\" .Env.OMP_BIND_MODE }}<,p:blue> NORMAL </>{{ end }}\
+    {{ if eq \"insert\" .Env.OMP_BIND_MODE }}<,p:green> INSERT </>{{ end }}\
+    {{ if eq \"replace\" .Env.OMP_BIND_MODE }}<,p:red> REPLACE </>{{ end }}\
+    {{ if eq \"replace_one\" .Env.OMP_BIND_MODE }}<,p:blue> NORMAL </>{{ end }}\
+    {{ if eq \"visual\" .Env.OMP_BIND_MODE }}<,p:mauve> VISUAL </>{{ end }}\
     </b>"""
 
 # Git
@@ -62,11 +62,11 @@ template = """\
 type = "text"
 style = "plain"
 foreground_templates = [
-  "{{ if eq \"default\" .Env.OMP_MODE }}p:blue{{ end }}",
-  "{{ if eq \"insert\" .Env.OMP_MODE }}p:green{{ end }}",
-  "{{ if eq \"replace\" .Env.OMP_MODE }}p:red{{ end }}",
-  "{{ if eq \"replace_one\" .Env.OMP_MODE }}p:blue{{ end }}",
-  "{{ if eq \"visual\" .Env.OMP_MODE }}p:mauve{{ end }}",
+  "{{ if eq \"default\" .Env.OMP_BIND_MODE }}p:blue{{ end }}",
+  "{{ if eq \"insert\" .Env.OMP_BIND_MODE }}p:green{{ end }}",
+  "{{ if eq \"replace\" .Env.OMP_BIND_MODE }}p:red{{ end }}",
+  "{{ if eq \"replace_one\" .Env.OMP_BIND_MODE }}p:blue{{ end }}",
+  "{{ if eq \"visual\" .Env.OMP_BIND_MODE }}p:mauve{{ end }}",
 ]
 background = "p:surface0"
 template = " {{ .Env.OMP_GIT_BRANCH }} "
@@ -116,11 +116,11 @@ type = "executiontime"
 style = "plain"
 foreground = "p:base"
 background_templates = [
-  "{{ if eq \"default\" .Env.OMP_MODE }}p:blue{{ end }}",
-  "{{ if eq \"insert\" .Env.OMP_MODE }}p:green{{ end }}",
-  "{{ if eq \"replace\" .Env.OMP_MODE }}p:red{{ end }}",
-  "{{ if eq \"replace_one\" .Env.OMP_MODE }}p:blue{{ end }}",
-  "{{ if eq \"visual\" .Env.OMP_MODE }}p:mauve{{ end }}",
+  "{{ if eq \"default\" .Env.OMP_BIND_MODE }}p:blue{{ end }}",
+  "{{ if eq \"insert\" .Env.OMP_BIND_MODE }}p:green{{ end }}",
+  "{{ if eq \"replace\" .Env.OMP_BIND_MODE }}p:red{{ end }}",
+  "{{ if eq \"replace_one\" .Env.OMP_BIND_MODE }}p:blue{{ end }}",
+  "{{ if eq \"visual\" .Env.OMP_BIND_MODE }}p:mauve{{ end }}",
 ]
 template = " <b>{{ .FormattedMs }}</b> "
 
