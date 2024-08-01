@@ -1,5 +1,12 @@
 oh-my-posh init fish --config ~/.config/omp.toml | source
 
+function repaint_on_bind_mode_change --on-variable fish_bind_mode
+    if test $fish_bind_mode != paste
+        set _omp_new_prompt true
+        commandline --function repaint
+    end
+end
+
 function set_poshcontext --no-scope-shadowing
     set -e OMP_BIND_MODE
     set -e OMP_GIT_BRANCH
