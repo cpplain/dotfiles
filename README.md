@@ -7,7 +7,7 @@ This repo contains my configuration files (aka dotfiles) and related scripts. Fe
 ## Installation
 
 ```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/cpplain/dotfiles/main/cfgmanager.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/cpplain/dotfiles/main/bin/cfgmanager)"
 ```
 
 ## Setup
