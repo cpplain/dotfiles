@@ -6,6 +6,7 @@ abbr g git
 abbr gb git branch
 abbr gc git commit
 abbr gco git checkout
+abbr gd git diff
 abbr gf git fetch
 abbr gm git merge
 abbr gpll git pull
@@ -14,3 +15,4 @@ abbr gr git rebase
 abbr gs git status
 
 abbr n nvim
+abbr n. nvim .
