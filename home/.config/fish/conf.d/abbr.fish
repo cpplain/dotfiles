@@ -9,8 +9,8 @@ abbr gco git checkout
 abbr gd git diff
 abbr gf git fetch
 abbr gm git merge
-abbr gpll git pull
-abbr gpsh git push
+abbr gpull git pull
+abbr gpush git push
 abbr gr git rebase
 abbr gs git status
 
