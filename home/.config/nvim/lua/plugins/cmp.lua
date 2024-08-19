@@ -12,9 +12,9 @@ return {
 		local cmp = require("cmp")
 
 		cmp.setup({
-			-- completion = {
-			-- 	autocomplete = false,
-			-- },
+			completion = {
+				autocomplete = false,
+			},
 			snippet = {
 				expand = function(args)
 					require("luasnip").lsp_expand(args.body)
@@ -28,6 +28,7 @@ return {
 				["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),
 				["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
 				["<C-y>"] = cmp.mapping(cmp.mapping.confirm({ select = true }), { "i", "c" }),
+				["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
 				["<C-e>"] = cmp.mapping(cmp.mapping.abort(), { "i", "c" }),
 			},
 			sources = cmp.config.sources({
