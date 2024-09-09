@@ -22,7 +22,7 @@ local servers = {
 		end,
 	},
 	taplo = {},
-	tsserver = {
+	ts_ls = {
 		settings = {
 			completions = {
 				completeFunctionCalls = true,
