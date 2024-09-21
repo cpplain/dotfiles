@@ -5,7 +5,21 @@ return {
 	lazy = false,
 	config = function()
 		require("nvim-treesitter").setup({
-			auto_install = true,
+			ensure_install = {
+				"bash",
+				"c",
+				"cpp",
+				"fish",
+				"gitcommit",
+				"lua",
+				"make",
+				"markdown",
+				"markdown_inline",
+				"toml",
+				"vim",
+				"vimdoc",
+				"yaml",
+			},
 		})
 
 		vim.api.nvim_create_autocmd("FileType", {
