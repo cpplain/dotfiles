@@ -1,3 +1,19 @@
+local parsers = {
+	"bash",
+	"c",
+	"cpp",
+	"fish",
+	"gitcommit",
+	"lua",
+	"make",
+	"markdown",
+	"markdown_inline",
+	"toml",
+	"vim",
+	"vimdoc",
+	"yaml",
+}
+
 return {
 	"nvim-treesitter/nvim-treesitter",
 	build = ":TSUpdate",
@@ -5,21 +21,7 @@ return {
 	lazy = false,
 	config = function()
 		require("nvim-treesitter").setup({
-			ensure_install = {
-				"bash",
-				"c",
-				"cpp",
-				"fish",
-				"gitcommit",
-				"lua",
-				"make",
-				"markdown",
-				"markdown_inline",
-				"toml",
-				"vim",
-				"vimdoc",
-				"yaml",
-			},
+			ensure_install = parsers,
 		})
 
 		vim.api.nvim_create_autocmd("FileType", {
