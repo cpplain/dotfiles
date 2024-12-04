@@ -21,7 +21,7 @@ return {
 	lazy = false,
 	config = function()
 		require("nvim-treesitter").setup({
-			ensure_install = parsers,
+			ensure_install = { parsers },
 		})
 
 		vim.api.nvim_create_autocmd("FileType", {
