@@ -4,17 +4,11 @@
 [core]
     editor = nvim
 
-[filter "lfs"]
-    clean = git-lfs clean -- %f
-    process = git-lfs filter-process
-    required = true
-    smudge = git-lfs smudge -- %f
-
-[pull]
-	ff = only
-
 [user]
     name = Christopher Plain
+
+[includeIf "hasconfig:remote.*.url:https://code.devsnc.com/**"]
+    path = config_servicenow
 
 [includeIf "hasconfig:remote.*.url:https://github.com/cpplain/**"]
     path = config_cpplain
@@ -23,4 +17,7 @@
     path = config_lamppostapps
 
 [includeIf "hasconfig:remote.*.url:https://github.com/lightstep/**"]
+    path = config_servicenow
+
+[includeIf "hasconfig:remote.*.url:https://gitlab.servicenow.net/**"]
     path = config_servicenow
