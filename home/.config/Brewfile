@@ -1,6 +1,6 @@
 tap "homebrew/bundle"
 tap "jandedobbeleer/oh-my-posh"
-tap "nikitabobko/tap"
+# tap "nikitabobko/tap"
 
 brew "fd"
 brew "fish"
@@ -21,7 +21,7 @@ brew "tree"
 brew "wget"
 
 cask "1password"
-cask "nikitabobko/tap/aerospace"
+# cask "nikitabobko/tap/aerospace"
 cask "arq"
 cask "docker"
 cask "dropbox"
