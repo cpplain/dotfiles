@@ -122,7 +122,7 @@ background_templates = [
   "{{ if eq \"replace_one\" .Env.OMP_BIND_MODE }}p:blue{{ end }}",
   "{{ if eq \"visual\" .Env.OMP_BIND_MODE }}p:mauve{{ end }}",
 ]
-template = " <b>{{ .FormattedMs }}</b> "
+template = " <b>{{ .FormattedMs }}</b> \n"
 
 [blocks.segments.properties]
 style = "round"
@@ -135,7 +135,6 @@ always_enabled = true
 [[blocks]]
 type = "prompt"
 alignment = "left"
-newline = true
 
 [[blocks.segments]]
 type = "status"
