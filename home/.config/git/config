@@ -1,8 +1,15 @@
 [color]
     ui = auto
 
+[branch]
+    autosetuprebase = always
+
 [core]
+    autocrlf = input
     editor = nvim
+
+[credential]
+    helper = osxkeychain
 
 [user]
     name = Christopher Plain
