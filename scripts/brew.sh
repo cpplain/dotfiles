@@ -20,10 +20,10 @@ fi
 
 case $CONFIG_ENV in
 personal)
-    brewfile=~/.config/Brewfile
+    brewfile=~/.config/homebrew/Brewfile
     ;;
 work)
-    brewfile=~/.config/Brewfile_work
+    brewfile=~/.config/homebrew/work/Brewfile
     ;;
 esac
 
