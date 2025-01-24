@@ -73,12 +73,13 @@ bootstrap() {
 usage() {
     cat <<EOS
 Usage: cfgmanager.sh [options]
-    --brew-bundle   Update brew, install packages, upgrade packages
-    --create-links  Create links to cofiguration files
-    --prune-links   Prune broken links
-    --remove-links  Remove all links to configuration files
-    --bootstrap     Bootstrap configuration (default)
-    -h, --help      Display this message
+    --brew-bundle     Update brew, install packages, upgrade packages
+    --bundle-cleanup  Uninstall all dependencies not present Brewfile
+    --create-links    Create links to cofiguration files
+    --prune-links     Prune broken links
+    --remove-links    Remove all links to configuration files
+    --bootstrap       Bootstrap configuration (default)
+    -h, --help        Display this message
 EOS
 }
 
@@ -86,6 +87,10 @@ case $1 in
 --brew-bundle)
     source $DOTFILES_REPO_DIR/scripts/brew.sh
     brew_bundle
+    ;;
+--bundle-cleanup)
+    source $DOTFILES_REPO_DIR/scripts/brew.sh
+    bundle_cleanup
     ;;
 --create-links)
     source $DOTFILES_REPO_DIR/scripts/links.sh
