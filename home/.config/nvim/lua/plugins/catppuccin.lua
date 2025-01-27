@@ -7,7 +7,8 @@ return {
 			dim_inactive = { enabled = true },
 			default_integrations = false,
 			integrations = {
-				cmp = true,
+				blink_cmp = true,
+				-- cmp = true,
 				gitsigns = true,
 				lsp_trouble = true,
 				markdown = true,
