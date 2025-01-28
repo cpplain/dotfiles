@@ -8,7 +8,6 @@ return {
 			default_integrations = false,
 			integrations = {
 				blink_cmp = true,
-				-- cmp = true,
 				gitsigns = true,
 				lsp_trouble = true,
 				markdown = true,
