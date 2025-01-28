@@ -6,10 +6,10 @@ return {
 	config = function()
 		require("blink.cmp").setup({
 			completion = {
-				menu = { border = "single" },
-				documentation = { window = { border = "single" } },
+				menu = { border = "rounded" },
+				documentation = { window = { border = "rounded" } },
 			},
-			signature = { window = { border = "single" } },
+			signature = { window = { border = "rounded" } },
 			sources = {
 				default = { "lazydev", "lsp", "path", "snippets", "buffer" },
 				providers = {
