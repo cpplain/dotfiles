@@ -26,6 +26,9 @@ return {
 		require("nvim-treesitter.configs").setup({
 			ensure_installed = parsers,
 			auto_install = false,
+			highlight = {
+				enable = true,
+			},
 		})
 
 		-- vim.api.nvim_create_autocmd("FileType", {
