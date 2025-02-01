@@ -1,0 +1,73 @@
+tap "homebrew/bundle"
+tap "jandedobbeleer/oh-my-posh"
+
+brew "bash"
+brew "fd"
+brew "fish"
+brew "git"
+brew "go"
+brew "mas"
+brew "neovim"
+brew "node@20"
+brew "nodenv"
+brew "jandedobbeleer/oh-my-posh/oh-my-posh"
+brew "pyenv"
+brew "python@3.12"
+brew "rbenv"
+brew "ripgrep"
+brew "tree"
+brew "wget"
+
+cask "1password"
+cask "docker"
+cask "font-sf-mono"
+cask "font-symbols-only-nerd-font"
+cask "ghostty"
+cask "wezterm"
+
+mas "1Password for Safari", id: 1569813296
+
+if !ENV.fetch("HOME").eql?("/Users/christopher.plain")
+  # tap "nikitabobko/tap"
+
+  brew "minikube"
+  brew "python-tk@3.12"
+
+  # cask "nikitabobko/tap/aerospace"
+  cask "arq"
+  cask "dropbox"
+  cask "fission"
+  cask "powerphotos"
+  cask "sf-symbols"
+
+  mas "Audiobook Builder", id: 1437681957
+  mas "Developer", id: 640199958
+  mas "GarageBand", id: 682658836
+  mas "iMovie", id: 408981434
+  mas "Keynote", id: 409183694
+  mas "Microsoft Excel", id: 462058435
+  mas "Microsoft Word", id: 462054704
+  mas "Numbers", id: 409203825
+  mas "Outread", id: 778846279
+  mas "Pages", id: 409201541
+  mas "Speedtest", id: 1153157709
+  mas "Xcode", id: 497799835
+else
+  tap "homebrew/services"
+  tap "nikitabobko/tap"
+
+  brew "jq"
+  brew "node-build"
+  brew "qemu"
+  brew "sqlite"
+
+  cask "nikitabobko/tap/aerospace"
+  cask "intellij-idea"
+  cask "mattermost"
+  cask "rubymine"
+  cask "slack"
+  cask "vagrant"
+  cask "virtualbox"
+
+  mas "Okta Extension App", id: 1439967473
+end

@@ -18,25 +18,14 @@ if ! which brew >/dev/null; then
     eval "$($brew shellenv)"
 fi
 
-case $CONFIG_ENV in
-personal)
-    brewfile=~/.config/Brewfile
-    ;;
-work)
-    brewfile=~/.config/Brewfile_work
-    ;;
-esac
-
 brew_bundle() {
     echo "Running brew bundle"
-    echo "Using brewfile: $brewfile"
     brew update
-    brew bundle --file $brewfile --verbose --force --no-lock
+    brew bundle --global --verbose --force --no-lock
 }
 
 bundle_cleanup() {
     echo "Running brew bundle cleanup"
-    echo "Using brewfile: $brewfile"
     brew update
-    brew bundle cleanup --file $brewfile --verbose --force --no-lock
+    brew bundle cleanup --global --verbose --force --no-lock
 }
