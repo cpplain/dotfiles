@@ -11,6 +11,7 @@ return {
 				gitsigns = true,
 				lsp_trouble = true,
 				markdown = true,
+				mason = true,
 				native_lsp = {
 					enabled = true,
 					virtual_text = {

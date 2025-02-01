@@ -19,6 +19,9 @@ return {
 	"stevearc/conform.nvim",
 	event = "BufWritePre",
 	cmd = "ConformInfo",
+	dependencies = {
+		"williamboman/mason.nvim",
+	},
 	config = function()
 		require("conform").setup({
 			format_on_save = {

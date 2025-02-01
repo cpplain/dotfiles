@@ -36,7 +36,10 @@ local servers = {
 return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
-	dependencies = { "saghen/blink.cmp" },
+	dependencies = {
+		"saghen/blink.cmp",
+		"williamboman/mason.nvim",
+	},
 	config = function()
 		local lspconfig = require("lspconfig")
 		local capabilities = require("blink.cmp").get_lsp_capabilities()
