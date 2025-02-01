@@ -16,6 +16,7 @@ local servers = {
 	},
 	marksman = {},
 	pyright = {},
+	rubocop = {},
 	ruff = {
 		on_attach = function(client, _)
 			client.server_capabilities.hoverProvider = false

@@ -9,6 +9,7 @@ local formatters = {
 	lua = { "stylua" },
 	markdown = { "prettierd" },
 	python = { "ruff_format" },
+	ruby = { "rubocop" },
 	sh = { "shfmt" },
 	toml = { "taplo" },
 	typescript = { "prettierd" },

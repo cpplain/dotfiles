@@ -1,28 +1,24 @@
 local packages = {
-	-- servers
 	"bash-language-server",
+	"clang-format",
 	"clangd",
 	"css-lsp",
+	"goimports",
 	"gopls",
 	"html-lsp",
 	"json-lsp",
 	"lua-language-server",
 	"marksman",
+	"prettierd",
 	"pyright",
 	"ruff",
+	"rubocop",
+	"shfmt",
+	"stylua",
 	"taplo",
 	"typescript-language-server",
 	"vim-language-server",
 	"yaml-language-server",
-
-	-- formatters
-	"clang-format",
-	"goimports",
-	"prettierd",
-	"ruff",
-	"shfmt",
-	"stylua",
-	"taplo",
 }
 
 return {
