@@ -3,11 +3,12 @@ tap "jandedobbeleer/oh-my-posh"
 # tap "nikitabobko/tap"
 
 brew "bash"
-brew "fd"
+brew "fd" # Neovim plugin requirement
 brew "fish"
-brew "fzf"
+brew "fzf" # Neovim plugin requirement
 brew "git"
 brew "go"
+brew "jq"
 brew "mas"
 brew "neovim"
 brew "node@20"
@@ -16,8 +17,9 @@ brew "jandedobbeleer/oh-my-posh/oh-my-posh"
 brew "pyenv"
 brew "python@3.12"
 brew "rbenv"
-brew "ripgrep"
+brew "ripgrep" # Neovim plugin requirement
 brew "ruby"
+brew "sqlite"
 brew "tree"
 brew "wget"
 
@@ -32,9 +34,6 @@ cask "wezterm"
 mas "1Password for Safari", id: 1569813296
 
 if !ENV.fetch("HOME").eql?("/Users/christopher.plain")
-  brew "minikube"
-  brew "python-tk@3.12"
-
   cask "arq"
   cask "dropbox"
   cask "fission"
@@ -56,10 +55,8 @@ if !ENV.fetch("HOME").eql?("/Users/christopher.plain")
 else
   tap "homebrew/services"
 
-  brew "jq"
   brew "node-build"
   brew "qemu"
-  brew "sqlite"
 
   cask "intellij-idea"
   cask "mattermost"
