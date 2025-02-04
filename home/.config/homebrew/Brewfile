@@ -1,9 +1,11 @@
 tap "homebrew/bundle"
 tap "jandedobbeleer/oh-my-posh"
+# tap "nikitabobko/tap"
 
 brew "bash"
 brew "fd"
 brew "fish"
+brew "fzf"
 brew "git"
 brew "go"
 brew "mas"
@@ -20,6 +22,7 @@ brew "tree"
 brew "wget"
 
 cask "1password"
+# cask "nikitabobko/tap/aerospace"
 cask "docker"
 cask "font-sf-mono"
 cask "font-symbols-only-nerd-font"
@@ -29,12 +32,9 @@ cask "wezterm"
 mas "1Password for Safari", id: 1569813296
 
 if !ENV.fetch("HOME").eql?("/Users/christopher.plain")
-  # tap "nikitabobko/tap"
-
   brew "minikube"
   brew "python-tk@3.12"
 
-  # cask "nikitabobko/tap/aerospace"
   cask "arq"
   cask "dropbox"
   cask "fission"
@@ -55,14 +55,12 @@ if !ENV.fetch("HOME").eql?("/Users/christopher.plain")
   mas "Xcode", id: 497799835
 else
   tap "homebrew/services"
-  tap "nikitabobko/tap"
 
   brew "jq"
   brew "node-build"
   brew "qemu"
   brew "sqlite"
 
-  cask "nikitabobko/tap/aerospace"
   cask "intellij-idea"
   cask "mattermost"
   cask "rubymine"
