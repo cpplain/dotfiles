@@ -15,6 +15,7 @@ brew "pyenv"
 brew "python@3.12"
 brew "rbenv"
 brew "ripgrep"
+brew "ruby"
 brew "tree"
 brew "wget"
 
