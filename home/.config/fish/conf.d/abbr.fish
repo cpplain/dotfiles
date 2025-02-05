@@ -19,7 +19,5 @@ abbr gpush "git push"
 abbr gr "git rebase"
 abbr gs "git status"
 
-abbr lvim "NVIM_APPNAME=nvim-lazyvim nvim"
-
 abbr n nvim
-abbr n. "nvim ."
+abbr ncust "NVIM_APPNAME=nvim-custom nvim"
