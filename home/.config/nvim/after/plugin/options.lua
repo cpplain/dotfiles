@@ -27,3 +27,13 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 
 vim.opt.termguicolors = true
+
+vim.filetype.add({
+	extension = {
+		h = "c",
+	},
+	pattern = {
+		["B?b?rewfile.*"] = "ruby",
+		[".*/git/config.*"] = "gitconfig",
+	},
+})
