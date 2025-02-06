@@ -9,6 +9,7 @@ brew "fzf" # Neovim plugin requirement
 brew "git"
 brew "go"
 brew "jq"
+brew "lazygit"
 brew "mas"
 brew "neovim"
 brew "node@20"
