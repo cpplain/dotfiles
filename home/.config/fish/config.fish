@@ -19,3 +19,7 @@ for line in (cat ~/.env | grep -v "^#")
 end
 
 fish_add_path -gP $DOTFILES_REPO_DIR/bin
+
+set -gx SNC_PROVISION_DEV_RSYNC true
+set -gx SNC_PROVISION_QEMU_MEM 8G
+set -gx SNC_PROVISION_QEMU_SMP 4
