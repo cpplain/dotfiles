@@ -1,3 +1,4 @@
+clipboard-paste-protection = false
 command = /opt/homebrew/bin/fish
 font-family = "SF Mono"
 font-size = 12
