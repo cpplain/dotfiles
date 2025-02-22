@@ -4,6 +4,7 @@ vim.g.loaded_python3_provider = 0
 vim.g.loaded_ruby_provider = 0
 
 vim.opt.breakindent = true
+vim.opt.conceallevel = 0
 vim.opt.list = false
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
