@@ -9,9 +9,7 @@ return {
 				enabled = false,
 			},
 		},
-		sources = {
-			cmdline = require("blink.cmp.config.sources").default.cmdline,
-		},
+		cmdline = require("blink.cmp.config.modes.cmdline").default,
 		signature = { window = { border = "rounded" } },
 	},
 }
