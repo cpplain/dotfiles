@@ -1,6 +1,6 @@
-![neovim screenshot](./images/screenshot-1.png)
-
 # Christopher's Dotfiles
+
+![neovim screenshot](./images/screenshot-2025-02-22.png)
 
 This repo contains my configuration files (aka dotfiles) and related scripts. Feel free to use whatever works for you. You may also find inspiration from [repos that have inspired me](#inspiration).
 
