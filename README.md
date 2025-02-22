@@ -10,14 +10,14 @@ This repo contains my configuration files (aka dotfiles) and related scripts. Fe
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/cpplain/dotfiles/main/bin/cfgmanager)"
 ```
 
-## Setup
+## Basic Setup
 
 - OS: [macOS](https://support.apple.com/macos)
 - Package manager: [Homebrew](https://brew.sh)
-- Terminal: [WezTerm](https://github.com/wez/wezterm)
+- Terminal: [Ghostty](https://ghostty.org/)
 - Shell: [fish](https://fishshell.com)
 - Prompt: [Oh My Posh](https://ohmyposh.dev)
-- Editor: [Neovim](https://github.com/neovim/neovim)
+- Editor: [Neovim](https://github.com/neovim/neovim) ([LazyVim](https://www.lazyvim.org/))
 - Font: [SF Mono](https://developer.apple.com/fonts/)
 - Symbols: [Symbols Nerd Font](https://www.nerdfonts.com)
 - Theme: [Catppuccin](https://github.com/wez/wezterm)
