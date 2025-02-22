@@ -8,6 +8,8 @@ vim.opt.list = false
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 
+vim.diagnostic.enable(false)
+
 vim.filetype.add({
 	extension = {
 		h = "c",
