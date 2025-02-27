@@ -3,6 +3,7 @@ abbr cmbb "cfgmanager --brew-bundle"
 abbr cmcl "cfgmanager --create-links"
 abbr cmpl "cfgmanager --prune-links"
 
+# git
 abbr g git
 abbr ga "git add"
 abbr gb "git branch"
@@ -19,5 +20,7 @@ abbr gpush "git push"
 abbr gr "git rebase"
 abbr gs "git status"
 
+# nvim
 abbr n nvim
+abbr lvim "NVIM_APPNAME=lazyvim nvim"
 abbr ncust "NVIM_APPNAME=nvim-custom nvim"
