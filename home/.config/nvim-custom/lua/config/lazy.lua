@@ -1,4 +1,3 @@
--- Bootstrap plugin manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -6,20 +5,29 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Must remap leader before initializing lazy
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
-
-require("lazy").setup("plugins", {
-	rocks = { enabled = false },
+require("lazy").setup({
+	spec = { { import = "plugins" } },
 	install = { colorscheme = { "catppuccin" } },
+	rocks = { enabled = false },
 	ui = { border = "rounded" },
-	change_detection = { notify = false },
+	checker = {
+		enabled = true,
+		notify = false,
+	},
+	change_detection = {
+		notify = false,
+	},
 	performance = {
 		rtp = {
 			disabled_plugins = {
+				"gzip",
+				-- "matchit",
+				-- "matchparen",
 				"netrwPlugin",
+				"tarPlugin",
+				"tohtml",
 				"tutor",
+				"zipPlugin",
 			},
 		},
 	},
