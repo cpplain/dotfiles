@@ -15,6 +15,7 @@ return {
 			"markdown",
 			"markdown_inline",
 			"python",
+			"puppet",
 			"query",
 			"ruby",
 			"toml",
