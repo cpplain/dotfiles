@@ -23,3 +23,4 @@ abbr gs "git status"
 # nvim
 abbr n nvim
 abbr lvim "NVIM_APPNAME=lazyvim nvim"
+abbr ncust "NVIM_APPNAME=nvim-cust nvim"
