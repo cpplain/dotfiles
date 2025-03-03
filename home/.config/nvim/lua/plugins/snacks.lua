@@ -2,18 +2,22 @@ return {
 	"folke/snacks.nvim",
 	opts = {
 		indent = {
-			enabled = false, -- disable indent guides
+			-- disable indent guides
+			enabled = false,
 		},
 		picker = {
 			sources = {
 				explorer = {
-					hidden = true, -- display hidden files
+					-- display hidden files
+					hidden = true,
 				},
 				files = {
-					hidden = true, -- search hidden files
+					-- search hidden files
+					hidden = true,
 				},
 				grep = {
-					hidden = true, -- search hidden files
+					-- search hidden files
+					hidden = true,
 				},
 			},
 		},
