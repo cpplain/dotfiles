@@ -1,1 +1,9 @@
+home/.config/fish/fish_variables
+home/.config/git/config_cpplain
+home/.config/git/config_servicenow
+home/.config/git/config_lamppostapps
+home/.config/lazyvim/lazy-lock.json
+home/.config/lazyvim/lazyvim.json
+home/.config/nvim/lazy-lock.json
+home/.config/nvim/lazyvim.json
 tmp/
