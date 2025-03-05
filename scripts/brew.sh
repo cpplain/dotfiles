@@ -21,11 +21,11 @@ fi
 brew_bundle() {
     echo "Running brew bundle"
     brew update
-    brew bundle --global --verbose --force --no-lock
+    brew bundle --global --verbose --force
 }
 
 bundle_cleanup() {
     echo "Running brew bundle cleanup"
     brew update
-    brew bundle cleanup --global --verbose --force --no-lock
+    brew bundle cleanup --global --verbose --force
 }
