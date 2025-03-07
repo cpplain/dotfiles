@@ -2,8 +2,6 @@
 
 set -euo pipefail
 
-[ -f ~/.env ] && source ~/.env
-
 set_env() {
     while true; do
         echo "Confgure environement for:"
@@ -37,6 +35,64 @@ set_env() {
 
     echo "CONFIG_ENV=$ENV" >~/.env
     echo "DOTFILES_REPO_DIR=$REPO_DIR" >>~/.env
+    source ~/.env
+}
+
+create_links() {
+    echo "Creating links"
+    pub_home=$DOTFILES_REPO_DIR/home
+    prv_home=$DOTFILES_REPO_DIR/private/home
+
+    dirs=$(find $pub_home -type d -depth 1)
+    for source in $dirs; do
+        target=$(echo $source | sed "s|$pub_home|$HOME|")
+
+        if [ -d $target ]; then
+            if [ -L $target ]; then
+                rm -f $target
+            else
+                echo "$target: Directory exists"
+                exit 1
+            fi
+        fi
+
+        ln -s $source $target
+        echo $target
+    done
+
+    files=$(find $pub_home -type f -depth 1)
+    for source in $files; do
+        target=$(echo $source | sed "s|$pub_home|$HOME|")
+
+        if [ -L $target ]; then
+            rm -f $target
+        fi
+
+        ln -s $source $target
+        echo $target
+    done
+
+    files=$(find $prv_home -type f)
+    for source in $files; do
+        target=$(echo $source | sed "s|$prv_home|$HOME|")
+
+        if [ -L $target ]; then
+            rm -f $target
+        fi
+
+        ln -s $source $target
+        echo $target
+    done
+}
+
+prune_links() {
+    echo "Pruning broken links"
+    find -L ~ -path ~/Library -prune -o -lname $DOTFILES_REPO_DIR/\* -exec rm -f {} \; -print 2>/dev/null
+}
+
+remove_links() {
+    echo "Removing all links"
+    find ~ -path ~/Library -prune -o -lname $DOTFILES_REPO_DIR/\* -exec rm -f {} \; -print 2>/dev/null
 }
 
 install_brew() {
@@ -93,15 +149,12 @@ case $1 in
     bundle_cleanup
     ;;
 --create-links)
-    source $DOTFILES_REPO_DIR/scripts/links.sh
     create_links
     ;;
 --prune-links)
-    source $DOTFILES_REPO_DIR/scripts/links.sh
     prune_links
     ;;
 --remove-links)
-    source $DOTFILES_REPO_DIR/scripts/links.sh
     remove_links
     ;;
 -h | --help)
