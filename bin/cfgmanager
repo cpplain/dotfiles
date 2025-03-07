@@ -47,16 +47,12 @@ create_links() {
     for source in $dirs; do
         target=$(echo $source | sed "s|$pub_home|$HOME|")
 
-        if [ -d $target ]; then
-            if [ -L $target ]; then
-                rm -f $target
-            else
-                echo "$target: Directory exists"
-                exit 1
-            fi
+        if [ -d $target ] && [ ! -L $target ]; then
+            echo "$target: Directory exists"
+            exit 1
         fi
 
-        ln -s $source $target
+        ln -snf $source $target
         echo $target
     done
 
@@ -64,11 +60,7 @@ create_links() {
     for source in $files; do
         target=$(echo $source | sed "s|$pub_home|$HOME|")
 
-        if [ -L $target ]; then
-            rm -f $target
-        fi
-
-        ln -s $source $target
+        ln -sf $source $target
         echo $target
     done
 
@@ -76,11 +68,7 @@ create_links() {
     for source in $files; do
         target=$(echo $source | sed "s|$prv_home|$HOME|")
 
-        if [ -L $target ]; then
-            rm -f $target
-        fi
-
-        ln -s $source $target
+        ln -sf $source $target
         echo $target
     done
 }
