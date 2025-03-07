@@ -117,10 +117,8 @@ clone_repo() {
 
 bootstrap() {
     set_env
-    source ~/.env
     install_brew
     clone_repo
-    source $DOTFILES_REPO_DIR/scripts/links.sh
     create_links
     source $DOTFILES_REPO_DIR/scripts/brew.sh
     brew_bundle
