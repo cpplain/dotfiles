@@ -3,6 +3,7 @@ return {
 	opts = {
 		ensure_installed = {
 			"rust-analyzer",
+			"taplo",
 		},
 		ui = { border = "rounded" },
 	},
