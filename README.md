@@ -34,3 +34,4 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/cpplain/dotfiles/main/bi
 - [stevearc / dotfiles](https://github.com/stevearc/dotfiles)
 - [ThePrimeagen / neovimrc](https://github.com/ThePrimeagen/neovimrc)
 - [tjdevries / config_manager](https://github.com/tjdevries/config_manager)
+
