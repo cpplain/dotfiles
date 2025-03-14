@@ -85,16 +85,21 @@ remove_links() {
 
 install_brew() {
     echo "Installing brew"
-    case $(uname -sm) in
-    "Darwin arm64")
-        brew=/opt/homebrew/bin/brew
-        ;;
-    *)
-        brew=/usr/local/bin/brew
-        ;;
-    esac
+    brew=/opt/homebrew/bin/brew
     test -x $brew && echo "Brew already installed: $brew" && return
     curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
+}
+
+brew_bundle() {
+    echo "Running brew bundle"
+    brew update
+    brew bundle --global --verbose --force
+}
+
+bundle_cleanup() {
+    echo "Running brew bundle cleanup"
+    brew update
+    brew bundle cleanup --global --verbose --force
 }
 
 clone_repo() {
@@ -108,7 +113,6 @@ bootstrap() {
     install_brew
     clone_repo
     create_links
-    source $DOTFILES_REPO_DIR/scripts/brew.sh
     brew_bundle
 }
 
@@ -127,11 +131,9 @@ EOS
 
 case $1 in
 --brew-bundle)
-    source $DOTFILES_REPO_DIR/scripts/brew.sh
     brew_bundle
     ;;
 --bundle-cleanup)
-    source $DOTFILES_REPO_DIR/scripts/brew.sh
     bundle_cleanup
     ;;
 --create-links)
