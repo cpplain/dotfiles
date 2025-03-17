@@ -35,15 +35,9 @@ style = "full"
 type = "git"
 style = "plain"
 foreground = "darkGray"
-template = """ {{ .HEAD }}\
-    {{ if or .Working.Changed .Staging.Changed }}<red>*</>{{ end }}\
-    {{ if or (gt .Ahead 0) (gt .Behind 0) }} {{ end }}\
-    {{ if gt .Ahead 0 }}<cyan>⇡</>{{ end }}\
-    {{ if gt .Behind 0 }}<cyan>⇣</>{{ end }}\
-    {{ if gt .StashCount 0 }} <cyan>≡</>{{ end }}"""
+template = " {{ .HEAD }}"
 
 [blocks.segments.properties]
-fetch_status = true
 branch_icon = ""
 
 # Execution Time
@@ -69,9 +63,14 @@ alignment = "left"
 [[blocks.segments]]
 type = "status"
 style = "plain"
-foreground = "magenta"
-foreground_templates = ["{{ if gt .Code 0 }}red{{ end }}"]
-template = "❯ "
+foreground_templates = [
+  "{{ if eq .Env.OMP_BIND_MODE \"default\" }}blue{{ end }}",
+  "{{ if eq .Env.OMP_BIND_MODE \"insert\" }}green{{ end }}",
+  "{{ if eq .Env.OMP_BIND_MODE \"replace\" }}red{{ end }}",
+  "{{ if eq .Env.OMP_BIND_MODE \"replace_one\" }}blue{{ end }}",
+  "{{ if eq .Env.OMP_BIND_MODE \"visual\" }}magenta{{ end }}",
+]
+template = "> "
 
 [blocks.segments.properties]
 always_enabled = true
@@ -81,5 +80,5 @@ always_enabled = true
 #
 
 [transient_prompt]
-foreground = "magenta"
-template = "❯ "
+foreground = "green"
+template = "> "
