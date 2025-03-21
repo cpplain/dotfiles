@@ -9,6 +9,7 @@ return {
 			jsonc = { "prettierd" },
 			markdown = { "prettierd" },
 			ruby = { "rubocop" },
+			rust = { "rustfmt" },
 			toml = { "taplo" },
 			typescript = { "prettierd" },
 			yaml = { "prettierd" },

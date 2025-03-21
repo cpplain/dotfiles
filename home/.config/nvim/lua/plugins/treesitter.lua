@@ -9,7 +9,9 @@ return {
 			"gitignore",
 			"make",
 			"puppet",
+			"ron",
 			"ruby",
+			"rust",
 		},
 	},
 }
