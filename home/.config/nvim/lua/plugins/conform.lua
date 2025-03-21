@@ -7,7 +7,7 @@ return {
 			javascript = { "prettierd" },
 			json = { "prettierd" },
 			jsonc = { "prettierd" },
-			markdown = { "prettierd" },
+			markdown = { "prettierd", "markdownlint-cli2", "markdown-toc" },
 			ruby = { "rubocop" },
 			rust = { "rustfmt" },
 			toml = { "taplo" },
