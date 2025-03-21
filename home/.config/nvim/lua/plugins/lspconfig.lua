@@ -3,6 +3,7 @@ return {
 	opts = {
 		servers = {
 			ruby_lsp = {},
+			taplo = {},
 		},
 		inlay_hints = { enabled = false },
 	},

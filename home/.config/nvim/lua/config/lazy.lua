@@ -10,7 +10,6 @@ require("lazy").setup({
 		{ "LazyVim/LazyVim", import = "lazyvim.plugins" },
 		{ import = "lazyvim.plugins.extras.lang.markdown" },
 		{ import = "lazyvim.plugins.extras.lang.rust" },
-		{ import = "lazyvim.plugins.extras.lang.toml" },
 		{ import = "plugins" },
 	},
 	defaults = {
