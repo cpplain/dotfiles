@@ -1,3 +1,3 @@
-command -q kubectl || exit
-
-kubectl completion fish | source
+if command -q kubectl
+    kubectl completion fish | source
+end

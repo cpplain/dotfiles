@@ -1,3 +1,0 @@
-command -q starship || exit
-
-starship init fish | source
