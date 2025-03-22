@@ -5,7 +5,7 @@ return {
 			"goimports",
 			"markdownlint-cli2",
 			"markdown-toc",
-			"prettierd",
+			"prettier",
 			"rust-analyzer",
 			"taplo",
 		},
