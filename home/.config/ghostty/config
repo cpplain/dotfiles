@@ -1,7 +1,7 @@
 clipboard-paste-protection = false
 command = /opt/homebrew/bin/fish
 # font-family = SF Mono
-font-family = Jetbrains Mono
+font-family = JetBrains Mono NL
 # font-size = 12
 font-size = 13
 macos-titlebar-style = native
