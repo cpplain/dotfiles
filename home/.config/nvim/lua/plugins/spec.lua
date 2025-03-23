@@ -40,14 +40,9 @@ return {
 		},
 	},
 	{
-		"rebelot/kanagawa.nvim",
-		opts = {},
-	},
-	{
 		"LazyVim/LazyVim",
 		opts = {
-			-- colorscheme = "catppuccin",
-			colorscheme = "kanagawa-dragon",
+			colorscheme = "catppuccin",
 		},
 	},
 	{
