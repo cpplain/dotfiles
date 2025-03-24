@@ -10,26 +10,13 @@ final_space = false
 type = "prompt"
 alignment = "left"
 
-# Mode
-
-[[blocks.segments]]
-type = "text"
-style = "plain"
-template = """\
-    {{ if eq \"default\" .Env.OMP_BIND_MODE }}<blue>[N]</>{{ end }}\
-    {{ if eq \"insert\" .Env.OMP_BIND_MODE }}<green>[I]</>{{ end }}\
-    {{ if eq \"replace\" .Env.OMP_BIND_MODE }}<red>[R]</>{{ end }}\
-    {{ if eq \"replace_one\" .Env.OMP_BIND_MODE }}<blue>[N]</>{{ end }}\
-    {{ if eq \"visual\" .Env.OMP_BIND_MODE }}<magenta>[V]</>{{ end }}\
-    """
-
 # User and Host
 
 [[blocks.segments]]
 type = "session"
 style = "plain"
 foreground = "darkGray"
-template = " {{ if .SSHSession }}{{ .UserName }}@{{ .HostName }}{{ end }}"
+template = "{{ if .SSHSession }}{{ .UserName }}@{{ .HostName }}{{ end }} "
 
 # Path
 
@@ -37,7 +24,7 @@ template = " {{ if .SSHSession }}{{ .UserName }}@{{ .HostName }}{{ end }}"
 type = "path"
 style = "plain"
 foreground = "blue"
-template = " {{ .Path }}"
+template = "{{ .Path }}"
 
 [blocks.segments.properties]
 style = "full"
@@ -73,6 +60,8 @@ always_enabled = true
 type = "prompt"
 alignment = "left"
 
+# Prompt
+#
 [[blocks.segments]]
 type = "status"
 style = "plain"
@@ -83,7 +72,7 @@ foreground_templates = [
   "{{ if eq .Env.OMP_BIND_MODE \"replace_one\" }}blue{{ end }}",
   "{{ if eq .Env.OMP_BIND_MODE \"visual\" }}magenta{{ end }}",
 ]
-template = ">>> "
+template = ">> "
 
 [blocks.segments.properties]
 always_enabled = true
