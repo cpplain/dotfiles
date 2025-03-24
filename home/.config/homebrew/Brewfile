@@ -36,8 +36,9 @@ mas "1Password for Safari", id: 1569813296
 mas "Xcode", id: 497799835
 
 require "socket"
+hostname = Socket.gethostname.downcase
 
-if Socket.gethostname.start_with? "christophers"
+if hostname.start_with? "christophers"
   cask "arq"
   cask "dropbox"
   cask "fission"
