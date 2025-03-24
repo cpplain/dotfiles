@@ -1,6 +1,5 @@
 tap "homebrew/bundle"
 tap "jandedobbeleer/oh-my-posh"
-# tap "nikitabobko/tap"
 
 brew "bash"
 brew "fd" # Neovim plugin requirement
@@ -26,7 +25,6 @@ brew "wget"
 
 cask "1password"
 cask "1password-cli"
-# cask "nikitabobko/tap/aerospace"
 cask "docker"
 cask "font-sf-mono"
 cask "font-symbols-only-nerd-font"
@@ -35,8 +33,11 @@ cask "font-jetbrains-mono"
 cask "wezterm"
 
 mas "1Password for Safari", id: 1569813296
+mas "Xcode", id: 497799835
 
-if !ENV.fetch("HOME").eql?("/Users/christopher.plain")
+require "socket"
+
+if Socket.gethostname.start_with? "christophers"
   cask "arq"
   cask "dropbox"
   cask "fission"
@@ -54,7 +55,6 @@ if !ENV.fetch("HOME").eql?("/Users/christopher.plain")
   mas "Outread", id: 778846279
   mas "Pages", id: 409201541
   mas "Speedtest", id: 1153157709
-  mas "Xcode", id: 497799835
 else
   tap "homebrew/services"
 
@@ -63,8 +63,6 @@ else
 
   cask "intellij-idea"
   cask "mattermost"
-  cask "rubymine"
-  cask "slack"
   cask "vagrant"
   cask "virtualbox"
 
