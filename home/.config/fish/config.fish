@@ -16,7 +16,7 @@ for line in (cat ~/.env | grep -v "^#")
     set -e item
 end
 
-fish_add_path -gP $DOTFILES_REPO_DIR/bin
+fish_add_path -gP $CONFIG_REPO/bin
 
 set -g fish_greeting # disable fish greeting
 set -g fish_prompt_pwd_dir_length 0

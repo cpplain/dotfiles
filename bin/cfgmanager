@@ -4,24 +4,24 @@ set -euo pipefail
 
 set_env() {
     while true; do
-        echo "Confgure environement for:"
+        echo "Config environment:"
         echo "[1] personal (default)"
         echo "[2] work"
-        read -p "Enter selection: " ENV
-        case $ENV in
+        read -p "Enter selection: " CONFIG_ENV
+        case $CONFIG_ENV in
         2)
-            ENV=work
+            CONFIG_ENV=work
             ;;
         *)
-            ENV=personal
+            CONFIG_ENV=personal
             ;;
         esac
 
-        read -p "Target repo directory: " REPO_DIR
-        REPO_DIR="${REPO_DIR/#\~/$HOME}"
+        read -p "Config repo directory: " CONFIG_REPO
+        CONFIG_REPO="${CONFIG_REPO/#\~/$HOME}"
 
-        echo "Configuration environment: $ENV"
-        echo "Dotfiles repo: $REPO_DIR"
+        echo "Config environment: $CONFIG_ENV"
+        echo "Config repo: $CONFIG_REPO"
         read -p "Continue? [Y/n]: " YN
         case $YN in
         n)
@@ -33,15 +33,15 @@ set_env() {
         esac
     done
 
-    echo "CONFIG_ENV=$ENV" >~/.env
-    echo "DOTFILES_REPO_DIR=$REPO_DIR" >>~/.env
+    echo "CONFIG_ENV=$CONFIG_ENV" >~/.env
+    echo "CONFIG_REPO=$CONFIG_REPO" >>~/.env
     source ~/.env
 }
 
 create_links() {
     echo "Creating links"
-    pub_home=$DOTFILES_REPO_DIR/home
-    prv_home=$DOTFILES_REPO_DIR/private/home
+    pub_home=$CONFIG_REPO/home
+    prv_home=$CONFIG_REPO/private/home
 
     dirs=$(find $pub_home -type d -depth 1)
     for source in $dirs; do
@@ -75,12 +75,12 @@ create_links() {
 
 prune_links() {
     echo "Pruning broken links"
-    find -L ~ -path ~/Library -prune -o -lname $DOTFILES_REPO_DIR/\* -exec rm -f {} \; -print 2>/dev/null
+    find -L ~ -path ~/Library -prune -o -lname $CONFIG_REPO/\* -exec rm -f {} \; -print 2>/dev/null
 }
 
 remove_links() {
     echo "Removing all links"
-    find ~ -path ~/Library -prune -o -lname $DOTFILES_REPO_DIR/\* -exec rm -f {} \; -print 2>/dev/null
+    find ~ -path ~/Library -prune -o -lname $CONFIG_REPO/\* -exec rm -f {} \; -print 2>/dev/null
 }
 
 install_brew() {
@@ -104,8 +104,8 @@ bundle_cleanup() {
 
 clone_repo() {
     echo "Cloning dotfiles repo"
-    test -d $DOTFILES_REPO_DIR/.git && echo "Repo already exists: $DOTFILES_REPO_DIR" && return
-    git clone --recurse-submodules https://github.com/cpplain/dotfiles.git $DOTFILES_REPO_DIR
+    test -d $CONFIG_REPO/.git && echo "Repo already exists: $CONFIG_REPO" && return
+    git clone --recurse-submodules https://github.com/cpplain/dotfiles.git $CONFIG_REPO
 }
 
 bootstrap() {
@@ -118,7 +118,7 @@ bootstrap() {
 
 usage() {
     cat <<EOS
-Usage: cfgmanager.sh [options]
+Usage: cfgmanager [options]
     --brew-bundle     Update brew, install packages, upgrade packages
     --bundle-cleanup  Uninstall all dependencies not present Brewfile
     --create-links    Create links to cofiguration files
@@ -144,6 +144,9 @@ case $1 in
     ;;
 --remove-links)
     remove_links
+    ;;
+--set-env)
+    set_env
     ;;
 -h | --help)
     usage
