@@ -140,6 +140,76 @@ return {
 		},
 	},
 	{
+		"nvim-lualine/lualine.nvim",
+		event = "VeryLazy",
+		init = function()
+			vim.g.lualine_laststatus = vim.o.laststatus
+			if vim.fn.argc(-1) > 0 then
+				-- set an empty statusline till lualine loads
+				vim.o.statusline = " "
+			else
+				-- hide the statusline on the starter page
+				vim.o.laststatus = 0
+			end
+		end,
+		opts = function()
+			local icons = LazyVim.config.icons
+
+			vim.o.laststatus = vim.g.lualine_laststatus
+
+			return {
+				options = {
+					theme = "catppuccin",
+					section_separators = "",
+					component_separators = "",
+					globalstatus = vim.o.laststatus == 3,
+					disabled_filetypes = { statusline = { "dashboard", "alpha", "ministarter", "snacks_dashboard" } },
+				},
+				sections = {
+					lualine_b = {
+						"branch",
+					},
+					lualine_c = {
+						{
+							"filename",
+							path = 1,
+						},
+						{
+							"diff",
+							symbols = {
+								added = icons.git.added,
+								modified = icons.git.modified,
+								removed = icons.git.removed,
+							},
+						},
+						{
+							"diagnostics",
+							symbols = {
+								error = icons.diagnostics.Error,
+								warn = icons.diagnostics.Warn,
+								info = icons.diagnostics.Info,
+								hint = icons.diagnostics.Hint,
+							},
+						},
+					},
+					lualine_x = {
+						"encoding",
+						{
+							"fileformat",
+							symbols = {
+								unix = "unix",
+								dos = "dos",
+								mac = "mac",
+							},
+						},
+						"filetype",
+					},
+				},
+				extensions = { "neo-tree", "lazy", "fzf" },
+			}
+		end,
+	},
+	{
 		"williamboman/mason.nvim",
 		opts = {
 			ensure_installed = {
@@ -204,10 +274,10 @@ return {
 	{
 		"folke/snacks.nvim",
 		opts = {
-			indent = {
-				-- disable indent guides
-				enabled = false,
-			},
+			-- indent = {
+			-- 	-- disable indent guides
+			-- 	enabled = false,
+			-- },
 			picker = {
 				sources = {
 					explorer = {
