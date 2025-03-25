@@ -41,10 +41,51 @@ return {
 		enabled = false,
 	},
 	{
-		"catppuccin",
-		opts = {
-			integrations = { blink_cmp = true },
-		},
+		"catppuccin/nvim",
+		lazy = true,
+		name = "catppuccin",
+		opts = function()
+			return {
+				dim_inactive = { enabled = true },
+				-- default_integrations = false,
+				integrations = {
+					blink_cmp = true,
+					flash = true,
+					grug_far = true,
+					gitsigns = true,
+					lsp_trouble = true,
+					-- lualine enabled in lualine config
+					mason = true,
+					markdown = true,
+					mini = true,
+					native_lsp = {
+						enabled = true,
+						virtual_text = {
+							errors = { "italic" },
+							hints = { "italic" },
+							warnings = { "italic" },
+							information = { "italic" },
+							ok = { "italic" },
+						},
+						underlines = {
+							errors = { "underline" },
+							hints = { "underline" },
+							warnings = { "underline" },
+							information = { "underline" },
+							ok = { "underline" },
+						},
+						inlay_hints = {
+							background = true,
+						},
+					},
+					noice = true,
+					snacks = true,
+					treesitter = true,
+					treesitter_context = true,
+					which_key = true,
+				},
+			}
+		end,
 	},
 	{
 		"stevearc/conform.nvim",
