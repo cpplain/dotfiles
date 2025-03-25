@@ -1,22 +1,50 @@
 return {
 	{
 		"saghen/blink.cmp",
-		opts = {
-			completion = {
-				menu = {
-					border = "rounded",
-					auto_show = false,
+		dependencies = { "rafamadriz/friendly-snippets" },
+		version = "*",
+		event = { "InsertEnter", "CmdlineEnter" },
+
+		---@module 'blink.cmp'
+		---@type blink.cmp.Config
+		opts = function()
+			return {
+				completion = {
+					menu = {
+						border = "rounded",
+						auto_show = false,
+					},
+					documentation = { window = { border = "rounded" } },
+					ghost_text = { enabled = false },
 				},
-				documentation = { window = { border = "rounded" } },
-				ghost_text = { enabled = false },
-			},
-			signature = { window = { border = "rounded" } },
-		},
+				sources = {
+					default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+					-- default = { "lazydev" },
+					providers = {
+						lazydev = {
+							name = "LazyDev",
+							module = "lazydev.integrations.blink",
+							score_offset = 100, -- show at a higher priority than lsp
+						},
+					},
+				},
+				signature = { window = { border = "rounded" } },
+			}
+		end,
+		config = function(_, opts)
+			require("blink.cmp").setup(opts)
+		end,
 	},
 	{
 		"akinsho/bufferline.nvim",
 		-- disable tabs
 		enabled = false,
+	},
+	{
+		"catppuccin",
+		opts = {
+			integrations = { blink_cmp = true },
+		},
 	},
 	{
 		"stevearc/conform.nvim",
