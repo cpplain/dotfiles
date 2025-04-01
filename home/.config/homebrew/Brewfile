@@ -33,12 +33,11 @@ cask "font-jetbrains-mono"
 cask "wezterm"
 
 mas "1Password for Safari", id: 1569813296
-mas "Xcode", id: 497799835
 
 require "socket"
 hostname = Socket.gethostname.downcase
 
-if hostname.start_with? "christophers"
+if hostname.start_with? "christopher"
   cask "arq"
   cask "dropbox"
   cask "fission"
@@ -56,6 +55,7 @@ if hostname.start_with? "christophers"
   mas "Outread", id: 778846279
   mas "Pages", id: 409201541
   mas "Speedtest", id: 1153157709
+  mas "Xcode", id: 497799835
 else
   tap "homebrew/services"
 
