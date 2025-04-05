@@ -121,3 +121,8 @@ end
 if test -e ~/.cargo/env.fish
     source ~/.cargo/env.fish
 end
+
+# Zig
+if test -e ~/.zig/zig
+    fish_add_path -gP ~/.zig
+end
