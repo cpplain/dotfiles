@@ -10,11 +10,11 @@ return {
 		opts = function()
 			return {
 				completion = {
-					menu = {
-						border = "rounded",
-						auto_show = false,
-					},
-					documentation = { window = { border = "rounded" } },
+					-- menu = {
+					-- 	border = "rounded",
+					-- 	auto_show = false,
+					-- },
+					-- documentation = { window = { border = "rounded" } },
 					ghost_text = { enabled = false },
 				},
 				sources = {
@@ -28,7 +28,7 @@ return {
 						},
 					},
 				},
-				signature = { window = { border = "rounded" } },
+				-- signature = { window = { border = "rounded" } },
 			}
 		end,
 		config = function(_, opts)
