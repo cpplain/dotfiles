@@ -382,10 +382,10 @@ return {
 	{
 		"folke/snacks.nvim",
 		opts = {
-			-- indent = {
-			-- 	-- disable indent guides
-			-- 	enabled = false,
-			-- },
+			indent = {
+				-- disable indent guides
+				enabled = false,
+			},
 			picker = {
 				sources = {
 					explorer = {
