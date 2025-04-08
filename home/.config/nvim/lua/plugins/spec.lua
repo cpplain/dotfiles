@@ -42,17 +42,15 @@ local catppuccin = {
 	opts = function()
 		return {
 			dim_inactive = { enabled = true },
-			-- default_integrations = false,
+			default_integrations = false,
 			integrations = {
 				blink_cmp = true,
 				flash = true,
-				grug_far = true,
 				gitsigns = true,
 				lsp_trouble = true,
 				-- lualine enabled in lualine config
 				mason = true,
 				markdown = true,
-				mini = true,
 				native_lsp = {
 					enabled = true,
 					virtual_text = {
@@ -74,7 +72,8 @@ local catppuccin = {
 					},
 				},
 				noice = true,
-				snacks = true,
+				render_markdown = true,
+				snacks = { enabled = true },
 				treesitter = true,
 				treesitter_context = true,
 				which_key = true,
