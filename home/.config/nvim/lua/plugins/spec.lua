@@ -518,6 +518,10 @@ local disabled = {
 		"folke/tokyonight.nvim",
 		enabled = false,
 	},
+	{
+		"folke/ts-comments.nvim",
+		enabled = false,
+	},
 }
 
 return {
