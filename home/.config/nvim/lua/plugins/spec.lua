@@ -114,7 +114,7 @@ local flash = {
 		{ "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
 		{ "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
 		{ "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-		{ "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+		{ "<C-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
 	},
 }
 
@@ -249,15 +249,15 @@ local noice = {
 	end,
     -- stylua: ignore
     keys = {
-        { "<leader>sn", "", desc = "+noice"},
+        { "<Leader>sn", "", desc = "+noice"},
         { "<S-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, mode = "c", desc = "Redirect Cmdline" },
-        { "<leader>snl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
-        { "<leader>snh", function() require("noice").cmd("history") end, desc = "Noice History" },
-        { "<leader>sna", function() require("noice").cmd("all") end, desc = "Noice All" },
-        { "<leader>snd", function() require("noice").cmd("dismiss") end, desc = "Dismiss All" },
-        { "<leader>snt", function() require("noice").cmd("pick") end, desc = "Noice Picker (Telescope/FzfLua)" },
-        { "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll Forward", mode = {"i", "n", "s"} },
-        { "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll Backward", mode = {"i", "n", "s"}},
+        { "<Leader>snl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
+        { "<Leader>snh", function() require("noice").cmd("history") end, desc = "Noice History" },
+        { "<Leader>sna", function() require("noice").cmd("all") end, desc = "Noice All" },
+        { "<Leader>snd", function() require("noice").cmd("dismiss") end, desc = "Dismiss All" },
+        { "<Leader>snt", function() require("noice").cmd("pick") end, desc = "Noice Picker (Telescope/FzfLua)" },
+        { "<C-f>", function() if not require("noice.lsp").scroll(4) then return "<C-f>" end end, silent = true, expr = true, desc = "Scroll Forward", mode = {"i", "n", "s"} },
+        { "<C-b>", function() if not require("noice.lsp").scroll(-4) then return "<C-b>" end end, silent = true, expr = true, desc = "Scroll Backward", mode = {"i", "n", "s"}},
     },
 	config = function(_, opts)
 		-- HACK: noice shows messages from before it was enabled,
@@ -406,7 +406,7 @@ local render_markdown = {
 					m.disable()
 				end
 			end,
-		}):map("<leader>um")
+		}):map("<Leader>um")
 	end,
 }
 
@@ -440,12 +440,12 @@ local trouble = {
 	"folke/trouble.nvim",
 	cmd = { "Trouble" },
 	keys = {
-		{ "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
-		{ "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
-		{ "<leader>cs", "<cmd>Trouble symbols toggle<cr>", desc = "Symbols (Trouble)" },
-		{ "<leader>cS", "<cmd>Trouble lsp toggle<cr>", desc = "LSP references/definitions/... (Trouble)" },
-		{ "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
-		{ "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
+		{ "<Leader>xx", "<Cmd>Trouble diagnostics toggle<CR>", desc = "Diagnostics (Trouble)" },
+		{ "<Leader>xX", "<Cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Buffer Diagnostics (Trouble)" },
+		{ "<Leader>cs", "<Cmd>Trouble symbols toggle<CR>", desc = "Symbols (Trouble)" },
+		{ "<Leader>cS", "<Cmd>Trouble lsp toggle<CR>", desc = "LSP references/definitions/... (Trouble)" },
+		{ "<Leader>xL", "<Cmd>Trouble loclist toggle<CR>", desc = "Location List (Trouble)" },
+		{ "<Leader>xQ", "<Cmd>Trouble qflist toggle<CR>", desc = "Quickfix List (Trouble)" },
 		{
 			"[q",
 			function()
