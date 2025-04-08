@@ -278,7 +278,6 @@ local nvim_autopairs = {
 
 local nvim_treesitter = {
 	"nvim-treesitter/nvim-treesitter",
-	dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
 	version = false,
 	build = ":TSUpdate",
 	lazy = vim.fn.argc(-1) == 0,
@@ -341,6 +340,17 @@ local nvim_treesitter = {
 				node_decremental = "<BS>",
 			},
 		},
+	},
+	config = function(_, opts)
+		require("nvim-treesitter.configs").setup(opts)
+	end,
+}
+
+local nvim_treesitter_textobjects = {
+	"nvim-treesitter/nvim-treesitter-textobjects",
+	lazy = vim.fn.argc(-1) == 0,
+	event = { "LazyFile", "VeryLazy" },
+	opts = {
 		textobjects = {
             --stylua: ignore
 			move = {
@@ -473,6 +483,7 @@ return {
 	noice,
 	nvim_autopairs,
 	nvim_treesitter,
+	nvim_treesitter_textobjects,
 	nvim_web_devicons,
 	render_markdown,
 	snacks,
