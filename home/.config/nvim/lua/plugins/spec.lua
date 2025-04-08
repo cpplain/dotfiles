@@ -294,8 +294,21 @@ local nvim_autopairs = {
 
 local nvim_treesitter = {
 	"nvim-treesitter/nvim-treesitter",
+	dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
+	version = false,
+	build = ":TSUpdate",
+	lazy = vim.fn.argc(-1) == 0,
+	event = { "LazyFile", "VeryLazy" },
+	cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
+	keys = {
+		{ "<C-Space>", desc = "Increment Selection" },
+		{ "<BS>", desc = "Decrement Selection", mode = "x" },
+	},
 	opts = {
 		ensure_installed = {
+			"bash",
+			"c",
+			"diff",
 			"git_config",
 			"git_rebase",
 			"gitattributes",
@@ -305,14 +318,59 @@ local nvim_treesitter = {
 			"gomod",
 			"gosum",
 			"gowork",
+			"html",
+			"javascript",
+			"jsdoc",
+			"json",
+			"jsonc",
+			"lua",
+			"luadoc",
+			"luap",
 			"make",
+			"markdown",
+			"markdown_inline",
+			"printf",
 			"puppet",
+			"python",
+			"query",
+			"regex",
 			"ron",
 			"ruby",
 			"rust",
+			"toml",
+			"tsx",
+			"typescript",
+			"vim",
+			"vimdoc",
+			"xml",
+			"yaml",
 			"zig",
 		},
+		highlight = { enable = true },
+		indent = { enable = true },
+		incremental_selection = {
+			enable = true,
+			keymaps = {
+				init_selection = "<C-Space>",
+				node_incremental = "<C-Space>",
+				scope_incremental = false,
+				node_decremental = "<BS>",
+			},
+		},
+		textobjects = {
+            --stylua: ignore
+			move = {
+				enable = true,
+				goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer", ["]a"] = "@parameter.inner" },
+				goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer", ["]A"] = "@parameter.inner" },
+				goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer", ["[a"] = "@parameter.inner" },
+				goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer", ["[A"] = "@parameter.inner" },
+			},
+		},
 	},
+	config = function(_, opts)
+		require("nvim-treesitter.configs").setup(opts)
+	end,
 }
 
 local nvim_web_devicons = {
