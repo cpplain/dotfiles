@@ -316,6 +316,12 @@ local nvim_treesitter = {
 	},
 }
 
+local nvim_web_devicons = {
+	"nvim-tree/nvim-web-devicons",
+	lazy = true,
+	opts = {},
+}
+
 local render_markdown = {
 	"MeanderingProgrammer/render-markdown.nvim",
 	opts = {
@@ -394,6 +400,10 @@ local disabled = {
 		enabled = false,
 	},
 	{
+		"echasnovski/mini.icons",
+		enabled = false,
+	},
+	{
 		"echasnovski/mini.pairs",
 		enabled = false,
 	},
@@ -415,6 +425,7 @@ return {
 	noice,
 	nvim_autopairs,
 	nvim_treesitter,
+	nvim_web_devicons,
 	render_markdown,
 	snacks,
 	disabled,
