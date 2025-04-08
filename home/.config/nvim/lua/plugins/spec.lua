@@ -386,6 +386,10 @@ local disabled = {
 		enabled = false,
 	},
 	{
+		"MagicDuck/grug-far.nvim",
+		enabled = false,
+	},
+	{
 		"echasnovski/mini.ai",
 		enabled = false,
 	},
