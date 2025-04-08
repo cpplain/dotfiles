@@ -173,7 +173,7 @@ local lualine = {
 				lualine_c = {
 					{
 						"filename",
-						path = 3,
+						path = 1,
 					},
 					{
 						"diff",
