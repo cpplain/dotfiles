@@ -211,22 +211,6 @@ local lualine = {
 	end,
 }
 
-local mason = {
-	"williamboman/mason.nvim",
-	opts = {
-		ensure_installed = {
-			"goimports",
-			"markdownlint-cli2",
-			"markdown-toc",
-			"prettier",
-			"rust-analyzer",
-			"taplo",
-			"zls",
-		},
-		ui = { border = "rounded" },
-	},
-}
-
 local noice = {
 	"folke/noice.nvim",
 	event = "VeryLazy",
@@ -453,6 +437,14 @@ local disabled = {
 		enabled = false,
 	},
 	{
+		"williamboman/mason.nvim",
+		enabled = false,
+	},
+	{
+		"williamboman/mason-lspconfig.nvim",
+		enabled = false,
+	},
+	{
 		"echasnovski/mini.ai",
 		enabled = false,
 	},
@@ -478,7 +470,6 @@ return {
 	lazyvim,
 	lspconfig,
 	lualine,
-	mason,
 	noice,
 	nvim_autopairs,
 	nvim_treesitter,
