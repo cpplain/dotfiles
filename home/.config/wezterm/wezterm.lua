@@ -25,10 +25,10 @@ config.font = wezterm.font("SF Mono")
 config.font_size = 12
 -- config.window_decorations = "RESIZE"
 -- config.window_padding = {
--- 	left = 20,
--- 	right = 20,
--- 	top = 20,
--- 	bottom = 20,
+--     left = 20,
+--     right = 20,
+--     top = 20,
+--     bottom = 20,
 -- }
 
 wezterm.on("gui-startup", function(cmd)

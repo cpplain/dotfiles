@@ -10,8 +10,8 @@ local blink_cmp = {
         return {
             completion = {
                 -- menu = {
-                -- 	border = "rounded",
-                -- 	auto_show = false,
+                --     border = "rounded",
+                --     auto_show = false,
                 -- },
                 -- documentation = { window = { border = "rounded" } },
                 ghost_text = { enabled = false },
@@ -108,14 +108,14 @@ local flash = {
     event = "VeryLazy",
     ---@type Flash.Config
     opts = {},
-	-- stylua: ignore
-	keys = {
-		{ "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-		{ "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-		{ "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-		{ "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-		{ "<C-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
-	},
+    -- stylua: ignore
+    keys = {
+        { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+        { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+        { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+        { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+        { "<C-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+    },
 }
 
 local lazyvim = {
@@ -353,13 +353,13 @@ local nvim_treesitter_textobjects = {
     opts = {
         textobjects = {
             --stylua: ignore
-			move = {
-				enable = true,
-				goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer", ["]a"] = "@parameter.inner" },
-				goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer", ["]A"] = "@parameter.inner" },
-				goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer", ["[a"] = "@parameter.inner" },
-				goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer", ["[A"] = "@parameter.inner" },
-			},
+            move = {
+                enable = true,
+                goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer", ["]a"] = "@parameter.inner" },
+                goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer", ["]A"] = "@parameter.inner" },
+                goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer", ["[a"] = "@parameter.inner" },
+                goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer", ["[A"] = "@parameter.inner" },
+            },
         },
     },
     config = function(_, opts)
