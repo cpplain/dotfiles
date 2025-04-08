@@ -9,7 +9,7 @@ local config = {}
 -- In newer versions of wezterm, use the config_builder which will
 -- help provide clearer error messages
 if wezterm.config_builder then
-	config = wezterm.config_builder()
+    config = wezterm.config_builder()
 end
 
 --
@@ -32,8 +32,8 @@ config.font_size = 12
 -- }
 
 wezterm.on("gui-startup", function(cmd)
-	local _, _, window = mux.spawn_window(cmd or {})
-	window:gui_window():maximize()
+    local _, _, window = mux.spawn_window(cmd or {})
+    window:gui_window():maximize()
 end)
 
 return config

@@ -15,11 +15,11 @@ vim.opt.tabstop = 4
 vim.diagnostic.enable(false)
 
 vim.filetype.add({
-	extension = {
-		h = "c",
-	},
-	pattern = {
-		["B?b?rewfile.*"] = "ruby",
-		[".*/git/config.*"] = "gitconfig",
-	},
+    extension = {
+        h = "c",
+    },
+    pattern = {
+        ["B?b?rewfile.*"] = "ruby",
+        [".*/git/config.*"] = "gitconfig",
+    },
 })
