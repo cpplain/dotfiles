@@ -1,3 +1,5 @@
+local LazyFile = { "BufReadPost", "BufNewFile", "BufWritePre" }
+
 local blink_cmp = {
     "saghen/blink.cmp",
     dependencies = { "rafamadriz/friendly-snippets" },
@@ -6,30 +8,28 @@ local blink_cmp = {
 
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
-    opts = function()
-        return {
-            completion = {
-                -- menu = {
-                --     border = "rounded",
-                --     auto_show = false,
-                -- },
-                -- documentation = { window = { border = "rounded" } },
-                ghost_text = { enabled = false },
-            },
-            sources = {
-                default = { "lazydev", "lsp", "path", "snippets", "buffer" },
-                -- default = { "lazydev" },
-                providers = {
-                    lazydev = {
-                        name = "LazyDev",
-                        module = "lazydev.integrations.blink",
-                        score_offset = 100, -- show at a higher priority than lsp
-                    },
+    opts = {
+        completion = {
+            -- menu = {
+            --     border = "rounded",
+            --     auto_show = false,
+            -- },
+            -- documentation = { window = { border = "rounded" } },
+            ghost_text = { enabled = false },
+        },
+        sources = {
+            default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+            -- default = { "lazydev" },
+            providers = {
+                lazydev = {
+                    name = "LazyDev",
+                    module = "lazydev.integrations.blink",
+                    score_offset = 100, -- show at a higher priority than lsp
                 },
             },
-            -- signature = { window = { border = "rounded" } },
-        }
-    end,
+        },
+        -- signature = { window = { border = "rounded" } },
+    },
     config = function(_, opts)
         require("blink.cmp").setup(opts)
     end,
@@ -37,48 +37,51 @@ local blink_cmp = {
 
 local catppuccin = {
     "catppuccin/nvim",
-    lazy = true,
     name = "catppuccin",
-    opts = function()
-        return {
-            dim_inactive = { enabled = true },
-            default_integrations = false,
-            integrations = {
-                blink_cmp = true,
-                flash = true,
-                gitsigns = true,
-                lsp_trouble = true,
-                -- lualine enabled in lualine config
-                mason = true,
-                markdown = true,
-                native_lsp = {
-                    enabled = true,
-                    virtual_text = {
-                        errors = { "italic" },
-                        hints = { "italic" },
-                        warnings = { "italic" },
-                        information = { "italic" },
-                        ok = { "italic" },
-                    },
-                    underlines = {
-                        errors = { "underline" },
-                        hints = { "underline" },
-                        warnings = { "underline" },
-                        information = { "underline" },
-                        ok = { "underline" },
-                    },
-                    inlay_hints = {
-                        background = true,
-                    },
+    priority = 1000,
+    opts = {
+        dim_inactive = { enabled = true },
+        default_integrations = false,
+        integrations = {
+            blink_cmp = true,
+            flash = true,
+            gitsigns = true,
+            lsp_trouble = true,
+            -- lualine enabled in lualine config
+            mason = true,
+            markdown = true,
+            native_lsp = {
+                enabled = true,
+                virtual_text = {
+                    errors = { "italic" },
+                    hints = { "italic" },
+                    warnings = { "italic" },
+                    information = { "italic" },
+                    ok = { "italic" },
                 },
-                noice = true,
-                render_markdown = true,
-                snacks = { enabled = true },
-                treesitter = true,
-                treesitter_context = true,
-                which_key = true,
+                underlines = {
+                    errors = { "underline" },
+                    hints = { "underline" },
+                    warnings = { "underline" },
+                    information = { "underline" },
+                    ok = { "underline" },
+                },
+                inlay_hints = {
+                    background = true,
+                },
             },
-        }
+            noice = true,
+            render_markdown = true,
+            snacks = { enabled = true },
+            treesitter = true,
+            treesitter_context = true,
+            which_key = true,
+        },
+    },
+    config = function(_, opts)
+        require("catppuccin").setup(opts)
+
+        vim.cmd.colorscheme("catppuccin")
     end,
 }
 
@@ -118,13 +121,6 @@ local flash = {
     },
 }
 
-local lazyvim = {
-    "LazyVim/LazyVim",
-    opts = {
-        colorscheme = "catppuccin",
-    },
-}
-
 local lspconfig = {
     "nvim-lspconfig",
     opts = {
@@ -143,110 +139,60 @@ local lspconfig = {
 local lualine = {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
-    init = function()
-        vim.g.lualine_laststatus = vim.o.laststatus
-        if vim.fn.argc(-1) > 0 then
-            -- set an empty statusline till lualine loads
-            vim.o.statusline = " "
-        else
-            -- hide the statusline on the starter page
-            vim.o.laststatus = 0
-        end
-    end,
-    opts = function()
-        local icons = LazyVim.config.icons
-
-        vim.o.laststatus = vim.g.lualine_laststatus
-
-        return {
-            options = {
-                theme = "catppuccin",
-                section_separators = "",
-                component_separators = "",
-                globalstatus = vim.o.laststatus == 3,
-                disabled_filetypes = { statusline = { "dashboard", "alpha", "ministarter", "snacks_dashboard" } },
+    opts = {
+        options = {
+            theme = "catppuccin",
+            section_separators = "",
+            component_separators = "",
+            disabled_filetypes = { statusline = { "dashboard", "alpha", "ministarter", "snacks_dashboard" } },
+        },
+        sections = {
+            lualine_b = {
+                "branch",
             },
-            sections = {
-                lualine_b = {
-                    "branch",
+            lualine_c = {
+                {
+                    "filename",
+                    path = 1,
                 },
-                lualine_c = {
-                    {
-                        "filename",
-                        path = 1,
-                    },
-                    {
-                        "diff",
-                        symbols = {
-                            added = icons.git.added,
-                            modified = icons.git.modified,
-                            removed = icons.git.removed,
-                        },
-                    },
-                    {
-                        "diagnostics",
-                        symbols = {
-                            error = icons.diagnostics.Error,
-                            warn = icons.diagnostics.Warn,
-                            info = icons.diagnostics.Info,
-                            hint = icons.diagnostics.Hint,
-                        },
+                {
+                    "diff",
+                    symbols = {
+                        added = " ",
+                        modified = " ",
+                        removed = " ",
                     },
                 },
-                lualine_x = {
-                    "encoding",
-                    {
-                        "fileformat",
-                        symbols = {
-                            unix = "unix",
-                            dos = "dos",
-                            mac = "mac",
-                        },
+                {
+                    "diagnostics",
+                    symbols = {
+                        error = " ",
+                        warn = " ",
+                        info = " ",
+                        hint = " ",
                     },
-                    "filetype",
                 },
             },
-            extensions = { "neo-tree", "lazy", "fzf" },
-        }
-    end,
+            lualine_x = {
+                "encoding",
+                {
+                    "fileformat",
+                    symbols = {
+                        unix = "unix",
+                        dos = "dos",
+                        mac = "mac",
+                    },
+                },
+                "filetype",
+            },
+        },
+        extensions = { "neo-tree", "lazy", "fzf" },
+    },
 }
 
 local noice = {
     "folke/noice.nvim",
     event = "VeryLazy",
-    opts = function()
-        return {
-            cmdline = {
-                view = "cmdline",
-            },
-            lsp = {
-                override = {
-                    ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-                    ["vim.lsp.util.stylize_markdown"] = true,
-                    ["cmp.entry.get_documentation"] = true,
-                },
-            },
-            routes = {
-                {
-                    filter = {
-                        event = "msg_show",
-                        any = {
-                            { find = "%d+L, %d+B" },
-                            { find = "; after #%d+" },
-                            { find = "; before #%d+" },
-                        },
-                    },
-                    view = "mini",
-                },
-            },
-            presets = {
-                bottom_search = true,
-                command_palette = false,
-                long_message_to_split = true,
-                lsp_doc_border = true,
-            },
-        }
-    end,
     -- stylua: ignore
     keys = {
         { "<Leader>sn", "", desc = "+noice"},
@@ -259,15 +205,37 @@ local noice = {
         { "<C-f>", function() if not require("noice.lsp").scroll(4) then return "<C-f>" end end, silent = true, expr = true, desc = "Scroll Forward", mode = {"i", "n", "s"} },
         { "<C-b>", function() if not require("noice.lsp").scroll(-4) then return "<C-b>" end end, silent = true, expr = true, desc = "Scroll Backward", mode = {"i", "n", "s"}},
     },
-    config = function(_, opts)
-        -- HACK: noice shows messages from before it was enabled,
-        -- but this is not ideal when Lazy is installing plugins,
-        -- so clear the messages in this case.
-        if vim.o.filetype == "lazy" then
-            vim.cmd([[messages clear]])
-        end
-        require("noice").setup(opts)
-    end,
+    opts = {
+        cmdline = {
+            view = "cmdline",
+        },
+        lsp = {
+            override = {
+                ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                ["vim.lsp.util.stylize_markdown"] = true,
+                ["cmp.entry.get_documentation"] = true,
+            },
+        },
+        routes = {
+            {
+                filter = {
+                    event = "msg_show",
+                    any = {
+                        { find = "%d+L, %d+B" },
+                        { find = "; after #%d+" },
+                        { find = "; before #%d+" },
+                    },
+                },
+                view = "mini",
+            },
+        },
+        presets = {
+            bottom_search = true,
+            command_palette = false,
+            long_message_to_split = true,
+            lsp_doc_border = true,
+        },
+    },
 }
 
 local nvim_autopairs = {
@@ -281,7 +249,7 @@ local nvim_treesitter = {
     version = false,
     build = ":TSUpdate",
     lazy = vim.fn.argc(-1) == 0,
-    event = { "LazyFile", "VeryLazy" },
+    event = { LazyFile, "VeryLazy" },
     cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
     keys = {
         { "<C-Space>", desc = "Increment Selection" },
@@ -349,7 +317,7 @@ local nvim_treesitter = {
 local nvim_treesitter_textobjects = {
     "nvim-treesitter/nvim-treesitter-textobjects",
     lazy = vim.fn.argc(-1) == 0,
-    event = { "LazyFile", "VeryLazy" },
+    event = { LazyFile, "VeryLazy" },
     opts = {
         textobjects = {
             --stylua: ignore
@@ -546,52 +514,11 @@ local which_key = {
     },
 }
 
-local disabled = {
-    {
-        "akinsho/bufferline.nvim",
-        -- disable tabs
-        enabled = false,
-    },
-    {
-        "MagicDuck/grug-far.nvim",
-        enabled = false,
-    },
-    {
-        "williamboman/mason.nvim",
-        enabled = false,
-    },
-    {
-        "williamboman/mason-lspconfig.nvim",
-        enabled = false,
-    },
-    {
-        "echasnovski/mini.ai",
-        enabled = false,
-    },
-    {
-        "echasnovski/mini.icons",
-        enabled = false,
-    },
-    {
-        "echasnovski/mini.pairs",
-        enabled = false,
-    },
-    {
-        "folke/tokyonight.nvim",
-        enabled = false,
-    },
-    {
-        "folke/ts-comments.nvim",
-        enabled = false,
-    },
-}
-
 return {
     blink_cmp,
     catppuccin,
     conform,
     flash,
-    lazyvim,
     lspconfig,
     lualine,
     noice,
@@ -603,5 +530,4 @@ return {
     snacks,
     trouble,
     which_key,
-    disabled,
 }
