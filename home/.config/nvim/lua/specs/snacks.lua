@@ -120,24 +120,32 @@ M.config = function(_, opts)
     Snacks.toggle.diagnostics():map("<Leader>ud")
     Snacks.toggle.dim():map("<Leader>uD")
     -- TODO: Add buffer specific toggle
-    Snacks.toggle
-        .new({
-            id = "Format on Save",
-            name = "Format on Save",
-            get = function()
-                return vim.g.autoformat
-            end,
-            set = function()
-                vim.g.autoformat = not vim.g.autoformat
-            end,
-        })
-        :map("<leader>uf")
+    Snacks.toggle({
+        name = "Format on Save",
+        get = function()
+            return vim.g.autoformat
+        end,
+        set = function()
+            vim.g.autoformat = not vim.g.autoformat
+        end,
+    }):map("<leader>uf")
     Snacks.toggle.indent():map("<Leader>ug")
+    Snacks.toggle({
+        name = "Git Signs",
+        get = function()
+            return require("gitsigns.config").config.signcolumn
+        end,
+        set = function()
+            require("gitsigns").toggle_signs()
+        end,
+    }):map("<leader>uG")
+    Snacks.toggle.inlay_hints():map("<leader>uh")
     Snacks.toggle.line_number():map("<Leader>ul")
     Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<Leader>uL")
     Snacks.toggle.option("spell", { name = "Spelling" }):map("<Leader>us")
     Snacks.toggle.treesitter():map("<Leader>uT")
     Snacks.toggle.option("wrap", { name = "Wrap" }):map("<Leader>uw")
+    Snacks.toggle.zen():map("<leader>uz")
 end
 
 return M
