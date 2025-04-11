@@ -1,0 +1,9 @@
+vim.lsp.enable({
+    "gopls",
+    "luals",
+    "marksman",
+    "rubylsp",
+    "rust_analyzer",
+    "taplo",
+    "zls",
+})
