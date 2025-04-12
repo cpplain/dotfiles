@@ -41,10 +41,6 @@ map("v", ">", ">gv")
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
 map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 
--- buffers
-map("n", "[b", "<Cmd>bprevious<CR>", { desc = "Previous Buffer" })
-map("n", "]b", "<Cmd>bnext<CR>", { desc = "Next Buffer" })
-
 -- clear search hightlight on escape
 map("n", "<Esc>", function()
     vim.cmd("noh")
