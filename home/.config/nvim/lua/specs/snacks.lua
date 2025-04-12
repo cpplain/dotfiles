@@ -59,7 +59,7 @@ return {
         { "<Leader>S", function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
         { "<Leader>n", function() Snacks.notifier.show_history() end, desc = "Notification History" },
         { "<Leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
-        { "<Leader>bo", function() Snacks.bufdelete().other() end, desc = "Delete Other Buffers" },
+        { "<Leader>bo", function() Snacks.bufdelete.other() end, desc = "Delete Other Buffers" },
         { "<Leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File" },
         { "<Leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
         { "<Leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
