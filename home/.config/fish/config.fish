@@ -58,7 +58,6 @@ abbr gs "git status"
 # Neovim
 abbr n nvim
 abbr lvim "NVIM_APPNAME=lazyvim nvim"
-abbr ncust "NVIM_APPNAME=nvim-cust nvim"
 
 #
 # Applications
