@@ -48,6 +48,7 @@ cask "wezterm"
 #
 # Temporarily disabling mas due to known issue with macOS 15.4
 # https://github.com/mas-cli/mas/issues/724#issuecomment-2699053144
+# TODO: Replace mas or enable when issue resolved 
 #
 
 # mas "1Password for Safari", id: 1569813296
