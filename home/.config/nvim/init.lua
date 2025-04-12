@@ -85,10 +85,7 @@ require("lazy").setup({
     rocks = { enabled = false },
     install = { colorscheme = { "catppuccin" } },
     ui = { border = "rounded" },
-    checker = {
-        enabled = true,
-        notify = false,
-    },
+    change_detection = { notify = false },
     performance = {
         rtp = {
             disabled_plugins = {
