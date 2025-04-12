@@ -1,8 +1,8 @@
 vim.lsp.enable({
     "gopls",
-    "luals",
+    "lua_ls",
     "marksman",
-    "rubylsp",
+    "ruby_lsp",
     "rust_analyzer",
     "taplo",
     "zls",
