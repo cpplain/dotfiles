@@ -51,14 +51,6 @@ map("n", "<Esc>", function()
     return "<Esc>"
 end, { expr = true, desc = "Escape and Clear Search Highlight" })
 
--- diagnostic
-map("n", "[d", function()
-    vim.diagnostic.jump({ count = -1, float = true })
-end, { desc = "Previous Diagnostic" })
-map("n", "]d", function()
-    vim.diagnostic.jump({ count = 1, float = true })
-end, { desc = "Next Diagnostic" })
-
 -- lazy
 map("n", "<Leader>l", "<Cmd>Lazy<CR>", { desc = "Lazy" })
 
