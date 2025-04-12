@@ -15,6 +15,56 @@ vim.opt.relativenumber = false
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 
+local map = vim.keymap.set
+
+-- better indenting
+map("v", "<", "<gv")
+map("v", ">", ">gv")
+
+-- better up/down
+map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
+map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
+
+-- buffers
+map("n", "[b", "<Cmd>bprevious<CR>", { desc = "Previous Buffer" })
+map("n", "]b", "<Cmd>bnext<CR>", { desc = "Next Buffer" })
+
+-- clear search hightlight on escape
+map("n", "<Esc>", function()
+    vim.cmd("noh")
+    return "<Esc>"
+end, { expr = true, desc = "Escape and Clear Search Highlight" })
+
+-- diagnostic
+map("n", "[d", function()
+    vim.diagnostic.jump({ count = -1, float = true })
+end, { desc = "Previous Diagnostic" })
+map("n", "]d", function()
+    vim.diagnostic.jump({ count = 1, float = true })
+end, { desc = "Next Diagnostic" })
+
+-- lazy
+map("n", "<Leader>l", "<Cmd>Lazy<CR>", { desc = "Lazy" })
+
+-- move lines
+map("n", "<A-j>", "<Cmd>move +1<CR>==", { desc = "Move Line Down" })
+map("n", "<A-k>", "<Cmd>move -2<CR>==", { desc = "Move Line Up" })
+map("v", "<A-j>", ":move '>+1<CR>gv=gv", { desc = "Move Selection Down", silent = true })
+map("v", "<A-k>", ":move '<-2<CR>gv=gv", { desc = "Move Selection Up", silent = true })
+
+-- resize window
+map("n", "<C-k>", "<Cmd>resize +2<CR>", { desc = "Increase Window Height" })
+map("n", "<C-j>", "<Cmd>resize -2<CR>", { desc = "Decrease Window Height" })
+map("n", "<C-l>", "<Cmd>vertical resize +2<CR>", { desc = "Increase Window Width" })
+map("n", "<C-h>", "<Cmd>vertical resize -2<CR>", { desc = "Decrease Window Width" })
+
+vim.api.nvim_create_autocmd("TextYankPost", {
+    group = vim.api.nvim_create_augroup("HighlightOnYank", { clear = true }),
+    callback = function()
+        vim.highlight.on_yank()
+    end,
+})
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
     local lazyrepo = "https://github.com/folke/lazy.nvim.git"

@@ -2,9 +2,9 @@ tap "homebrew/bundle"
 tap "jandedobbeleer/oh-my-posh"
 
 brew "bash"
-brew "fd" # Neovim plugin requirement
+brew "fd"
 brew "fish"
-brew "fzf" # Neovim plugin requirement
+brew "fzf"
 brew "git"
 brew "go"
 brew "goimports"
@@ -24,8 +24,9 @@ brew "prettier"
 brew "pyenv"
 brew "python@3.12"
 brew "rbenv"
-brew "ripgrep" # Neovim plugin requirement
+brew "ripgrep"
 brew "ruby"
+brew "ruby-lsp"
 brew "rust-analyzer"
 brew "shfmt"
 brew "sqlite"
