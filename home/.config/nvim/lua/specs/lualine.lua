@@ -47,7 +47,7 @@ return {
                     "filetype",
                 },
             },
-            extensions = { "lazy" },
+            extensions = { "lazy", "oil" },
         },
     },
 }

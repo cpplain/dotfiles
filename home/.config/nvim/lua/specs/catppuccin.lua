@@ -8,7 +8,6 @@ return {
         default_integrations = false,
         integrations = {
             blink_cmp = true,
-            flash = true,
             gitsigns = true,
             lsp_trouble = true,
             -- lualine enabled in lualine config

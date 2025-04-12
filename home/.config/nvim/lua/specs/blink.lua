@@ -24,8 +24,4 @@ return {
         },
         signature = { window = { border = "rounded" } },
     },
-
-    config = function(_, opts)
-        require("blink.cmp").setup(opts)
-    end,
 }
