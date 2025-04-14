@@ -34,33 +34,33 @@ vim.opt.wrap = false
 local map = vim.keymap.set
 
 -- better indenting
-map("v", "<", "<gv")
-map("v", ">", ">gv")
+map("v", "<", "<gv", { desc = "Shift lines left" })
+map("v", ">", ">gv", { desc = "Shift lines right" })
 
 -- better up/down
-map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
-map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
+map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Move cursor down", expr = true, silent = true })
+map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Move cursor up", expr = true, silent = true })
 
 -- clear search hightlight on escape
 map("n", "<Esc>", function()
     vim.cmd("noh")
     return "<Esc>"
-end, { expr = true, desc = "Escape and Clear Search Highlight" })
+end, { expr = true, desc = "Escape and clear search highlight" })
 
 -- lazy
-map("n", "<Leader>l", "<Cmd>Lazy<CR>", { desc = "Lazy" })
+map("n", "<Leader>l", "<Cmd>Lazy<CR>", { desc = "Open lazy" })
 
 -- move lines
-map("n", "<A-j>", "<Cmd>move +1<CR>==", { desc = "Move Line Down" })
-map("n", "<A-k>", "<Cmd>move -2<CR>==", { desc = "Move Line Up" })
-map("v", "<A-j>", ":move '>+1<CR>gv=gv", { desc = "Move Selection Down", silent = true })
-map("v", "<A-k>", ":move '<-2<CR>gv=gv", { desc = "Move Selection Up", silent = true })
+map("n", "<A-j>", "<Cmd>move +1<CR>==", { desc = "Move line down" })
+map("n", "<A-k>", "<Cmd>move -2<CR>==", { desc = "Move line up" })
+map("v", "<A-j>", ":move '>+1<CR>gv=gv", { desc = "Move lines down", silent = true })
+map("v", "<A-k>", ":move '<-2<CR>gv=gv", { desc = "Move lines up", silent = true })
 
 -- resize window
-map("n", "<C-k>", "<Cmd>resize +2<CR>", { desc = "Increase Window Height" })
-map("n", "<C-j>", "<Cmd>resize -2<CR>", { desc = "Decrease Window Height" })
-map("n", "<C-l>", "<Cmd>vertical resize +2<CR>", { desc = "Increase Window Width" })
-map("n", "<C-h>", "<Cmd>vertical resize -2<CR>", { desc = "Decrease Window Width" })
+map("n", "<C-k>", "<Cmd>resize +2<CR>", { desc = "Increase window height" })
+map("n", "<C-j>", "<Cmd>resize -2<CR>", { desc = "Decrease window height" })
+map("n", "<C-l>", "<Cmd>vertical resize +2<CR>", { desc = "Increase window width" })
+map("n", "<C-h>", "<Cmd>vertical resize -2<CR>", { desc = "Decrease window width" })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
     group = vim.api.nvim_create_augroup("HighlightOnYank", { clear = true }),

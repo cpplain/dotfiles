@@ -24,15 +24,16 @@ return {
     "folke/trouble.nvim",
     cmd = { "Trouble" },
 
+    -- stylua: ignore
     keys = {
-        { "<Leader>xx", "<Cmd>Trouble diagnostics toggle<CR>", desc = "Diagnostics (Trouble)" },
-        { "<Leader>xX", "<Cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Buffer Diagnostics (Trouble)" },
-        { "<Leader>cs", "<Cmd>Trouble symbols toggle<CR>", desc = "Symbols (Trouble)" },
-        { "<Leader>cS", "<Cmd>Trouble lsp toggle<CR>", desc = "LSP references/definitions/... (Trouble)" },
-        { "<Leader>xL", "<Cmd>Trouble loclist toggle<CR>", desc = "Location List (Trouble)" },
-        { "<Leader>xQ", "<Cmd>Trouble qflist toggle<CR>", desc = "Quickfix List (Trouble)" },
-        { "[q", prev, desc = "Previous Trouble/Quickfix Item" },
-        { "]q", next, desc = "Next Trouble/Quickfix Item" },
+        { "<Leader>xx", "<Cmd>Trouble diagnostics toggle<CR>", desc = "Open diagnostics (trouble)" },
+        { "<Leader>xX", "<Cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Open buffer diagnostics (trouble)" },
+        { "<Leader>cs", "<Cmd>Trouble symbols toggle<CR>", desc = "Open symbols (trouble)" },
+        { "<Leader>cS", "<Cmd>Trouble lsp toggle<CR>", desc = "Open LSP references/definitions/... (trouble)" },
+        { "<Leader>xL", "<Cmd>Trouble loclist toggle<CR>", desc = "Open location List (trouble)" },
+        { "<Leader>xQ", "<Cmd>Trouble qflist toggle<CR>", desc = "Open quickfix List (trouble)" },
+        { "[q", prev, desc = "Previous trouble/quickfix item" },
+        { "]q", next, desc = "Next trouble/quickfix item" },
     },
 
     opts = {

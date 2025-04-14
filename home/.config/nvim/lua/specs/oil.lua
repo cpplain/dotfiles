@@ -1,9 +1,10 @@
 return {
     "stevearc/oil.nvim",
     event = "VeryLazy",
+    cmd = "Oil",
 
     keys = {
-        { "<Leader>-", "<Cmd>Oil --float<CR>", desc = "Open oil file explorer" },
+        { "<Leader>-", "<Cmd>Oil --float<CR>", desc = "Open file explorer (oil)" },
     },
 
     ---@module 'oil'

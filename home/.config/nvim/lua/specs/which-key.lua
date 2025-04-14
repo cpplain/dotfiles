@@ -4,8 +4,8 @@ return {
 
     -- stylua: ignore
     keys = {
-        { "<Leader>?", function() require("which-key").show({ global = false }) end, desc = "Buffer Keymaps (which-key)" },
-        { "<C-w><Space>", function() require("which-key").show({ keys = "<C-w>", loop = true }) end, desc = "Window Hydra Mode (which-key)" },
+        { "<Leader>?", function() require("which-key").show({ global = false }) end, desc = "Show buffer keymaps (which-key)" },
+        { "<C-w><Space>", function() require("which-key").show({ keys = "<C-w>", loop = true }) end, desc = "Enter window hydra mode (which-key)" },
     },
 
     opts_extend = { "spec" },

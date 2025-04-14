@@ -7,8 +7,8 @@ return {
     cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
 
     keys = {
-        { "<C-Space>", desc = "Increment Selection" },
-        { "<BS>", desc = "Decrement Selection", mode = "x" },
+        { "<C-Space>", desc = "Increment selection" },
+        { "<BS>", desc = "Decrement selection", mode = "x" },
     },
 
     opts = {
