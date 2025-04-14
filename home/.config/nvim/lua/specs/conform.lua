@@ -8,10 +8,6 @@ return {
         { "<leader>cf", function() require("conform").format({ async = true }) end, mode = { "n", "v" }, desc = "Format" },
     },
 
-    init = function()
-        vim.g.autoformat = true
-    end,
-
     opts = {
         formatters_by_ft = {
             css = { "prettier" },
