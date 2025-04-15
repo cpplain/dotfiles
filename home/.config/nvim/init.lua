@@ -29,6 +29,7 @@ vim.opt.splitright = true
 vim.opt.tabstop = 4
 vim.opt.termguicolors = true
 vim.opt.timeoutlen = 250
+vim.opt.winborder = "rounded"
 vim.opt.wrap = false
 
 local map = vim.keymap.set

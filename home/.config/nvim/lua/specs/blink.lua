@@ -7,11 +7,6 @@ return {
     ---@module "blink.cmp"
     ---@type blink.cmp.Config
     opts = {
-        completion = {
-            menu = { border = "rounded" },
-            documentation = { window = { border = "rounded" } },
-            ghost_text = { enabled = false },
-        },
         sources = {
             default = { "lazydev", "lsp", "path", "snippets", "buffer" },
             providers = {
@@ -22,6 +17,5 @@ return {
                 },
             },
         },
-        signature = { window = { border = "rounded" } },
     },
 }
