@@ -1,6 +1,5 @@
 return {
     "nvim-treesitter/nvim-treesitter-textobjects",
-    lazy = vim.fn.argc(-1) == 0,
     event = { "BufReadPost", "BufNewFile", "VeryLazy" },
 
     opts = {

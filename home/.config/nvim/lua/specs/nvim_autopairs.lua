@@ -1,5 +1,5 @@
 return {
     "windwp/nvim-autopairs",
-    event = "VeryLazy",
+    event = { "InsertEnter", "CmdlineEnter" },
     opts = {},
 }

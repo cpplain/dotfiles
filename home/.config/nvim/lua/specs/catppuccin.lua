@@ -2,6 +2,7 @@ return {
     "catppuccin/nvim",
     name = "catppuccin",
     priority = 1000,
+    lazy = false,
 
     opts = {
         dim_inactive = { enabled = true },

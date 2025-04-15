@@ -2,9 +2,8 @@ return {
     "nvim-treesitter/nvim-treesitter",
     version = false,
     build = ":TSUpdate",
-    lazy = vim.fn.argc(-1) == 0,
     event = { "BufReadPost", "BufNewFile", "VeryLazy" },
-    cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
+    cmd = { "TSInstall", "TSUpdate", "TSUpdateSync" },
 
     keys = {
         { "<C-Space>", desc = "Increment selection" },
