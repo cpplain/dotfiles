@@ -84,7 +84,7 @@ else
   cask "intellij-idea"
   cask "mattermost"
   cask "vagrant"
-  cask "virtualbox"
+  cask "visual-studio-code"
 
   # mas "Okta Extension App", id: 1439967473
 end
