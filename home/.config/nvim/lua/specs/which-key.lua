@@ -11,6 +11,7 @@ return {
     opts_extend = { "spec" },
     opts = {
         preset = "helix",
+        icons = { mappings = false },
         spec = {
             -- stylua: ignore
             {

@@ -44,7 +44,6 @@ return {
         { "<Leader>sM", function() Snacks.picker.man() end, desc = "Search man pages" },
         { "<Leader>sq", function() Snacks.picker.qflist() end, desc = "Search quickfix list" },
         { "<Leader>sR", function() Snacks.picker.resume() end, desc = "Searc resume" },
-        { "<Leader>st", function() Snacks.picker.todo_comments() end, desc = "Search todo comments" },
         { "<Leader>su", function() Snacks.picker.undo() end, desc = "Search undo history" },
         -- LSP
         { "gd", function() Snacks.picker.lsp_definitions() end, desc = "Goto definition" },
@@ -69,6 +68,7 @@ return {
     opts = {
         explorer = {},
         toggle = {},
+
         dashboard = {
             preset = {
                 header = [[
@@ -91,7 +91,9 @@ return {
                 },
             },
         },
+
         picker = {
+            hidden = true,
             sources = {
                 explorer = {
                     hidden = true,
@@ -101,6 +103,15 @@ return {
                 },
                 grep = {
                     hidden = true,
+                },
+            },
+            ---@diagnostic disable-next-line: missing-fields
+            icons = {
+                files = {
+                    enabled = false,
+                },
+                git = {
+                    enabled = false,
                 },
             },
         },

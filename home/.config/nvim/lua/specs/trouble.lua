@@ -14,6 +14,7 @@ return {
             "[q",
             function()
                 if require("trouble").is_open() then
+                    ---@diagnostic disable-next-line: missing-parameter, missing-fields
                     require("trouble").prev({ skip_groups = true, jump = true })
                 else
                     pcall(vim.cmd.cprev)
@@ -25,6 +26,7 @@ return {
             "]q",
             function()
                 if require("trouble").is_open() then
+                    ---@diagnostic disable-next-line: missing-parameter, missing-fields
                     require("trouble").next({ skip_groups = true, jump = true })
                 else
                     pcall(vim.cmd.cnext)
@@ -35,10 +37,23 @@ return {
     },
 
     opts = {
-        modes = {
-            lsp = {
-                win = { position = "right" },
+        -- stylua: ignore
+        icons = {
+            ---@type trouble.Indent.symbols
+            indent = {
+                -- top           = "│ ",
+                -- middle        = "├╴",
+                -- last          = "└╴",
+                top           = "  ",
+                middle        = "  ",
+                last          = "  ",
+                fold_open     = "- ",
+                fold_closed   = "+ ",
+                ws            = "  ",
             },
+            folder_closed   = "",
+            folder_open     = "",
+            kinds = {},
         },
     },
 }
