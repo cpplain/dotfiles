@@ -4,8 +4,8 @@ return {
     opts = {
         options = {
             icons_enabled = false,
-            -- theme = "catppuccin",
-            theme = "monochrome",
+            -- theme = "auto",
+            theme = "catppuccin",
             section_separators = "",
             component_separators = "",
             disabled_filetypes = { statusline = { "snacks_dashboard" } },

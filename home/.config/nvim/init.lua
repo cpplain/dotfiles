@@ -82,8 +82,7 @@ require("lazy").setup({
         version = false,
     },
     rocks = { enabled = false },
-    -- install = { colorscheme = { "catppuccin" } },
-    install = { colorscheme = { "monochrome" } },
+    install = { colorscheme = { "catppuccin" } },
     ui = { border = "rounded" },
     change_detection = { notify = false },
     performance = {
