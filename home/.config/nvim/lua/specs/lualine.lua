@@ -6,7 +6,7 @@ return {
             icons_enabled = false,
             -- theme = "auto",
             -- theme = "catppuccin",
-            theme = "selenized",
+            theme = "selenized-light",
             section_separators = "",
             component_separators = "",
             disabled_filetypes = { statusline = { "snacks_dashboard" } },

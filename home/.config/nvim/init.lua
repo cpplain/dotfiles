@@ -82,7 +82,7 @@ require("lazy").setup({
         version = false,
     },
     rocks = { enabled = false },
-    install = { colorscheme = { "selenized" } },
+    install = { colorscheme = { "selenized-light" } },
     ui = { border = "rounded" },
     change_detection = { notify = false },
     performance = {
