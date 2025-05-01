@@ -37,10 +37,11 @@ brew "zls"
 cask "1password"
 cask "1password-cli"
 cask "docker"
+cask "font-jetbrains-mono"
 cask "font-sf-mono"
 cask "font-symbols-only-nerd-font"
 cask "ghostty"
-cask "font-jetbrains-mono"
+cask "visual-studio-code"
 cask "wezterm"
 
 #
@@ -82,7 +83,6 @@ else
   cask "intellij-idea"
   cask "mattermost"
   cask "vagrant"
-  cask "visual-studio-code"
 
   # mas "Okta Extension App", id: 1439967473
 end
