@@ -6,6 +6,5 @@ font-size = 13
 macos-titlebar-style = hidden
 mouse-hide-while-typing = true
 term = xterm-256color
-# theme = dark:catppuccin-mocha.conf,light:catppuccin-latte.conf
-theme = selenized-light
+theme = dark:catppuccin-mocha.conf,light:catppuccin-latte.conf
 window-padding-balance = true
