@@ -2,9 +2,8 @@ vim.lsp.enable({
     "gopls",
     "lua_ls",
     "marksman",
-    -- "ruby_lsp",
+    "ruby_lsp",
     "rust_analyzer",
-    "solargraph",
     "taplo",
     "zls",
 })

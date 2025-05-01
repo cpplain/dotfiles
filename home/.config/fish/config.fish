@@ -67,6 +67,8 @@ abbr lvim "NVIM_APPNAME=lazyvim nvim"
 if test -d /opt/homebrew
     set -gx HOMEBREW_BUNDLE_NO_LOCK 1
     /opt/homebrew/bin/brew shellenv | source
+
+    fish_add_path -gP /opt/homebrew/lib/ruby/gems/3.4.0/bin
 end
 
 #
