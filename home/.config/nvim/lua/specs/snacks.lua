@@ -1,7 +1,7 @@
 return {
     "folke/snacks.nvim",
-    priority = 1000,
     lazy = false,
+    priority = 1000,
 
     -- stylua: ignore
     keys = {
@@ -46,11 +46,11 @@ return {
         { "<Leader>sR", function() Snacks.picker.resume() end, desc = "Searc resume" },
         { "<Leader>su", function() Snacks.picker.undo() end, desc = "Search undo history" },
         -- LSP
-        { "gd", function() Snacks.picker.lsp_definitions() end, desc = "Goto definition" },
-        { "gD", function() Snacks.picker.lsp_declarations() end, desc = "Goto declaration" },
-        { "gI", function() Snacks.picker.lsp_implementations() end, desc = "Goto implementation" },
-        { "gr", function() Snacks.picker.lsp_references() end, nowait = true, desc = "Goto references" },
-        { "gy", function() Snacks.picker.lsp_type_definitions() end, desc = "Goto type definition" },
+        { "<Leader>ld", function() Snacks.picker.lsp_definitions() end, desc = "Goto definition" },
+        { "<Leader>lD", function() Snacks.picker.lsp_declarations() end, desc = "Goto declaration" },
+        { "<Leader>lI", function() Snacks.picker.lsp_implementations() end, desc = "Goto implementation" },
+        { "<Leader>lr", function() Snacks.picker.lsp_references() end, nowait = true, desc = "Goto references" },
+        { "<Leader>ly", function() Snacks.picker.lsp_type_definitions() end, desc = "Goto type definition" },
         { "<Leader>ss", function() Snacks.picker.lsp_symbols() end, desc = "Search LSP symbols" },
         { "<Leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "Search LSP workspace Symbols" },
         -- other
