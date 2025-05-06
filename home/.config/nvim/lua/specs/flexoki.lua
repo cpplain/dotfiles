@@ -3,7 +3,14 @@ return {
     -- dir = "~/git/flexoki.nvim",
     lazy = false,
     priority = 1000,
-    config = function()
-        vim.cmd.colorscheme("flexoki-light")
+
+    opts = {
+        plugins = {
+            gitsigns = true,
+        },
+    },
+    config = function(_, opts)
+        require("flexoki").setup(opts)
+        vim.cmd.colorscheme("flexoki")
     end,
 }
