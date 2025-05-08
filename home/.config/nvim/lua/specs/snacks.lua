@@ -37,6 +37,7 @@ return {
         { "<Leader>sd", function() Snacks.picker.diagnostics() end, desc = "Search diagnostics" },
         { "<Leader>sD", function() Snacks.picker.diagnostics_buffer() end, desc = "Search buffer diagnostics" },
         { "<Leader>sh", function() Snacks.picker.help() end, desc = "Search help" },
+        { "<Leader>sH", function() Snacks.picker.highlights() end, desc = "Search highlights" },
         { "<Leader>si", function() Snacks.picker.icons() end, desc = "Search icons" },
         { "<Leader>sj", function() Snacks.picker.jumps() end, desc = "Search jumps" },
         { "<Leader>sk", function() Snacks.picker.keymaps() end, desc = "Search keymaps" },
