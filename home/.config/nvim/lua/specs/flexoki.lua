@@ -6,7 +6,8 @@ return {
 
     opts = {
         plugins = {
-            gitsigns = true,
+            "gitsigns",
+            "which_key",
         },
     },
     config = function(_, opts)
