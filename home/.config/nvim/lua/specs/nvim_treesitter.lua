@@ -18,6 +18,7 @@ return {
             "bash",
             "c",
             "diff",
+            "fish",
             "git_config",
             "git_rebase",
             "gitattributes",
