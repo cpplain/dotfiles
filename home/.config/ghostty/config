@@ -1,8 +1,8 @@
 clipboard-paste-protection = false
 command = /opt/homebrew/bin/fish
 font-family = JetBrains Mono NL
-font-size = 13
-# font-size = 15
+# font-size = 13
+font-size = 16
 macos-titlebar-style = hidden
 mouse-hide-while-typing = true
 term = xterm-256color

@@ -44,13 +44,7 @@ cask "ghostty"
 cask "visual-studio-code"
 cask "wezterm"
 
-#
-# Temporarily disabling mas due to known issue with macOS 15.4
-# https://github.com/mas-cli/mas/issues/724#issuecomment-2699053144
-# TODO: Replace mas or enable when issue resolved 
-#
-
-# mas "1Password for Safari", id: 1569813296
+mas "1Password for Safari", id: 1569813296
 
 require "socket"
 hostname = Socket.gethostname.downcase
@@ -62,18 +56,18 @@ if hostname.start_with? "christopher"
   cask "powerphotos"
   cask "sf-symbols"
 
-  # mas "Audiobook Builder", id: 1437681957
-  # mas "Developer", id: 640199958
-  # mas "GarageBand", id: 682658836
-  # mas "iMovie", id: 408981434
-  # mas "Keynote", id: 409183694
-  # mas "Microsoft Excel", id: 462058435
-  # mas "Microsoft Word", id: 462054704
-  # mas "Numbers", id: 409203825
-  # mas "Outread", id: 778846279
-  # mas "Pages", id: 409201541
-  # mas "Speedtest", id: 1153157709
-  # mas "Xcode", id: 497799835
+  mas "Audiobook Builder", id: 1437681957
+  mas "Developer", id: 640199958
+  mas "GarageBand", id: 682658836
+  mas "iMovie", id: 408981434
+  mas "Keynote", id: 409183694
+  mas "Microsoft Excel", id: 462058435
+  mas "Microsoft Word", id: 462054704
+  mas "Numbers", id: 409203825
+  mas "Outread", id: 778846279
+  mas "Pages", id: 409201541
+  mas "Speedtest", id: 1153157709
+  mas "Xcode", id: 497799835
 else
   tap "homebrew/services"
 
@@ -84,5 +78,5 @@ else
   cask "mattermost"
   cask "vagrant"
 
-  # mas "Okta Extension App", id: 1439967473
+  mas "Okta Extension App", id: 1439967473
 end
