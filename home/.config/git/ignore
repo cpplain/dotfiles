@@ -1,5 +1,4 @@
 tmp/
 .DS_Store
+.claude/settings.local.json
 .localized
-
-**/.claude/settings.local.json
