@@ -4,7 +4,7 @@ font-family = JetBrains Mono NL
 # font-size = 13
 font-size = 16
 keybind = shift+enter=text:\n
-macos-titlebar-style = hidden
+macos-titlebar-style = native
 mouse-hide-while-typing = true
 term = xterm-256color
 # theme = dark:catppuccin-mocha.conf,light:catppuccin-latte.conf
