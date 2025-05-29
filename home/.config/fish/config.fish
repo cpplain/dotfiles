@@ -43,6 +43,7 @@ abbr g git
 abbr ga "git add"
 abbr gb "git branch"
 abbr gc "git commit"
+abbr gca "git commit --amend"
 abbr gco "git checkout"
 abbr gd "git diff"
 abbr gf "git fetch"
