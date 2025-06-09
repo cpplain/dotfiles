@@ -55,6 +55,9 @@ abbr gpull "git pull"
 abbr gpush "git push"
 abbr gr "git rebase"
 abbr gs "git status"
+abbr gwc create_worktree
+abbr gwl "git worktree list"
+abbr gwr "git worktree remove"
 
 # Neovim
 abbr n nvim
