@@ -49,5 +49,9 @@ function create_worktree --description 'Create a git worktree with standardized 
     echo
     echo "Worktree created successfully!"
     echo "To navigate to it: cd $worktree_path"
-end
 
+    # Set up work repo links if applicable
+    cd $worktree_path
+    setup_work_repo_links
+    cd - >/dev/null
+end

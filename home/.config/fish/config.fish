@@ -58,6 +58,7 @@ abbr gs "git status"
 abbr gwc create_worktree
 abbr gwl "git worktree list"
 abbr gwr "git worktree remove"
+abbr swl setup_work_repo_links
 
 # Neovim
 abbr n nvim

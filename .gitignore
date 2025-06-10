@@ -1,4 +1,5 @@
 home/.config/fish/fish_variables
+home/.config/fish/functions/setup_work_repo_links.fish
 home/.config/git/config_cpplain
 home/.config/git/config_servicenow
 home/.config/git/config_lamppostapps
