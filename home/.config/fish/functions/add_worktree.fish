@@ -1,5 +1,4 @@
-function create_worktree --description 'Create a git worktree with standardized naming'
-    # Get the repository root and name
+function add_worktree --description "Add a git worktree with standardized naming"
     set repo_root (git rev-parse --show-toplevel 2>/dev/null)
     or begin
         echo "Error: Not in a git repository"
@@ -9,22 +8,17 @@ function create_worktree --description 'Create a git worktree with standardized 
     set repo_name (basename $repo_root)
     set parent_dir (dirname $repo_root)
 
-    # Get branch name
     if test (count $argv) -eq 0
-        echo "Usage: create_worktree <branch-name>"
+        echo "Usage: add_worktree <branch-name>"
         echo "Examples:"
-        echo "  create_worktree feature/new-widget"
-        echo "  create_worktree scratch/JIRA-123"
-        echo "  create_worktree bugfix/login-issue"
+        echo "  add_worktree feature/new-widget"
+        echo "  add_worktree scratch/JIRA-123"
+        echo "  add_worktree bugfix/login-issue"
         return 1
     end
 
     set branch_name $argv[1]
-
-    # Convert slashes to hyphens for directory name
-    set branch_safe (string replace -a '/' '-' $branch_name)
-
-    # Construct worktree name
+    set branch_safe (string replace -a "/" "-" $branch_name)
     set worktree_name "$repo_name-$branch_safe"
     set worktree_path "$parent_dir/$worktree_name"
 
@@ -32,9 +26,7 @@ function create_worktree --description 'Create a git worktree with standardized 
     echo "  Repository: $repo_name"
     echo "  Branch: $branch_name"
     echo "  Worktree path: $worktree_path"
-    echo
 
-    # Check if branch exists locally or remotely
     if git show-ref --verify --quiet "refs/heads/$branch_name"
         echo "Using existing local branch: $branch_name"
         git worktree add $worktree_path $branch_name
@@ -46,12 +38,11 @@ function create_worktree --description 'Create a git worktree with standardized 
         git worktree add -b $branch_name $worktree_path
     end
 
-    echo
     echo "Worktree created successfully!"
     echo "To navigate to it: cd $worktree_path"
+    echo "To remove it later: remove_worktree $worktree_name"
 
-    # Set up work repo links if applicable
     cd $worktree_path
-    setup_work_repo_links
+    sync_worktree_files
     cd - >/dev/null
 end
