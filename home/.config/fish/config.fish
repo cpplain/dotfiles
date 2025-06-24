@@ -32,11 +32,19 @@ set fish_cursor_visual block
 # Abbreviations
 #
 
+# Homebrew
+abbr bb "brew update && brew bundle --global --verbose --force"
+abbr bbc "brew update && brew bundle cleanup --global --verbose --force"
+
 # Config Manager
-abbr cmbc "cfgmanager --bundle-cleanup"
-abbr cmbb "cfgmanager --brew-bundle"
-abbr cmcl "cfgmanager --create-links"
-abbr cmpl "cfgmanager --prune-links"
+abbr cma "cfgman adopt"
+abbr cmap "cfgman adopt --private"
+abbr cmcl "cfgman create-links"
+abbr cmo "cfgman orphan"
+abbr cmpl "cfgman prune-links"
+abbr cmrl "cfgman remove-links"
+abbr cms "cfgman status"
+abbr cmse "cfgman set-env"
 
 # Git
 abbr g git

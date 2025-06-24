@@ -1,0 +1,25 @@
+{
+  "ignore_patterns": [ ".DS_Store" ],
+  "link_mappings": [
+    {
+      "source": "home",
+      "target": "~/",
+      "link_as_directory": [
+        ".config/fish",
+        ".config/ghostty",
+        ".config/git",
+        ".config/homebrew",
+        ".config/lazygit",
+        ".config/lazyvim",
+        ".config/nvim",
+        ".config/rubocop",
+        ".config/wezterm"
+      ]
+    },
+    {
+      "source": "private/home",
+      "target": "~/",
+      "link_as_directory": []
+    }
+  ]
+}
