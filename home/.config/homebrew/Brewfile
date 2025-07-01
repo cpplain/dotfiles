@@ -36,7 +36,7 @@ brew "zls"
 
 cask "1password"
 cask "1password-cli"
-cask "docker"
+cask "docker-desktop"
 cask "font-jetbrains-mono"
 cask "font-sf-mono"
 cask "font-symbols-only-nerd-font"
