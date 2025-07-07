@@ -18,8 +18,8 @@ function add_worktree --description "Add a git worktree with standardized naming
     end
 
     set branch_name $argv[1]
-    set branch_safe (string replace -a "/" "-" $branch_name)
-    set worktree_name "$repo_name-$branch_safe"
+    set branch_base (basename $branch_name)
+    set worktree_name "$repo_name-$branch_base"
     set worktree_path "$parent_dir/$worktree_name"
 
     echo "Creating worktree:"
