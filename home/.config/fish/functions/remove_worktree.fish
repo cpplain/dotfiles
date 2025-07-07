@@ -42,20 +42,12 @@ function remove_worktree --description "Remove a git worktree and its backup dir
         return 1
     end
 
-    set repo_name (basename $main_worktree)
-    set backup_dir "$HOME/git-worktree-files/$repo_name/$worktree_name"
-
     echo "Removing worktree..."
     git worktree remove $target_worktree
     if test $status -ne 0
         echo "Error: Failed to remove worktree"
         echo "You may need to use 'git worktree remove --force' if there are uncommitted changes"
         return 1
-    end
-
-    if test -d "$backup_dir"
-        echo "Removing backup directory..."
-        rm -rf "$backup_dir"
     end
 
     echo "Successfully removed worktree: $worktree_name"
