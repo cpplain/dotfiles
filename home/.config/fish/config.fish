@@ -36,15 +36,13 @@ set fish_cursor_visual block
 abbr bb "brew update && brew bundle --global --verbose --force"
 abbr bbc "brew update && brew bundle cleanup --global --verbose --force"
 
-# Config Manager
-abbr cma "cfgman adopt"
-abbr cmap "cfgman adopt --private"
-abbr cmcl "cfgman create-links"
-abbr cmo "cfgman orphan"
-abbr cmpl "cfgman prune-links"
-abbr cmrl "cfgman remove-links"
-abbr cms "cfgman status"
-abbr cmse "cfgman set-env"
+# Link Manager
+abbr lna "lnk adopt --path"
+abbr lnc "lnk create"
+abbr lno "lnk orphan --path"
+abbr lnp "lnk prune"
+abbr lnr "lnk remove"
+abbr lns "lnk status"
 
 # Git
 abbr g git

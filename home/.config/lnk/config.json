@@ -2,11 +2,11 @@
   "ignore_patterns": [".DS_Store"],
   "link_mappings": [
     {
-      "source": "home",
+      "source": "~/git/dotfiles/home",
       "target": "~/"
     },
     {
-      "source": "private/home",
+      "source": "~/git/dotfiles/private/home",
       "target": "~/"
     }
   ]

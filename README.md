@@ -10,14 +10,14 @@ This repo contains my configuration files (aka dotfiles) and related scripts. Fe
 # Fresh system bootstrap (installs Homebrew, Go, and configures everything)
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/cpplain/dotfiles/main/bin/bootstrap)"
 
-# Or if you already have the repo cloned and cfgman installed
+# Or if you already have the repo cloned and lnk installed
 cd ~/git/dotfiles
-cfgman create-links
+lnk --config home/.config/lnk/config.json create
 ```
 
 ## Configuration Management
 
-This repository uses `cfgman`, a Go-based dotfile management tool with the following features:
+This repository uses `lnk`, a Go-based dotfile management tool with the following features:
 
 - **Fast execution** - Written in Go for improved performance over shell scripts
 - **File-level and directory-level linking** - Links individual files by default, directories when specified
@@ -26,16 +26,15 @@ This repository uses `cfgman`, a Go-based dotfile management tool with the follo
 - **Git integration** - Automatically respects `.gitignore` patterns
 - **Zero dependencies** - Pure Go implementation using only the standard library
 
-See the [full cfgman documentation](go/README.md) for detailed usage.
+See the [full lnk documentation](https://github.com/cpplain/lnk) for detailed usage.
 
 Quick commands:
 
 ```bash
-cfgman status                        # Show all managed files
-cfgman adopt ~/.config/app           # Add file to dotfiles
-cfgman adopt --private ~/.ssh/config # Add to private repo
-cfgman orphan ~/.config/app          # Remove from dotfiles
-cfgman orphan --dry-run ~/.config    # Preview recursive removal
+lnk status                                                # Show all managed files
+lnk adopt --path ~/.ssh/config --source-dir home          # Add to dotfiles
+lnk adopt --path ~/.ssh/config --source-dir private/home  # Add to private repo
+lnk orphan --path ~/.config/app                           # Remove from dotfiles
 ```
 
 ## Basic Setup

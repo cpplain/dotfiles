@@ -10,7 +10,7 @@ echo
 
 # Configuration
 DEFAULT_PARENT_DIR="$HOME/git"
-CFGMAN_REPO="https://github.com/cpplain/cfgman.git"
+LNK_REPO="https://github.com/cpplain/lnk.git"
 DOTFILES_REPO="https://github.com/cpplain/dotfiles.git"
 
 # Function to check if a command exists
@@ -43,33 +43,33 @@ install_go() {
     fi
 }
 
-# Function to install cfgman
-install_cfgman() {
-    if command_exists cfgman; then
-        echo "✓ cfgman is already installed"
+# Function to install lnk
+install_lnk() {
+    if command_exists lnk; then
+        echo "✓ lnk is already installed"
     else
-        echo "Installing cfgman..."
+        echo "Installing lnk..."
 
-        CFGMAN_DIR="$PARENT_DIR/cfgman"
+        LNK_DIR="$PARENT_DIR/lnk"
 
-        if [[ -d "$CFGMAN_DIR/.git" ]]; then
-            echo "cfgman repository already exists at $CFGMAN_DIR"
-            cd "$CFGMAN_DIR"
+        if [[ -d "$LNK_DIR/.git" ]]; then
+            echo "lnk repository already exists at $LNK_DIR"
+            cd "$LNK_DIR"
             git pull
         else
-            # Clone cfgman repository
-            echo "Cloning cfgman repository..."
+            # Clone lnk repository
+            echo "Cloning lnk repository..."
             mkdir -p "$PARENT_DIR"
-            git clone "$CFGMAN_REPO" "$CFGMAN_DIR"
-            cd "$CFGMAN_DIR"
+            git clone "$LNK_REPO" "$LNK_DIR"
+            cd "$LNK_DIR"
         fi
 
-        # Build and install cfgman
-        echo "Building and installing cfgman..."
+        # Build and install lnk
+        echo "Building and installing lnk..."
         make install
 
         cd "$HOME"
-        echo "✓ cfgman installed successfully"
+        echo "✓ lnk installed successfully"
     fi
 }
 
@@ -78,7 +78,7 @@ main() {
     echo "This script will:"
     echo "  1. Install Homebrew (if needed)"
     echo "  2. Install Go (if needed)"
-    echo "  3. Install cfgman (if needed)"
+    echo "  3. Install lnk (if needed)"
     echo "  4. Clone the dotfiles repository"
     echo "  5. Create configuration symlinks"
     echo "  6. Install Homebrew packages from Brewfile"
@@ -96,7 +96,7 @@ main() {
     read -p "Where should the git repositories be cloned? [$DEFAULT_PARENT_DIR] " PARENT_DIR
     PARENT_DIR=${PARENT_DIR:-$DEFAULT_PARENT_DIR}
     echo "Repositories will be cloned to:"
-    echo "  - $PARENT_DIR/cfgman"
+    echo "  - $PARENT_DIR/lnk"
     echo "  - $PARENT_DIR/dotfiles"
     echo
 
@@ -106,8 +106,8 @@ main() {
     # Step 2: Install Go
     install_go
 
-    # Step 3: Install cfgman
-    install_cfgman
+    # Step 3: Install lnk
+    install_lnk
 
     # Step 4: Clone repository
     DOTFILES_DIR="$PARENT_DIR/dotfiles"
@@ -124,7 +124,7 @@ main() {
     echo
     echo "Creating configuration symlinks..."
     cd "$DOTFILES_DIR"
-    cfgman create-links
+    lnk --config "$DOTFILES_DIR/home/.config/lnk/config.json" create
 
     # Step 6: Install Homebrew packages
     echo
@@ -136,10 +136,9 @@ main() {
     echo
     echo "Next steps:"
     echo "  1. Restart your terminal or run: source ~/.config/fish/config.fish"
-    echo "  2. The 'cfgman' command is now available globally"
-    echo "  3. Run 'cfgman status' to see managed files"
+    echo "  2. The 'lnk' command is now available globally"
+    echo "  3. Run 'lnk status' to see managed files"
 }
 
 # Run main function
 main "$@"
-
