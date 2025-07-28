@@ -1,4 +1,5 @@
 tap "homebrew/bundle"
+tap "sst/tap"
 
 brew "bash"
 brew "fd"
@@ -18,6 +19,7 @@ brew "mas"
 brew "neovim"
 brew "node@22"
 brew "nodenv"
+brew "sst/tap/opencode"
 brew "prettier"
 brew "pyenv"
 brew "python@3.12"
@@ -72,11 +74,8 @@ else
   tap "homebrew/services"
 
   brew "node-build"
-  brew "qemu"
 
   cask "intellij-idea"
-  cask "mattermost"
-  cask "vagrant"
 
   mas "Okta Extension App", id: 1439967473
 end
