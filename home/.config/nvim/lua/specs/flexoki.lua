@@ -1,6 +1,6 @@
 return {
     "cpplain/flexoki.nvim",
-    dir = "~/git/flexoki.nvim",
+    -- dir = "~/git/flexoki.nvim",
     lazy = false,
     priority = 1000,
 
