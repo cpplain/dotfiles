@@ -9,6 +9,6 @@ return {
             component_separators = "",
             disabled_filetypes = { statusline = { "snacks_dashboard" } },
         },
-        extensions = { "lazy", "oil", "quickfix", "trouble" },
+        extensions = { "lazy", "oil", "quickfix" },
     },
 }
