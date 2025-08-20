@@ -7,6 +7,5 @@ keybind = shift+enter=text:\n
 # macos-titlebar-style = native
 mouse-hide-while-typing = true
 term = xterm-256color
-# theme = dark:catppuccin-mocha.conf,light:catppuccin-latte.conf
 theme = dark:flexoki-dark,light:flexoki-light
 window-padding-balance = true
