@@ -6,15 +6,11 @@ return {
     -- stylua: ignore
     keys = {
         -- TODO: Add root and cwd versions where applicable (e.g., `.files()`)
-        { "<Leader>e", "<Leader>fe", desc = "Open file explorer (snacks)", remap = true },
+        { "<Leader>e", function() Snacks.explorer() end, desc = "Open file explorer (snacks)" },
         { "<Leader>n", function() Snacks.picker.notifications() end, desc = "Show notification history" },
         -- find
         { "<Leader>fb", function() Snacks.picker.buffers() end, desc = "Find open buffer" },
-        { "<Leader>fc", function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find config file" },
-        { "<Leader>fe", function() Snacks.explorer() end, desc = "Open file explorer (snacks)" },
         { "<Leader>ff", function() Snacks.picker.files() end, desc = "Find files" },
-        { "<Leader>fg", function() Snacks.picker.git_files() end, desc = "Find git file" },
-        { "<Leader>fp", function() Snacks.picker.projects() end, desc = "Find projects" },
         { "<Leader>fr", function() Snacks.picker.recent() end, desc = "Find recent file" },
         -- git
         { "<Leader>gd", function() Snacks.picker.git_diff() end, desc = "Git diff" },
@@ -29,11 +25,7 @@ return {
         { "<Leader>sp", function() Snacks.picker.lazy() end, desc = "Grep plugin spec" },
         { "<Leader>sw", function() Snacks.picker.grep_word() end, desc = "Grep visual selection or word", mode = { "n", "x" } },
         -- search
-        { '<Leader>s"', function() Snacks.picker.registers() end, desc = "Search registers" },
-        { '<Leader>s/', function() Snacks.picker.search_history() end, desc = "Search history" },
         { "<Leader>sa", function() Snacks.picker.autocmds() end, desc = "Search autocmds" },
-        { "<Leader>sc", function() Snacks.picker.command_history() end, desc = "Command history" },
-        { "<Leader>sC", function() Snacks.picker.commands() end, desc = "Search commands" },
         { "<Leader>sd", function() Snacks.picker.diagnostics() end, desc = "Search diagnostics" },
         { "<Leader>sD", function() Snacks.picker.diagnostics_buffer() end, desc = "Search buffer diagnostics" },
         { "<Leader>sh", function() Snacks.picker.help() end, desc = "Search help" },
@@ -44,7 +36,7 @@ return {
         { "<Leader>sm", function() Snacks.picker.marks() end, desc = "Search marks" },
         { "<Leader>sM", function() Snacks.picker.man() end, desc = "Search man pages" },
         { "<Leader>sq", function() Snacks.picker.qflist() end, desc = "Search quickfix list" },
-        { "<Leader>sR", function() Snacks.picker.resume() end, desc = "Searc resume" },
+        { "<Leader>sR", function() Snacks.picker.resume() end, desc = "Search resume" },
         { "<Leader>su", function() Snacks.picker.undo() end, desc = "Search undo history" },
         -- LSP
         { "<Leader>ld", function() Snacks.picker.lsp_definitions() end, desc = "Goto definition" },
@@ -52,17 +44,10 @@ return {
         { "<Leader>lI", function() Snacks.picker.lsp_implementations() end, desc = "Goto implementation" },
         { "<Leader>lr", function() Snacks.picker.lsp_references() end, nowait = true, desc = "Goto references" },
         { "<Leader>ly", function() Snacks.picker.lsp_type_definitions() end, desc = "Goto type definition" },
-        { "<Leader>ss", function() Snacks.picker.lsp_symbols() end, desc = "Search LSP symbols" },
-        { "<Leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "Search LSP workspace Symbols" },
         -- other
-        { "<Leader>.", function() Snacks.scratch() end, desc = "Toggle scratch buffer" },
-        { "<Leader>S", function() Snacks.scratch.select() end, desc = "Select scratch buffer" },
         { "<Leader>bd", function() Snacks.bufdelete() end, desc = "Delete buffer" },
         { "<Leader>bo", function() Snacks.bufdelete.other() end, desc = "Delete other buffers" },
         { "<Leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename file" },
-        { "<Leader>gg", function() Snacks.lazygit() end, desc = "Open lazygit" },
-        { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "Next reference", mode = { "n", "t" } },
-        { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev reference", mode = { "n", "t" } },
     },
 
     ---@type snacks.Config
@@ -86,7 +71,6 @@ return {
                     { icon = " ", key = "p", desc = "Projects", action = "<Leader>fp" },
                     { icon = " ", key = "g", desc = "Find Text", action = "<Leader>sg" },
                     { icon = " ", key = "r", desc = "Recent Files", action = "<Leader>fr" },
-                    { icon = " ", key = "c", desc = "Config", action = "<Leader>fc" },
                     { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
                     { icon = " ", key = "q", desc = "Quit", action = ":qa" },
                 },
@@ -121,11 +105,9 @@ return {
     config = function(_, opts)
         require("snacks").setup(opts)
 
-        Snacks.toggle.profiler_highlights():map("<Leader>dph")
-        Snacks.toggle.profiler():map("<Leader>dpp")
-        Snacks.toggle.option("conceallevel", { off = 0, on = 2, name = "Conceal Level" }):map("<Leader>uc")
-        Snacks.toggle.diagnostics():map("<Leader>ud")
-        Snacks.toggle.dim():map("<Leader>uD")
+        Snacks.toggle.option("conceallevel", { off = 0, on = 2, name = "Conceal Level" }):map("<Leader>tc")
+        Snacks.toggle.diagnostics():map("<Leader>td")
+        Snacks.toggle.dim():map("<Leader>tD")
         -- TODO: Add buffer specific toggle
         Snacks.toggle({
             name = "Format on Save",
@@ -135,8 +117,7 @@ return {
             set = function()
                 vim.g.autoformat = not vim.g.autoformat
             end,
-        }):map("<leader>uf")
-        Snacks.toggle.indent():map("<Leader>ug")
+        }):map("<leader>tf")
         Snacks.toggle({
             name = "Git Signs",
             get = function()
@@ -145,13 +126,12 @@ return {
             set = function()
                 require("gitsigns").toggle_signs()
             end,
-        }):map("<leader>uG")
-        Snacks.toggle.inlay_hints():map("<leader>uh")
-        Snacks.toggle.line_number():map("<Leader>ul")
-        Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<Leader>uL")
-        Snacks.toggle.option("spell", { name = "Spelling" }):map("<Leader>us")
-        Snacks.toggle.treesitter():map("<Leader>uT")
-        Snacks.toggle.option("wrap", { name = "Wrap" }):map("<Leader>uw")
-        Snacks.toggle.zen():map("<leader>uz")
+        }):map("<leader>tg")
+        Snacks.toggle.line_number():map("<Leader>tl")
+        Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<Leader>tL")
+        Snacks.toggle.option("spell", { name = "Spelling" }):map("<Leader>ts")
+        Snacks.toggle.treesitter():map("<Leader>tt")
+        Snacks.toggle.option("wrap", { name = "Wrap" }):map("<Leader>tw")
+        Snacks.toggle.zen():map("<leader>tz")
     end,
 }
