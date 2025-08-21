@@ -43,7 +43,6 @@ cask "font-jetbrains-mono"
 cask "font-sf-mono"
 cask "font-symbols-only-nerd-font"
 cask "ghostty"
-cask "visual-studio-code"
 
 mas "1Password for Safari", id: 1569813296
 
