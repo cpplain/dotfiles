@@ -58,7 +58,7 @@ map("n", "<Leader>cd", function()
     vim.api.nvim_put({ vim.trim(vim.fn.system({ "date", "-Iseconds" })) }, "c", true, true)
 end, { desc = "Insert date and time (ISO 8601)" })
 
-map("n", "<Leader>l", "<Cmd>Lazy<CR>", { desc = "Open lazy" })
+map("n", "<Leader>lz", "<Cmd>Lazy<CR>", { desc = "Open lazy" })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
     group = vim.api.nvim_create_augroup("HighlightOnYank", { clear = true }),
