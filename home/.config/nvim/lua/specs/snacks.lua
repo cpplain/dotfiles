@@ -1,60 +1,57 @@
 return {
     "folke/snacks.nvim",
     priority = 1000,
-
-    ---@type snacks.Config
-    opts = {
-        explorer = {},
-        toggle = {},
-
-        dashboard = {
-            preset = {
-                header = [[
+    config = function()
+        ---@type snacks.Config
+        local opts = {
+            explorer = {},
+            toggle = {},
+            dashboard = {
+                preset = {
+                    header = [[
 ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
 ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
 ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
 ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
 ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
 ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
-                -- stylua: ignore
-                keys = {
-                    { icon = " ", key = "f", desc = "Find File", action = "<Leader>ff" },
-                    { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-                    { icon = " ", key = "p", desc = "Projects", action = "<Leader>fp" },
-                    { icon = " ", key = "g", desc = "Find Text", action = "<Leader>sg" },
-                    { icon = " ", key = "r", desc = "Recent Files", action = "<Leader>fr" },
-                    { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
-                    { icon = " ", key = "q", desc = "Quit", action = ":qa" },
+                    -- stylua: ignore
+                    keys = {
+                        { icon = " ", key = "f", desc = "Find File", action = "<Leader>ff" },
+                        { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+                        { icon = " ", key = "p", desc = "Projects", action = "<Leader>fp" },
+                        { icon = " ", key = "g", desc = "Find Text", action = "<Leader>sg" },
+                        { icon = " ", key = "r", desc = "Recent Files", action = "<Leader>fr" },
+                        { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
+                        { icon = " ", key = "q", desc = "Quit", action = ":qa" },
+                    },
                 },
             },
-        },
+            picker = {
+                hidden = true,
+                sources = {
+                    explorer = {
+                        hidden = true,
+                    },
+                    files = {
+                        hidden = true,
+                    },
+                    grep = {
+                        hidden = true,
+                    },
+                },
+                ---@diagnostic disable-next-line: missing-fields
+                icons = {
+                    files = {
+                        enabled = false,
+                    },
+                    git = {
+                        enabled = false,
+                    },
+                },
+            },
+        }
 
-        picker = {
-            hidden = true,
-            sources = {
-                explorer = {
-                    hidden = true,
-                },
-                files = {
-                    hidden = true,
-                },
-                grep = {
-                    hidden = true,
-                },
-            },
-            ---@diagnostic disable-next-line: missing-fields
-            icons = {
-                files = {
-                    enabled = false,
-                },
-                git = {
-                    enabled = false,
-                },
-            },
-        },
-    },
-
-    config = function(_, opts)
         require("snacks").setup(opts)
 
         local map = vim.keymap.set
