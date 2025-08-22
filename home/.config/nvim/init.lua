@@ -1,6 +1,3 @@
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
-
 vim.g.autoformat = true
 
 vim.g.loaded_node_provider = 0
@@ -30,6 +27,9 @@ vim.opt.tabstop = 4
 vim.opt.termguicolors = true
 vim.opt.winborder = "rounded"
 vim.opt.wrap = false
+
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 local map = vim.keymap.set
 
@@ -74,8 +74,20 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup({
-    spec = { { import = "specs" } },
+local plugins = {
+    { "saghen/blink.cmp", version = "*" },
+    { "stevearc/conform.nvim" },
+    { "cpplain/flexoki.nvim", priority = 1000 },
+    -- { "cpplain/flexoki.nvim", dir = "~/git/flexoki.nvim", priority = 1000 },
+    { "lewis6991/gitsigns.nvim" },
+    { "folke/lazydev.nvim" },
+    { "nvim-lualine/lualine.nvim" },
+    { "nvim-treesitter/nvim-treesitter", branch = "main", build = ":TSUpdate" },
+    { "stevearc/oil.nvim" },
+    { "folke/snacks.nvim", priority = 1000 },
+}
+
+local lazy_opts = {
     defaults = {
         lazy = false,
         version = false,
@@ -98,4 +110,6 @@ require("lazy").setup({
             },
         },
     },
-})
+}
+
+require("lazy").setup(plugins, lazy_opts)
