@@ -1,11 +1,1 @@
 tmp/
-lazy-lock.json
-lazyvim.json
-
-home/.config/fish/fish_variables
-home/.config/fish/config.d/private.fish
-home/.config/git/config_cpplain
-home/.config/git/config_servicenow
-home/.config/git/config_lamppostapps
-home/.config/git/ignore_servicenow
-home/.config/fish/conf.d/private.fish
