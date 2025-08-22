@@ -8,7 +8,7 @@ This repo contains my configuration files and related scripts. Feel free to use 
 
 ```bash
 # Fresh system bootstrap (installs Homebrew, Go, and configures everything)
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/cpplain/dotfiles/main/bin/bootstrap)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/cpplain/dotfiles/main/bootstrap.sh)"
 
 # Or if you already have the repo cloned and lnk installed
 cd ~/git/dotfiles
