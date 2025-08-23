@@ -1,8 +1,6 @@
 require("flexoki").setup({
-    plugins = {
+    groups = {
         "gitsigns",
-        "nvim_treesitter_context",
-        "which_key",
     },
 })
 
