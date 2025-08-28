@@ -100,7 +100,7 @@ local lazy_opts = {
         version = false,
     },
     rocks = { enabled = false },
-    install = { colorscheme = { "flexoki-light" } },
+    install = { colorscheme = { "flexoki" } },
     ui = { border = "rounded" },
     change_detection = { notify = false },
     performance = {
