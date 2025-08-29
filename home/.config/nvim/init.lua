@@ -103,9 +103,7 @@ local lazy_opts = {
         rtp = {
             disabled_plugins = {
                 "gzip",
-                -- "matchit",
-                -- "matchparen",
-                -- "netrwPlugin",
+                "netrwPlugin",
                 "tarPlugin",
                 "tohtml",
                 "tutor",
