@@ -11,8 +11,8 @@ require("lualine").setup({
             --stylua: ignore
             { "mode", fmt = function(str) return str:sub(1, 1) end, },
         },
-        lualine_b = { "branch" },
-        lualine_c = { "filename", "diff", "diagnostics" },
+        lualine_b = { "filename", "diff", "diagnostics" },
+        lualine_c = { "branch" },
     },
     extensions = { "lazy", "oil", "quickfix" },
 })
