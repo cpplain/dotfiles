@@ -18,7 +18,7 @@ vim.opt.ruler = false
 vim.opt.scrolloff = 4
 vim.opt.shiftround = true
 vim.opt.shiftwidth = 4
-vim.opt.showcmd = false
+vim.opt.showcmdloc = "statusline"
 vim.opt.showmode = false
 vim.opt.sidescrolloff = 8
 vim.opt.signcolumn = "yes"
@@ -78,13 +78,10 @@ local plugins = {
     { "stevearc/conform.nvim" },
     { "cpplain/flexoki.nvim", priority = 1100 },
     { "cpplain/flexoki-gitsigns.nvim", priority = 1000 },
-    { "cpplain/flexoki-lualine.nvim", priority = 1000 },
     -- { "cpplain/flexoki.nvim", dir = "~/git/flexoki.nvim", priority = 1100 },
     -- { "cpplain/flexoki-gitsigns.nvim", dir = "~/git/flexoki-gitsigns.nvim", priority = 1000 },
-    -- { "cpplain/flexoki-lualine.nvim", dir = "~/git/flexoki-lualine.nvim", priority = 1000 },
     { "lewis6991/gitsigns.nvim" },
     { "folke/lazydev.nvim" },
-    { "nvim-lualine/lualine.nvim" },
     { "nvim-treesitter/nvim-treesitter", branch = "main", build = ":TSUpdate" },
     { "stevearc/oil.nvim" },
     { "folke/snacks.nvim", priority = 1000 },
@@ -114,3 +111,17 @@ local lazy_opts = {
 }
 
 require("lazy").setup(plugins, lazy_opts)
+
+require("config.flexoki")
+require("config.snacks")
+require("config.blink")
+require("config.conform")
+require("config.diagnostic")
+require("config.gitsigns")
+require("config.lazydev")
+require("config.lsp")
+require("config.nvim_treesitter")
+require("config.oil")
+require("config.statusline").setup()
+
+vim.opt.statusline = "%!v:lua.require('config.statusline').get()"
