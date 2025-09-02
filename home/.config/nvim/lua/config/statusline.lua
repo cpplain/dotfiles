@@ -88,7 +88,9 @@ function M.get()
         diagnostics(),
         "%=",
         "%S  ",
-        "%{&fileencoding} %{&fileformat} %y  ",
+        "%{&fileencoding}  ",
+        "%{&fileformat}  ",
+        "%y  ",
         "%p%%  ",
         "%l:%c ",
     })
