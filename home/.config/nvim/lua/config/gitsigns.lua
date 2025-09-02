@@ -12,7 +12,9 @@ gitsigns.setup({
 })
 
 -- stylua: ignore start
+---@diagnostic disable-next-line: param-type-mismatch
 vim.keymap.set("n", "<Leader>gn", function() gitsigns.nav_hunk("next") end, { desc = "Goto next hunk" })
+---@diagnostic disable-next-line: param-type-mismatch
 vim.keymap.set("n", "<Leader>gp", function() gitsigns.nav_hunk("prev") end, { desc = "Goto prev hunk" })
 -- stylua: ignore end
 
