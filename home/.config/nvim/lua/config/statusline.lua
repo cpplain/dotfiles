@@ -94,21 +94,4 @@ function M.get()
     })
 end
 
-function M.setup()
-    vim.api.nvim_create_autocmd("DiagnosticChanged", {
-        callback = function()
-            vim.cmd("redrawstatus")
-        end,
-        desc = "Refresh statusline when diagnostics change",
-    })
-
-    vim.api.nvim_create_autocmd("User", {
-        pattern = "GitSignsChanged",
-        callback = function()
-            vim.cmd("redrawstatus")
-        end,
-        desc = "Refresh statusline when git status changes",
-    })
-end
-
 return M

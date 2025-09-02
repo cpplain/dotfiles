@@ -122,6 +122,6 @@ require("config.lazydev")
 require("config.lsp")
 require("config.nvim_treesitter")
 require("config.oil")
-require("config.statusline").setup()
+require("config.statusline")
 
 vim.opt.statusline = "%!v:lua.require('config.statusline').get()"
