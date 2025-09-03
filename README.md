@@ -1,6 +1,8 @@
 # Christopher's Dotfiles
 
-![neovim screenshot](./images/screenshot-1.png)
+<img width="1566" height="1014" alt="Screenshot 2025-09-02 at 9 35 21 PM" src="https://github.com/user-attachments/assets/499fec4b-a566-4f13-b0c3-ac452e9c841c" />
+<img width="1566" height="1014" alt="Screenshot 2025-09-02 at 9 35 47 PM" src="https://github.com/user-attachments/assets/95d101c9-7462-4882-9db0-8e1107c1cde0" />
+
 
 This repo contains my configuration files and related scripts. Feel free to use whatever works for you.
 
