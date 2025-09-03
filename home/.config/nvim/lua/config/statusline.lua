@@ -4,28 +4,28 @@ local function mode()
     local m = vim.api.nvim_get_mode().mode:sub(1, 1):lower()
 
     if "n" == m then
-        return "%#StatusLineModeN# N %#StatusLine# "
+        return "%#StatusLineModeN# [N] %#StatusLine# "
     end
     if "i" == m then
-        return "%#StatusLineModeI# I %#StatusLine# "
+        return "%#StatusLineModeI# [I] %#StatusLine# "
     end
     if "c" == m then
-        return "%#StatusLineModeC# C %#StatusLine# "
+        return "%#StatusLineModeC# [C] %#StatusLine# "
     end
     if "v" == m or "\22" == m then
-        return "%#StatusLineModeV# V %#StatusLine# "
+        return "%#StatusLineModeV# [V] %#StatusLine# "
     end
     if "r" == m then
-        return "%#StatusLineModeR# R %#StatusLine# "
+        return "%#StatusLineModeR# [R] %#StatusLine# "
     end
     if "s" == m or "\19" == m then
-        return "%#StatusLineModeV# S %#StatusLine# "
+        return "%#StatusLineModeV# [S] %#StatusLine# "
     end
     if "t" == m then
-        return "%#StatusLineModeT# T %#StatusLine# "
+        return "%#StatusLineModeT# [T] %#StatusLine# "
     end
 
-    return " ? "
+    return " [?] "
 end
 
 local function git_head()

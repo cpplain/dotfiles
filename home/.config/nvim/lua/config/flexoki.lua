@@ -4,12 +4,12 @@ require("flexoki").setup({
     },
     highlight_override = function(colors)
         return {
-            StatusLineModeN = { fg = colors.blue, bg = colors.blue4 },
-            StatusLineModeI = { fg = colors.green, bg = colors.green4 },
-            StatusLineModeV = { fg = colors.magenta, bg = colors.magenta4 },
-            StatusLineModeR = { fg = colors.red, bg = colors.red4 },
-            StatusLineModeC = { fg = colors.orange, bg = colors.orange4 },
-            StatusLineModeT = { fg = colors.green, bg = colors.green4 },
+            StatusLineModeN = { fg = colors.blue },
+            StatusLineModeI = { fg = colors.green },
+            StatusLineModeV = { fg = colors.magenta },
+            StatusLineModeR = { fg = colors.red },
+            StatusLineModeC = { fg = colors.orange },
+            StatusLineModeT = { fg = colors.green },
         }
     end,
 })
