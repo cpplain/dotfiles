@@ -76,10 +76,10 @@ vim.opt.rtp:prepend(lazypath)
 local plugins = {
     { "saghen/blink.cmp", version = "*" },
     { "stevearc/conform.nvim" },
-    { "cpplain/flexoki.nvim", priority = 1100 },
-    { "cpplain/flexoki-gitsigns.nvim", priority = 1000 },
-    -- { "cpplain/flexoki.nvim", dir = "~/git/flexoki.nvim", priority = 1100 },
-    -- { "cpplain/flexoki-gitsigns.nvim", dir = "~/git/flexoki-gitsigns.nvim", priority = 1000 },
+    { "cpplain/flexoki.nvim", priority = 1000 },
+    { "cpplain/flexoki-gitsigns.nvim", priority = 900 },
+    -- { "cpplain/flexoki.nvim", dir = "~/git/flexoki.nvim", priority = 1000 },
+    -- { "cpplain/flexoki-gitsigns.nvim", dir = "~/git/flexoki-gitsigns.nvim", priority = 900 },
     { "lewis6991/gitsigns.nvim" },
     { "folke/lazydev.nvim" },
     { "nvim-treesitter/nvim-treesitter", branch = "main", build = ":TSUpdate" },
@@ -88,10 +88,6 @@ local plugins = {
 }
 
 local lazy_opts = {
-    defaults = {
-        lazy = false,
-        version = false,
-    },
     rocks = { enabled = false },
     install = { colorscheme = { "flexoki" } },
     ui = { border = "rounded" },
