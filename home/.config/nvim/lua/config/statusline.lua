@@ -79,7 +79,7 @@ local function diagnostics()
     return #parts > 0 and table.concat(parts, " ") .. "  " or ""
 end
 
-function M.get()
+function M.get_active()
     return table.concat({
         mode(),
         "%t%m%r  ",
@@ -94,6 +94,10 @@ function M.get()
         "%p%%  ",
         "%l:%c ",
     })
+end
+
+function M.get_inactive()
+    return " %t%=%l:%c "
 end
 
 return M

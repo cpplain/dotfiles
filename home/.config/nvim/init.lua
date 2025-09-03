@@ -122,6 +122,37 @@ require("config.lazydev")
 require("config.lsp")
 require("config.nvim_treesitter")
 require("config.oil")
-require("config.statusline")
 
-vim.opt.statusline = "%!v:lua.require('config.statusline').get()"
+vim.api.nvim_create_autocmd("DiagnosticChanged", {
+    callback = function()
+        vim.wo.statusline = require("config.statusline").get_active()
+    end,
+    desc = "Refresh statusline when diagnostics change",
+})
+
+vim.api.nvim_create_autocmd("ModeChanged", {
+    callback = function()
+        vim.wo.statusline = require("config.statusline").get_active()
+    end,
+    desc = "Refresh statusline when mode changes",
+})
+
+vim.api.nvim_create_autocmd("User", {
+    pattern = "GitSignsChanged",
+    callback = function()
+        vim.wo.statusline = require("config.statusline").get_active()
+    end,
+    desc = "Refresh statusline when git status changes",
+})
+
+vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
+    callback = function()
+        vim.wo.statusline = require("config.statusline").get_active()
+    end,
+})
+
+vim.api.nvim_create_autocmd("WinLeave", {
+    callback = function()
+        vim.wo.statusline = require("config.statusline").get_inactive()
+    end,
+})
