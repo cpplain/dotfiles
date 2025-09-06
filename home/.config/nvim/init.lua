@@ -119,7 +119,10 @@ require("config.lsp")
 require("config.nvim_treesitter")
 require("config.oil")
 
+local statusline_group = vim.api.nvim_create_augroup("UserStatusline", { clear = true })
+
 vim.api.nvim_create_autocmd("DiagnosticChanged", {
+    group = statusline_group,
     callback = function()
         vim.wo.statusline = require("config.statusline").get_active()
     end,
@@ -127,6 +130,7 @@ vim.api.nvim_create_autocmd("DiagnosticChanged", {
 })
 
 vim.api.nvim_create_autocmd("ModeChanged", {
+    group = statusline_group,
     callback = function()
         vim.wo.statusline = require("config.statusline").get_active()
     end,
@@ -134,6 +138,7 @@ vim.api.nvim_create_autocmd("ModeChanged", {
 })
 
 vim.api.nvim_create_autocmd("User", {
+    group = statusline_group,
     pattern = "GitSignsChanged",
     callback = function()
         vim.wo.statusline = require("config.statusline").get_active()
@@ -142,12 +147,14 @@ vim.api.nvim_create_autocmd("User", {
 })
 
 vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
+    group = statusline_group,
     callback = function()
         vim.wo.statusline = require("config.statusline").get_active()
     end,
 })
 
 vim.api.nvim_create_autocmd("WinLeave", {
+    group = statusline_group,
     callback = function()
         vim.wo.statusline = require("config.statusline").get_inactive()
     end,
