@@ -60,9 +60,9 @@ end, { expr = true, desc = "Escape and clear search highlight" })
 map("n", "<Leader>lz", "<Cmd>Lazy<CR>", { desc = "Open lazy" })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
-    group = vim.api.nvim_create_augroup("HighlightOnYank", { clear = true }),
+    group = vim.api.nvim_create_augroup("UserHighlight", { clear = true }),
     callback = function()
-        vim.highlight.on_yank()
+        vim.hl.on_yank()
     end,
 })
 
