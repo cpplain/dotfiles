@@ -1,3 +1,5 @@
+vim.cmd.colorscheme("flexoki")
+
 vim.g.autoformat = true
 
 vim.g.loaded_node_provider = 0
@@ -76,10 +78,6 @@ vim.opt.rtp:prepend(lazypath)
 local plugins = {
     { "saghen/blink.cmp", version = "*" },
     { "stevearc/conform.nvim" },
-    { "cpplain/flexoki.nvim", priority = 1000 },
-    { "cpplain/flexoki-gitsigns.nvim", priority = 900 },
-    -- { "cpplain/flexoki.nvim", dir = "~/git/flexoki.nvim", priority = 1000 },
-    -- { "cpplain/flexoki-gitsigns.nvim", dir = "~/git/flexoki-gitsigns.nvim", priority = 900 },
     { "lewis6991/gitsigns.nvim" },
     { "folke/lazydev.nvim" },
     { "nvim-treesitter/nvim-treesitter", branch = "main", build = ":TSUpdate" },
@@ -108,7 +106,6 @@ local lazy_opts = {
 
 require("lazy").setup(plugins, lazy_opts)
 
-require("config.flexoki")
 require("config.snacks")
 require("config.blink")
 require("config.conform")
