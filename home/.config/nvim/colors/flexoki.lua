@@ -1,6 +1,3 @@
-if vim.fn.exists("syntax_on") then
-    vim.cmd.syntax("reset")
-end
 vim.cmd.highlight("clear")
 vim.o.termguicolors = true
 vim.g.colors_name = "flexoki"
