@@ -370,12 +370,12 @@ Each accent color has four semantic layers for different use cases:
 | 6    | Cyan           | cyan-400    | cyan-600    | Links, emphasis     |
 | 7    | White          | base-300    | base-400    | Standard white/gray |
 | 8    | Bright Black   | base-600    | base-700    | Dimmed/secondary    |
-| 9    | Bright Red     | red-300     | red-500     | Bright errors       |
-| 10   | Bright Green   | green-300   | green-500   | Bright success      |
-| 11   | Bright Yellow  | yellow-300  | yellow-500  | Bright warnings     |
-| 12   | Bright Blue    | blue-300    | blue-500    | Bright info         |
-| 13   | Bright Magenta | magenta-300 | magenta-500 | Bright special      |
-| 14   | Bright Cyan    | cyan-300    | cyan-500    | Bright emphasis     |
+| 9    | Bright Red     | red-200     | red-400     | Bright errors       |
+| 10   | Bright Green   | green-200   | green-400   | Bright success      |
+| 11   | Bright Yellow  | yellow-200  | yellow-400  | Bright warnings     |
+| 12   | Bright Blue    | blue-200    | blue-400    | Bright info         |
+| 13   | Bright Magenta | magenta-200 | magenta-400 | Bright special      |
+| 14   | Bright Cyan    | cyan-200    | cyan-400    | Bright emphasis     |
 | 15   | Bright White   | paper       | base-100    | Brightest white     |
 
 #### Terminal Window Colors
