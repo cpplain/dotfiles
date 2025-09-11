@@ -1,7 +1,7 @@
 # Christopher's Dotfiles
 
-<img width="1566" height="1014" alt="Screenshot 2025-09-02 at 9 35 21 PM" src="https://github.com/user-attachments/assets/499fec4b-a566-4f13-b0c3-ac452e9c841c" />
-<img width="1566" height="1014" alt="Screenshot 2025-09-02 at 9 35 47 PM" src="https://github.com/user-attachments/assets/95d101c9-7462-4882-9db0-8e1107c1cde0" />
+<img width="1566" height="1014" alt="Screenshot 2025-09-11 at 2 30 15 PM" src="https://github.com/user-attachments/assets/cc53fd93-723d-4653-b90f-c88ba87a1602" />
+<img width="1566" height="1014" alt="Screenshot 2025-09-11 at 2 29 56 PM" src="https://github.com/user-attachments/assets/792aef7b-03f9-4806-9d07-916b78b1ee6c" />
 
 This repo contains my configuration files and related scripts. Feel free to use whatever works for you.
 
