@@ -14,7 +14,7 @@ This repo contains my configuration files and related scripts. Feel free to use 
 - Editor: [Neovim](https://github.com/neovim/neovim)
 - Font: [JetBrains Mono](https://www.jetbrains.com/lp/mono)
 - Symbols: [Symbols Nerd Font](https://www.nerdfonts.com)
-- Themes: Custom themes based on the [Flexoki](https://stephango.com/flexoki) color palette by Steph Ango
+- Themes: [Flexoki](https://stephango.com/flexoki) (custom themes based on the palette by Steph Ango)
 
 ## Installation
 
