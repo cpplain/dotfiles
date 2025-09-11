@@ -159,8 +159,8 @@ if vim.o.background == "dark" then
     c.ui2 = p.base850
     c.ui3 = p.base800
     c.tx = p.base200
-    c.tx2 = p.base500
-    c.tx3 = p.base700
+    c.tx2 = p.base400
+    c.tx3 = p.base600
     c.red = p.red400
     c.red2 = p.red600
     c.red3 = p.red800
@@ -201,8 +201,8 @@ else
     c.ui2 = p.base150
     c.ui3 = p.base200
     c.tx = p.base800
-    c.tx2 = p.base500
-    c.tx3 = p.base300
+    c.tx2 = p.base600
+    c.tx3 = p.base400
     c.red = p.red600
     c.red2 = p.red400
     c.red3 = p.red200

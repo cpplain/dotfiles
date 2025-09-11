@@ -20,11 +20,11 @@ This section maps each color to semantic variables These semantic variables (lik
 | <img src="../assets/base-900.png" width="64" height="32"> | base-900 | `#282726` | `ui`       | -           |
 | <img src="../assets/base-850.png" width="64" height="32"> | base-850 | `#343331` | `ui2`      | -           |
 | <img src="../assets/base-800.png" width="64" height="32"> | base-800 | `#403E3C` | `ui3`      | `tx`        |
-| <img src="../assets/base-700.png" width="64" height="32"> | base-700 | `#575653` | `tx3`      | -           |
-| <img src="../assets/base-600.png" width="64" height="32"> | base-600 | `#6F6E69` | -          | -           |
-| <img src="../assets/base-500.png" width="64" height="32"> | base-500 | `#878580` | `tx2`      | `tx2`       |
-| <img src="../assets/base-400.png" width="64" height="32"> | base-400 | `#9F9D96` | -          | -           |
-| <img src="../assets/base-300.png" width="64" height="32"> | base-300 | `#B7B5AC` | -          | `tx3`       |
+| <img src="../assets/base-700.png" width="64" height="32"> | base-700 | `#575653` | -          | -           |
+| <img src="../assets/base-600.png" width="64" height="32"> | base-600 | `#6F6E69` | `tx3`      | `tx2`       |
+| <img src="../assets/base-500.png" width="64" height="32"> | base-500 | `#878580` | -          | -           |
+| <img src="../assets/base-400.png" width="64" height="32"> | base-400 | `#9F9D96` | `tx2`      | `tx3`       |
+| <img src="../assets/base-300.png" width="64" height="32"> | base-300 | `#B7B5AC` | -          | -           |
 | <img src="../assets/base-200.png" width="64" height="32"> | base-200 | `#CECDC3` | `tx`       | `ui3`       |
 | <img src="../assets/base-150.png" width="64" height="32"> | base-150 | `#DAD8CE` | -          | `ui2`       |
 | <img src="../assets/base-100.png" width="64" height="32"> | base-100 | `#E6E4D9` | -          | `ui`        |
