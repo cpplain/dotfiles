@@ -16,7 +16,6 @@ require("snacks").setup({
             keys = {
                 { icon = " ", key = "f", desc = "Find File", action = "<Leader>ff" },
                 { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-                { icon = " ", key = "p", desc = "Projects", action = "<Leader>fp" },
                 { icon = " ", key = "g", desc = "Find Text", action = "<Leader>sg" },
                 { icon = " ", key = "r", desc = "Recent Files", action = "<Leader>fr" },
                 { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
