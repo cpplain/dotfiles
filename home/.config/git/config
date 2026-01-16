@@ -11,23 +11,6 @@
 [credential]
     helper = osxkeychain
 
-[user]
-    name = Christopher Plain
-
-[includeIf "hasconfig:remote.*.url:https://code.devsnc.com/**"]
-    path = config_servicenow
-
-[includeIf "hasconfig:remote.*.url:https://github.com/cpplain/**"]
-    path = config_cpplain
-
-[includeIf "hasconfig:remote.*.url:https://github.com/lamppostapps/**"]
-    path = config_lamppostapps
-
-[includeIf "hasconfig:remote.*.url:https://github.com/lightstep/**"]
-    path = config_servicenow
-
-[includeIf "hasconfig:remote.*.url:https://gitlab.servicenow.net/**"]
-    path = config_servicenow
-
 [include]
     path = config_local
+    path = config_private
