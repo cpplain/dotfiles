@@ -1,8 +1,8 @@
-[color]
-    ui = auto
-
 [branch]
     autosetuprebase = always
+
+[color]
+    ui = auto
 
 [core]
     autocrlf = input
@@ -10,6 +10,9 @@
 
 [credential]
     helper = osxkeychain
+
+[fetch]
+	prune = true
 
 [include]
     path = config_local
