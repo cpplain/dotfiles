@@ -7,5 +7,5 @@
   },
   "alwaysThinkingEnabled": true,
   "includeCoAuthoredBy": false,
-  "plansDirectory": "./plans"
+  "plansDirectory": ".claude/plans"
 }
