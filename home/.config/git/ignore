@@ -1,6 +1,7 @@
+.claude/plans/
+.claude/settings.local.json
 tmp/
 .DS_Store
-.claude/settings.local.json
 .localized
 AGENTS.md
 CLAUDE.md
