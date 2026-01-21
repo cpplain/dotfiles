@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": ["WebSearch"]
+  },
+  "env": {
+    "DISABLE_AUTOUPDATER": "1"
+  },
+  "alwaysThinkingEnabled": true,
+  "includeCoAuthoredBy": false,
+  "plansDirectory": "./plans"
+}
