@@ -9,7 +9,7 @@ function add_worktree --description "Add a git worktree with standardized naming
     set parent_dir (dirname $repo_root)
 
     # Parse arguments
-    set -l options 'h/help' 'c/copy'
+    set -l options h/help c/copy
     if not argparse $options -- $argv
         return 1
     end
@@ -24,7 +24,7 @@ function add_worktree --description "Add a git worktree with standardized naming
     end
 
     set branch_name $argv[1]
-    
+
     # Collect files to copy if --copy flag is used
     set -l files_to_copy
     if set -q _flag_copy
@@ -53,6 +53,11 @@ function add_worktree --description "Add a git worktree with standardized naming
         git worktree add -b $branch_name $worktree_path
     end
 
+    if test $status -ne 0
+        echo "Error: Failed to create worktree"
+        return 1
+    end
+
     echo "Worktree created successfully!"
     echo "To navigate to it: cd $worktree_path"
     echo "To remove it later: remove_worktree $worktree_name"
@@ -61,18 +66,18 @@ function add_worktree --description "Add a git worktree with standardized naming
     if test -n "$files_to_copy"
         echo ""
         echo "Copying files to new worktree..."
-        
+
         for file in $files_to_copy
             set src_path "$repo_root/$file"
             set dest_path "$worktree_path/$file"
-            
+
             if test -e "$src_path"
                 # Create parent directory if needed
                 set parent (dirname "$dest_path")
                 if not test -d "$parent"
                     mkdir -p "$parent"
                 end
-                
+
                 # Copy the file or directory
                 if test -d "$src_path"
                     cp -R "$src_path" "$dest_path"
