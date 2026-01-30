@@ -1,39 +1,54 @@
 tap "homebrew/bundle"
 
+# Shells
 brew "bash"
-brew "fd"
 brew "fish"
+
+# Core tools
+brew "fd"
 brew "fzf"
 brew "git"
-brew "go"
-brew "goimports"
-brew "gopls"
 brew "jq"
 brew "lazygit"
-brew "lua-language-server"
-brew "markdown-toc"
-brew "markdownlint-cli2"
-brew "marksman"
 brew "mas"
+brew "ripgrep"
+brew "sqlite"
+brew "tree"
+brew "wget"
+
+# Editors
 brew "neovim"
+
+# Languages & version managers
+brew "go"
 brew "node@22"
 brew "nodenv"
-brew "prettier"
 brew "pyenv"
 brew "python@3.12"
 brew "rbenv"
-brew "ripgrep"
 brew "ruby"
+
+# LSP servers
+brew "bash-language-server"
+brew "gopls"
+brew "lua-language-server"
+brew "marksman"
 brew "ruby-lsp"
 brew "rust-analyzer"
-brew "shfmt"
-brew "sqlite"
-brew "stylua"
-brew "taplo"
-brew "tree"
-brew "wget"
+brew "solargraph"
+brew "yaml-language-server"
 brew "zls"
 
+# Formatters & linters
+brew "goimports"
+brew "markdown-toc"
+brew "markdownlint-cli2"
+brew "prettier"
+brew "shfmt"
+brew "stylua"
+brew "taplo"
+
+# Casks
 cask "1password"
 cask "1password-cli"
 cask "claude-code"
@@ -43,6 +58,7 @@ cask "font-sf-mono"
 cask "font-symbols-only-nerd-font"
 cask "ghostty"
 
+# Mac App Store
 mas "1Password for Safari", id: 1569813296
 
 require "socket"
