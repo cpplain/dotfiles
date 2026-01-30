@@ -4,7 +4,7 @@
   },
   "env": {
     "DISABLE_AUTOUPDATER": "1",
-    "ENABLE_LSP_TOOLS": "1"
+    "ENABLE_LSP_TOOL": "1"
   },
   "includeCoAuthoredBy": false,
   "plansDirectory": ".claude/plans"
