@@ -1,0 +1,12 @@
+{
+  "name": "my-plugins",
+  "owner": {
+    "name": "cpplain"
+  },
+  "plugins": [
+    {
+      "name": "lsp-config",
+      "source": "./lsp-config"
+    }
+  ]
+}

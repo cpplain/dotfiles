@@ -1,11 +1,14 @@
 {
-  "permissions": {
-    "allow": ["WebSearch"]
+  "enabledPlugins": {
+    "lsp-config@my-plugins": true
   },
   "env": {
     "DISABLE_AUTOUPDATER": "1",
     "ENABLE_LSP_TOOL": "1"
   },
   "includeCoAuthoredBy": false,
+  "permissions": {
+    "allow": ["WebSearch"]
+  },
   "plansDirectory": ".claude/plans"
 }

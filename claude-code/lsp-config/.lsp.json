@@ -1,0 +1,41 @@
+{
+  "bash-language-server": {
+    "command": "bash-language-server",
+    "args": ["start"],
+    "extensionToLanguage": {
+      ".sh": "shellscript",
+      ".bash": "shellscript",
+      ".zsh": "shellscript",
+      ".ksh": "shellscript"
+    }
+  },
+  "gopls": {
+    "command": "gopls",
+    "extensionToLanguage": {
+      ".go": "go"
+    }
+  },
+  "lua-language-server": {
+    "command": "lua-language-server",
+    "extensionToLanguage": {
+      ".lua": "lua"
+    }
+  },
+  "solargraph": {
+    "command": "solargraph",
+    "args": ["stdio"],
+    "extensionToLanguage": {
+      ".rb": "ruby",
+      ".rake": "ruby",
+      ".gemspec": "ruby"
+    }
+  },
+  "yaml-language-server": {
+    "command": "yaml-language-server",
+    "args": ["--stdio"],
+    "extensionToLanguage": {
+      ".yaml": "yaml",
+      ".yml": "yaml"
+    }
+  }
+}
