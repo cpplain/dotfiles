@@ -30,6 +30,12 @@
       ".gemspec": "ruby"
     }
   },
+  "sourcekit-lsp": {
+    "command": "sourcekit-lsp",
+    "extensionToLanguage": {
+      ".swift": "swift"
+    }
+  },
   "yaml-language-server": {
     "command": "yaml-language-server",
     "args": ["--stdio"],
