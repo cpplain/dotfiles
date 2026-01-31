@@ -1,4 +1,5 @@
 vim.lsp.enable({
+    "bashls",
     "cssls",
     "gopls",
     "html",
@@ -9,5 +10,6 @@ vim.lsp.enable({
     "sourcekit",
     "taplo",
     "ts_ls",
+    "yamlls",
     "zls",
 })

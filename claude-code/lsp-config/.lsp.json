@@ -37,6 +37,19 @@
       ".lua": "lua"
     }
   },
+  "marksman": {
+    "command": "marksman",
+    "args": ["server"],
+    "extensionToLanguage": {
+      ".md": "markdown"
+    }
+  },
+  "rust-analyzer": {
+    "command": "rust-analyzer",
+    "extensionToLanguage": {
+      ".rs": "rust"
+    }
+  },
   "solargraph": {
     "command": "solargraph",
     "args": ["stdio"],
@@ -50,6 +63,13 @@
     "command": "sourcekit-lsp",
     "extensionToLanguage": {
       ".swift": "swift"
+    }
+  },
+  "taplo": {
+    "command": "taplo",
+    "args": ["lsp", "stdio"],
+    "extensionToLanguage": {
+      ".toml": "toml"
     }
   },
   "typescript-language-server": {
@@ -72,6 +92,12 @@
     "extensionToLanguage": {
       ".yaml": "yaml",
       ".yml": "yaml"
+    }
+  },
+  "zls": {
+    "command": "zls",
+    "extensionToLanguage": {
+      ".zig": "zig"
     }
   }
 }

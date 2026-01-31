@@ -53,7 +53,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/cpplain/dotfiles/main/bo
 - `home/.config/ghostty/` - Ghostty terminal
 - `home/.config/lnk/` - Link manager configuration
 - `home/.claude/` - Claude Code user settings and skills (git-worktree, skill-builder)
-- `claude-code/lsp-config/` - Language server definitions (bash, CSS, Go, HTML, Lua, Ruby, Swift, TypeScript/JavaScript, YAML)
+- `claude-code/lsp-config/` - Language server definitions (Bash, CSS, Go, HTML, Lua, Markdown, Ruby, Rust, Swift, TOML, TypeScript/JavaScript, YAML, Zig)
 
 ### Theme
 
