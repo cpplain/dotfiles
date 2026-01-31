@@ -79,7 +79,6 @@ local plugins = {
     { "saghen/blink.cmp", version = "*" },
     { "stevearc/conform.nvim" },
     { "lewis6991/gitsigns.nvim" },
-    { "folke/lazydev.nvim" },
     { "neovim/nvim-lspconfig" },
     { "nvim-treesitter/nvim-treesitter", branch = "main", build = ":TSUpdate" },
     { "stevearc/oil.nvim" },
@@ -112,7 +111,6 @@ require("config.blink")
 require("config.conform")
 require("config.diagnostic")
 require("config.gitsigns")
-require("config.lazydev")
 require("config.lsp")
 require("config.nvim_treesitter")
 require("config.oil")
