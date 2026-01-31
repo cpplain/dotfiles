@@ -35,6 +35,8 @@ brew "lua-language-server"
 brew "marksman"
 brew "rust-analyzer"
 brew "solargraph"
+brew "typescript-language-server"
+brew "vscode-langservers-extracted"
 brew "yaml-language-server"
 brew "zls"
 

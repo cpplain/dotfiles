@@ -1,10 +1,13 @@
 vim.lsp.enable({
+    "cssls",
     "gopls",
+    "html",
     "lua_ls",
     "marksman",
     "rust_analyzer",
     "solargraph",
     "sourcekit",
     "taplo",
+    "ts_ls",
     "zls",
 })
