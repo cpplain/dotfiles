@@ -14,6 +14,7 @@ brew "mas"
 brew "ripgrep"
 brew "sqlite"
 brew "tree"
+brew "tree-sitter-cli"
 brew "wget"
 
 # Editors

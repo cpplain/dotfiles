@@ -80,7 +80,7 @@ local plugins = {
     { "stevearc/conform.nvim" },
     { "lewis6991/gitsigns.nvim" },
     { "neovim/nvim-lspconfig" },
-    { "nvim-treesitter/nvim-treesitter", branch = "main", build = ":TSUpdate" },
+    { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
     { "stevearc/oil.nvim" },
     { "folke/snacks.nvim", priority = 1000 },
 }

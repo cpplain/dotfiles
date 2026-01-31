@@ -16,7 +16,6 @@ require("nvim-treesitter").install({
     "javascript",
     "jsdoc",
     "json",
-    "jsonc",
     "lua",
     "luadoc",
     "luap",
@@ -39,13 +38,4 @@ require("nvim-treesitter").install({
     "xml",
     "yaml",
     "zig",
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "<filetype>" },
-    callback = function()
-        vim.bo.indentexpr = "v:lua.require('nvim-treesitter').indentexpr()"
-        vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-        vim.treesitter.start()
-    end,
 })
