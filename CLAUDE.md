@@ -40,6 +40,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/cpplain/dotfiles/main/bo
 
 - `home/` - Public configurations, symlinked to `~/`
 - `private/` - Git submodule with private configs, also symlinked to `~/`
+- `claude-code/` - Claude Code plugins (LSP server configurations)
 - `scripts/` - Utility shell scripts
 - `docs/` - Manual configuration steps not yet automated
 - `assets/` - Flexoki theme color definitions
@@ -51,7 +52,8 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/cpplain/dotfiles/main/bo
 - `home/.config/git/` - Git config (includes `config_local` and `config_private`)
 - `home/.config/ghostty/` - Ghostty terminal
 - `home/.config/lnk/` - Link manager configuration
-- `home/.claude/skills/` - Claude Code skills (git-worktree, skill-builder)
+- `home/.claude/` - Claude Code user settings and skills (git-worktree, skill-builder)
+- `claude-code/lsp-config/` - Language server definitions (bash, Go, Lua, Ruby, YAML)
 
 ### Theme
 
