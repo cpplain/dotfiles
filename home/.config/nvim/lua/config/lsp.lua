@@ -5,6 +5,7 @@ vim.lsp.enable({
     "html",
     "lua_ls",
     "marksman",
+    "pyright",
     "rust_analyzer",
     "solargraph",
     "sourcekit",

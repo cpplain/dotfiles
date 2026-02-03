@@ -44,6 +44,14 @@
       ".md": "markdown"
     }
   },
+  "pyright": {
+    "command": "pyright-langserver",
+    "args": ["--stdio"],
+    "extensionToLanguage": {
+      ".py": "python",
+      ".pyi": "python"
+    }
+  },
   "rust-analyzer": {
     "command": "rust-analyzer",
     "extensionToLanguage": {
