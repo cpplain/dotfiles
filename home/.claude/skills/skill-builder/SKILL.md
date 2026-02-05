@@ -1,11 +1,17 @@
 ---
 name: skill-builder
 description: Create and edit Claude Code skills. Use when users want to create a new skill, update an existing skill, or need guidance on skill structure and best practices.
+argument-hint: "[skill-name]"
+metadata:
+  author: cpplain
+  version: "1.0"
 ---
 
 # Skill Builder
 
 Create skills that extend Claude's capabilities with specialized knowledge, workflows, and tools.
+
+Claude Code skills follow the [Agent Skills open standard](https://agentskills.io/specification), making them compatible with other AI coding tools like OpenAI Codex, GitHub Copilot, Gemini CLI, and Cursor.
 
 ## Skill Structure
 
@@ -17,10 +23,14 @@ skill-name/
 └── assets/            # Optional - templates, images, static files
 ```
 
-**Locations:**
+**Locations (priority order):**
 
-- Personal: `~/.claude/skills/<skill-name>/SKILL.md`
-- Project: `.claude/skills/<skill-name>/SKILL.md`
+1. **Enterprise**: Managed settings (organization-wide)
+2. **Personal**: `~/.claude/skills/<skill-name>/SKILL.md`
+3. **Project**: `.claude/skills/<skill-name>/SKILL.md`
+4. **Plugin**: `<plugin>/skills/<skill-name>/SKILL.md` (namespaced as `plugin-name:skill-name`)
+
+Claude auto-discovers skills from subdirectories in monorepos.
 
 ## SKILL.md Format
 
@@ -33,23 +43,48 @@ user-invocable: false # Optional - hide from / menu
 allowed-tools: Read, Bash(git:*) # Optional - pre-approved tools
 context: fork # Optional - run in subagent
 agent: Explore # Optional - subagent type when forked
+model: haiku # Optional - model to use (haiku, sonnet, opus)
 argument-hint: "[issue-number]" # Optional - shown in autocomplete
+hooks: # Optional - skill-scoped hooks
+  pre-task: echo "Starting task"
+metadata: # Optional - arbitrary key-value pairs
+  author: Your Name
+  version: 1.0.0
+license: MIT # Optional - for distribution
+compatibility: Requires gh CLI # Optional - environment requirements
 ---
 Markdown instructions here...
 ```
 
 ### Frontmatter Fields
 
-| Field                      | Required | Purpose                                                  |
-| -------------------------- | -------- | -------------------------------------------------------- |
-| `name`                     | Yes      | Lowercase, hyphens only. Must match directory name       |
-| `description`              | Yes      | What it does AND when to use it. This triggers the skill |
-| `disable-model-invocation` | No       | `true` = only manual `/skill-name` invocation            |
-| `user-invocable`           | No       | `false` = hidden from user, Claude can still invoke      |
-| `allowed-tools`            | No       | Tools Claude can use without permission                  |
-| `context`                  | No       | `fork` = run in isolated subagent                        |
-| `agent`                    | No       | Subagent type: `Explore`, `Plan`, etc.                   |
-| `argument-hint`            | No       | Autocomplete hint like `[filename]`                      |
+#### Required Fields
+
+| Field         | Purpose                                                                       |
+| ------------- | ----------------------------------------------------------------------------- |
+| `name`        | Lowercase, hyphens only (max 64 chars). Must match directory name             |
+| `description` | What it does AND when to use it. This is the primary trigger (max 1024 chars) |
+
+#### Claude Code Extensions (Optional)
+
+| Field                      | Purpose                                                                                           |
+| -------------------------- | ------------------------------------------------------------------------------------------------- |
+| `disable-model-invocation` | `true` = only manual `/skill-name` invocation                                                     |
+| `user-invocable`           | `false` = hidden from `/` menu, Claude can still invoke                                           |
+| `allowed-tools`            | Tools Claude can use without permission (e.g., `Read, Bash(git *)`)                               |
+| `context`                  | `fork` = run in isolated subagent                                                                 |
+| `agent`                    | Subagent type when forked: `Explore`, `Plan`, `general-purpose`, or custom from `.claude/agents/` |
+| `model`                    | Model to use: `haiku`, `sonnet`, or `opus`                                                        |
+| `hooks`                    | Skill-scoped lifecycle hooks                                                                      |
+| `argument-hint`            | Autocomplete hint shown in `/` menu (e.g., `[filename]`, `[issue-number]`)                        |
+
+#### Agent Skills Standard (Optional, for cross-platform compatibility)
+
+| Field           | Purpose                                               |
+| --------------- | ----------------------------------------------------- |
+| `metadata`      | Arbitrary key-value pairs (e.g., `author`, `version`) |
+| `license`       | License name or reference to bundled license file     |
+| `compatibility` | Environment requirements (max 500 chars)              |
 
 ### String Substitutions
 
@@ -74,6 +109,14 @@ Changed files: !`gh pr diff --name-only`
 
 Review this pull request...
 ```
+
+### Permission Patterns
+
+Control skill access in `.claude/permissions` using these patterns:
+
+- `Skill(skill-name)` - Allow specific skill invocation
+- `Skill(skill-name *)` - Allow skill with any arguments
+- `Skill(*)` - Allow all skills
 
 ## Creation Workflow
 
@@ -111,6 +154,16 @@ For each usage example, identify:
 3. Update SKILL.md or resources
 4. Repeat
 
+### 5. Validate
+
+Use the `skills-ref` CLI to validate skill structure:
+
+```bash
+skills-ref validate ./my-skill
+```
+
+See [github.com/agentskills/agentskills](https://github.com/agentskills/agentskills) for installation.
+
 ## Design Principles
 
 ### Conciseness
@@ -129,6 +182,58 @@ Claude is already smart. Only add context Claude doesn't have. Challenge each pa
 - **Medium freedom**: Pseudocode when a pattern exists but variation is acceptable
 - **Low freedom**: Specific scripts when consistency is critical
 
+## Best Practices
+
+### Writing Descriptions
+
+- **Third person, not first**: "Processes Excel files" not "I can help you process..."
+- **Include trigger keywords**: What it does AND when to use it
+- **Be specific**: "Use when working with .xlsx files" helps Claude decide when to invoke
+
+### Naming Conventions
+
+- **Use gerund form**: `processing-pdfs`, `analyzing-data`, `reviewing-code`
+- **Lowercase with hyphens**: No underscores, spaces, or capital letters
+- **Match directory name**: Required for skill discovery
+
+### Testing and Iteration
+
+- **Test with multiple models**: Haiku needs more explicit guidance than Opus
+- **Develop iteratively**: Use one Claude instance to create skills, another to test them
+- **Validation loops**: Common pattern is run validator → fix errors → repeat
+
+## Advanced Features
+
+### Extended Thinking Mode
+
+Include the word "ultrathink" in your skill content to enable extended thinking mode for complex reasoning tasks.
+
+### MCP Tool References
+
+Reference MCP tools using fully qualified names: `ServerName:tool_name`
+
+```yaml
+Use the database:query_users tool to fetch user information.
+```
+
+### Subagent Execution
+
+When `context: fork` is set:
+
+- Skill runs in isolation (no conversation history)
+- Skill content becomes the subagent's prompt
+- Parent agent sees only summarized results
+
+Built-in agents: `Explore` (read-only), `Plan`, `general-purpose`
+
+### Invocation Control
+
+| Frontmatter                      | User Can Invoke | Claude Can Invoke | Description                               |
+| -------------------------------- | --------------- | ----------------- | ----------------------------------------- |
+| (default)                        | Yes             | Yes               | Normal behavior                           |
+| `disable-model-invocation: true` | Yes             | No                | Manual `/skill-name` only                 |
+| `user-invocable: false`          | No              | Yes               | Hidden from `/` menu, Claude auto-invokes |
+
 ## Examples
 
 ### Reference Skill (background knowledge)
@@ -144,7 +249,7 @@ When writing API endpoints:
   - Include request validation
 ```
 
-### Task Skill (manual invocation)
+### Task Skill (manual invocation with metadata)
 
 ```yaml
 ---
@@ -152,6 +257,16 @@ name: deploy
 description: Deploy the application to production
 disable-model-invocation: true
 context: fork
+model: haiku
+hooks:
+  pre-task: git fetch origin
+  post-task: notify-deployment
+metadata:
+  author: DevOps Team
+  version: 2.1.0
+  last-updated: 2026-01-15
+license: MIT
+compatibility: Requires Docker and kubectl CLI
 ---
 1. Run test suite
 2. Build application
