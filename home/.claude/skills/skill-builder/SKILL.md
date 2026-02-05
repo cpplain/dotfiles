@@ -96,7 +96,7 @@ Markdown instructions here...
 
 ### Dynamic Context Injection
 
-Run shell commands before skill loads with `` !`command` ``:
+Run shell commands before skill loads with `!&#96;command&#96;`:
 
 ```yaml
 ---
@@ -104,8 +104,8 @@ name: pr-review
 context: fork
 ---
 
-PR diff: !`gh pr diff`
-Changed files: !`gh pr diff --name-only`
+PR diff: !&#96;gh pr diff&#96;
+Changed files: !&#96;gh pr diff --name-only&#96;
 
 Review this pull request...
 ```
