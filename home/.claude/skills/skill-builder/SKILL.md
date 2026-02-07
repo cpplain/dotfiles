@@ -71,7 +71,7 @@ Markdown instructions here...
 | -------------------------- | ------------------------------------------------------------------------------------------------- |
 | `disable-model-invocation` | `true` = only manual `/skill-name` invocation                                                     |
 | `user-invocable`           | `false` = hidden from `/` menu, Claude can still invoke                                           |
-| `allowed-tools`            | Tools Claude can use without permission (e.g., `Read, Bash(git *)`)                               |
+| `allowed-tools`            | Tools Claude can use without permission (e.g., `Read, Bash(git:*)`)                               |
 | `context`                  | `fork` = run in isolated subagent                                                                 |
 | `agent`                    | Subagent type when forked: `Explore`, `Plan`, `general-purpose`, or custom from `.claude/agents/` |
 | `model`                    | Model to use: `haiku`, `sonnet`, or `opus`                                                        |
