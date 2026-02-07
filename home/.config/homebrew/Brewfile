@@ -25,9 +25,10 @@ brew "go"
 brew "node@22"
 brew "nodenv"
 brew "pyenv"
-brew "python@3.12"
+brew "python"
 brew "rbenv"
 brew "ruby"
+brew "uv"
 
 # LSP servers
 brew "bash-language-server"
