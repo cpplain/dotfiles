@@ -63,7 +63,7 @@ Module or area affected — derive from the primary area of change using singula
 
 Indicate breaking changes in either (or both) of two ways:
 
-- Append `!` after type/scope: `feat(api)!: remove deprecated endpoints`
+- Append "!" after type/scope: `feat(api)!: remove deprecated endpoints`
 - Add a `BREAKING CHANGE:` footer: `BREAKING CHANGE: response format changed from XML to JSON`
 - `BREAKING CHANGE` must be uppercase; `BREAKING-CHANGE` is also accepted as a footer token
 
