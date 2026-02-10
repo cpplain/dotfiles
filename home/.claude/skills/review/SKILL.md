@@ -170,7 +170,13 @@ If you find yourself wanting to report any of the above, **stop and reconsider**
 2. Find constants used exactly once
 3. Find defensive validation for impossible cases (e.g., type checking after isinstance)
 4. Find wrapper functions that add no value
-5. For each issue, verify the simplified version has fewer lines
+5. Find overly complex conditional branching
+   - Deeply nested if/else (arrow anti-pattern) that can be flattened with early returns/guard clauses
+   - Long if/elif chains replaceable with lookup tables or dictionary dispatch
+   - Boolean expressions that can be simplified (e.g., `if x == False` → `if not x`, redundant conditions)
+6. Find unnecessary intermediate variables
+   - Variables assigned once and immediately returned or used on the next line with no added clarity (e.g., `result = foo(); return result` → `return foo()`)
+7. For each issue, verify the simplified version has fewer lines
 
 **Do NOT report**:
 
