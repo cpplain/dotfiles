@@ -74,6 +74,9 @@ if test -d /opt/homebrew
     fish_add_path -gP /opt/homebrew/lib/ruby/gems/3.4.0/bin
 end
 
+# Local binaries
+fish_add_path -gP ~/.local/bin
+
 #
 # Programming Languages
 #
