@@ -19,7 +19,7 @@ This repo contains my configuration files and related scripts. Feel free to use 
 ## Installation
 
 ```bash
-# Fresh system bootstrap (installs Homebrew, Go, and configures everything)
+# Fresh system bootstrap (installs Homebrew, lnk, and configures everything)
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/cpplain/dotfiles/main/bootstrap.sh)"
 
 # Or if you already have the repo cloned and lnk installed
