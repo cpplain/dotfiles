@@ -22,7 +22,7 @@ brew "neovim"
 
 # Languages & version managers
 brew "go"
-brew "node@22"
+brew "node"
 brew "nodenv"
 brew "pyenv"
 brew "python"
