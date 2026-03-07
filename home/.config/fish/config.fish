@@ -6,10 +6,6 @@ set -gx XDG_RUNTIME_DIR $TMPDIR
 
 set -gx EDITOR nvim
 
-set -gx SNC_PROVISION_DEV_RSYNC true
-set -gx SNC_PROVISION_QEMU_MEM 16G
-set -gx SNC_PROVISION_QEMU_SMP 8
-
 set -g fish_greeting # disable fish greeting
 set -g fish_prompt_pwd_dir_length 0
 set -g fish_key_bindings fish_vi_key_bindings
