@@ -18,13 +18,9 @@ set -g fish_transient_prompt 1
 abbr bb "brew update && brew bundle --global --verbose --force"
 abbr bbc "brew update && brew bundle cleanup --global --verbose --force"
 
-# Link Manager
-abbr lna "lnk adopt --path"
-abbr lnc "lnk create"
-abbr lno "lnk orphan --path"
-abbr lnp "lnk prune"
-abbr lnr "lnk remove"
-abbr lns "lnk status"
+# Claude Code
+abbr ccd "claude --dangerously-skip-permissions"
+abbr ccpa "claude --permission-mode plan --allow-dangerously-skip-permissions"
 
 # Git
 abbr g git
@@ -48,9 +44,16 @@ abbr gwl "git worktree list"
 abbr gwr remove_worktree
 abbr gws sync_worktree_files
 
+# Link Manager
+abbr lna "lnk adopt --path"
+abbr lnc "lnk create"
+abbr lno "lnk orphan --path"
+abbr lnp "lnk prune"
+abbr lnr "lnk remove"
+abbr lns "lnk status"
+
 # Neovim
 abbr n nvim
-abbr lvim "NVIM_APPNAME=lazyvim nvim"
 
 #
 # Applications
