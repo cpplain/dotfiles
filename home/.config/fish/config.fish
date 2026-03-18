@@ -19,6 +19,7 @@ abbr bb "brew update && brew bundle --global --verbose --force"
 abbr bbc "brew update && brew bundle cleanup --global --verbose --force"
 
 # Claude Code
+abbr ccc "claude -p \"/commit\""
 abbr ccd "claude --dangerously-skip-permissions"
 abbr ccpa "claude --permission-mode plan --allow-dangerously-skip-permissions"
 
