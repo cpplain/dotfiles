@@ -10,7 +10,7 @@ conform.setup({
         json = { "prettier" },
         jsonc = { "prettier" },
         lua = { "stylua" },
-        markdown = { "prettier", "markdownlint-cli2", "markdown-toc" },
+        markdown = { "prettier" },
         rust = { "rustfmt" },
         sh = { "shfmt" },
         toml = { "taplo" },

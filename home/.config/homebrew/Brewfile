@@ -45,8 +45,6 @@ brew "zls"
 
 # Formatters & linters
 brew "goimports"
-brew "markdown-toc"
-brew "markdownlint-cli2"
 brew "prettier"
 brew "shfmt"
 brew "stylua"
