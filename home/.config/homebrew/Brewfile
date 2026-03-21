@@ -8,7 +8,6 @@ brew "fzf"
 brew "git"
 brew "hugo"
 brew "jq"
-brew "lazygit"
 brew "cpplain/tap/lnk"
 brew "cpplain/tap/lorah"
 brew "mas"
@@ -88,10 +87,7 @@ if hostname.start_with? "christopher"
   mas "Xcode", id: 497799835
 else
   tap "homebrew/services"
-
   brew "node-build"
-
   cask "intellij-idea"
-
   mas "Okta Extension App", id: 1439967473
 end
