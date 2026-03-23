@@ -9,33 +9,52 @@ echo "=================="
 echo
 
 # Configuration
+DEFAULT_DOTFILES_ENV="personal"
 DEFAULT_DOTFILES_DIR="$HOME/git/dotfiles"
 DOTFILES_REPO="https://github.com/cpplain/dotfiles.git"
 
-# Show plan and get confirmation
+# Show plan
 echo "This script will:"
-echo "  1. Install Homebrew"
-echo "  2. Install lnk via Homebrew"
-echo "  3. Clone the dotfiles repository"
-echo "  4. Create configuration symlinks"
-echo "  5. Install Homebrew packages from Brewfile"
+echo "  1. Set machine role (personal or work)"
+echo "  2. Install Homebrew"
+echo "  3. Install lnk via Homebrew"
+echo "  4. Clone the dotfiles repository"
+echo "  5. Create configuration symlinks"
+echo "  6. Install Homebrew packages from Brewfile"
 echo
 
+# Ask for machine role
+while true; do                                                                                                                                                         │
+    read -p "Machine role (personal/work)? [DEFAULT_DOTFILES_ENV] " DOTFILES_ENV                                                                                                   │
+    DOTFILES_ENV=${DOTFILES_ENV:-$DEFAULT_DOTFILES_ENV}                                                                                                                             │
+    if [[ "$DOTFILES_ENV" == "personal" || "$DOTFILES_ENV" == "work" ]]; then                                                                                          │
+        break                                                                                                                                                          │
+    fi                                                                                                                                                                 │
+    echo "Invalid role. Please enter 'personal' or 'work'."                                                                                                            │
+done                                                                                                                                                                   │
+echo
+
+# Ask for dotfiles directory
+read -p "Where should dotfiles be cloned? [$DEFAULT_DOTFILES_DIR] " DOTFILES_DIR
+DOTFILES_DIR=${DOTFILES_DIR:-$DEFAULT_DOTFILES_DIR}
+echo
+
+# Confirm
+echo "Configuration:"
+echo "  Machine role: $DOTFILES_ENV"
+echo "  Dotfiles directory: $DOTFILES_DIR"
+echo
 read -p "Continue? [Y/n] " -n 1 -r
 echo
 if [[ ! $REPLY =~ ^[Yy]$ ]] && [[ ! -z $REPLY ]]; then
     echo "Bootstrap cancelled."
     exit 0
 fi
-
-# Ask for dotfiles directory
-echo
-read -p "Where should dotfiles be cloned? [$DEFAULT_DOTFILES_DIR] " DOTFILES_DIR
-DOTFILES_DIR=${DOTFILES_DIR:-$DEFAULT_DOTFILES_DIR}
-echo "Dotfiles will be cloned to: $DOTFILES_DIR"
 echo
 
-# Step 1: Install Homebrew
+echo "$DOTFILES_ENV" >"$HOME/.dotfilesenv"
+
+# Install Homebrew
 echo "Installing Homebrew..."
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
@@ -44,11 +63,11 @@ if [[ -d "/opt/homebrew" ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-# Step 2: Install lnk
+# Install lnk
 echo "Installing lnk..."
 brew install cpplain/tap/lnk
 
-# Step 3: Clone dotfiles repository
+# Clone dotfiles repository
 if [[ -d "$DOTFILES_DIR/.git" ]]; then
     echo "✓ Repository already exists at $DOTFILES_DIR"
 else
@@ -57,13 +76,13 @@ else
     git clone --recurse-submodules "$DOTFILES_REPO" "$DOTFILES_DIR"
 fi
 
-# Step 4: Create configuration symlinks
+# Create configuration symlinks
 echo
 echo "Creating configuration symlinks..."
 cd "$DOTFILES_DIR"
 lnk --config "$DOTFILES_DIR/home/.config/lnk/config.json" create
 
-# Step 5: Install Homebrew packages
+# Install Homebrew packages
 echo
 echo "Installing Homebrew packages from Brewfile..."
 brew update && brew bundle --global --verbose --force

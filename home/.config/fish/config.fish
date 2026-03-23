@@ -6,6 +6,10 @@ set -gx XDG_RUNTIME_DIR $TMPDIR
 
 set -gx EDITOR nvim
 
+if test -f ~/.dotfilesenv
+    set -gx DOTFILES_ENV (string trim (cat ~/.dotfilesenv))
+end
+
 set -g fish_greeting # disable fish greeting
 set -g fish_prompt_pwd_dir_length 0
 set -g fish_transient_prompt 1
