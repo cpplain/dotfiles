@@ -1,15 +1,35 @@
 function remove_worktree --description "Remove a git worktree and its backup directory"
-    if test (count $argv) -eq 0
-        echo "Usage: remove_worktree <worktree-name>"
-        echo "Example: remove_worktree myrepo-feature-branch"
+    set -l options h/help r/repo=
+    if not argparse $options -- $argv
         return 1
+    end
+
+    if test (count $argv) -eq 0
+        echo "Usage: remove_worktree [--repo|-r <path>] <worktree-name>"
+        echo "Example: remove_worktree myrepo-feature-branch"
+        echo "         remove_worktree --repo ~/git/work/myrepo myrepo-feature-branch"
+        return 1
+    end
+
+    if set -q _flag_repo
+        set repo_root (git -C "$_flag_repo" rev-parse --show-toplevel 2>/dev/null)
+        or begin
+            echo "Error: Not a git repository: $_flag_repo"
+            return 1
+        end
+    else
+        set repo_root (git rev-parse --show-toplevel 2>/dev/null)
+        or begin
+            echo "Error: Not in a git repository"
+            return 1
+        end
     end
 
     set worktree_name $argv[1]
     set target_worktree ""
     set main_worktree ""
 
-    for line in (git worktree list --porcelain | grep "^worktree ")
+    for line in (git -C $repo_root worktree list --porcelain | grep "^worktree ")
         set path (string replace "worktree " "" $line)
         set name (basename $path)
 
@@ -30,7 +50,7 @@ function remove_worktree --description "Remove a git worktree and its backup dir
     if test -z "$target_worktree"
         echo "Error: Worktree '$worktree_name' not found"
         echo "Available worktrees:"
-        for line in (git worktree list --porcelain | grep "^worktree ")
+        for line in (git -C $repo_root worktree list --porcelain | grep "^worktree ")
             set path (string replace "worktree " "" $line)
             echo "  - "(basename $path)
         end
@@ -43,7 +63,7 @@ function remove_worktree --description "Remove a git worktree and its backup dir
     end
 
     echo "Removing worktree..."
-    git worktree remove $target_worktree
+    git -C $repo_root worktree remove $target_worktree
     if test $status -ne 0
         echo "Error: Failed to remove worktree"
         echo "You may need to use 'git worktree remove --force' if there are uncommitted changes"

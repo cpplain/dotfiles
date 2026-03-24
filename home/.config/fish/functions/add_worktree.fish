@@ -1,23 +1,32 @@
 function add_worktree --description "Add a git worktree with standardized naming"
-    set repo_root (git rev-parse --show-toplevel 2>/dev/null)
-    or begin
-        echo "Error: Not in a git repository"
-        return 1
-    end
-
-    set repo_name (basename $repo_root)
-    set parent_dir (dirname $repo_root)
-
     # Parse arguments
-    set -l options h/help c/copy
+    set -l options h/help c/copy r/repo=
     if not argparse $options -- $argv
         return 1
     end
 
+    if set -q _flag_repo
+        set repo_root (git -C "$_flag_repo" rev-parse --show-toplevel 2>/dev/null)
+        or begin
+            echo "Error: Not a git repository: $_flag_repo"
+            return 1
+        end
+    else
+        set repo_root (git rev-parse --show-toplevel 2>/dev/null)
+        or begin
+            echo "Error: Not in a git repository"
+            return 1
+        end
+    end
+
+    set repo_name (basename $repo_root)
+    set worktrees_dir ~/git
+
     if set -q _flag_help; or test (count $argv) -eq 0
-        echo "Usage: add_worktree <branch-name> [--copy|-c file1 file2 ...]"
+        echo "Usage: add_worktree [--repo|-r <path>] <branch-name> [--copy|-c file1 file2 ...]"
         echo "Examples:"
         echo "  add_worktree feature/new-widget"
+        echo "  add_worktree --repo ~/git/work/myrepo feature/new-widget"
         echo "  add_worktree scratch/JIRA-123 --copy .env config/"
         echo "  add_worktree bugfix/login-issue -c .env package-lock.json"
         return 1
@@ -35,22 +44,22 @@ function add_worktree --description "Add a git worktree with standardized naming
     end
     set branch_base (basename $branch_name)
     set worktree_name "$repo_name-$branch_base"
-    set worktree_path "$parent_dir/$worktree_name"
+    set worktree_path "$worktrees_dir/$worktree_name"
 
     echo "Creating worktree:"
     echo "  Repository: $repo_name"
     echo "  Branch: $branch_name"
     echo "  Worktree path: $worktree_path"
 
-    if git show-ref --verify --quiet "refs/heads/$branch_name"
+    if git -C $repo_root show-ref --verify --quiet "refs/heads/$branch_name"
         echo "Using existing local branch: $branch_name"
-        git worktree add $worktree_path $branch_name
-    else if git ls-remote --heads origin $branch_name | grep -q .
+        git -C $repo_root worktree add $worktree_path $branch_name
+    else if git -C $repo_root ls-remote --heads origin $branch_name | grep -q .
         echo "Checking out remote branch: origin/$branch_name"
-        git worktree add $worktree_path $branch_name
+        git -C $repo_root worktree add $worktree_path $branch_name
     else
         echo "Creating new branch: $branch_name"
-        git worktree add -b $branch_name $worktree_path
+        git -C $repo_root worktree add -b $branch_name $worktree_path
     end
 
     if test $status -ne 0
@@ -60,7 +69,7 @@ function add_worktree --description "Add a git worktree with standardized naming
 
     echo "Worktree created successfully!"
     echo "To navigate to it: cd $worktree_path"
-    echo "To remove it later: remove_worktree $worktree_name"
+    echo "To remove it later: remove_worktree --repo $repo_root $worktree_name"
 
     # Copy specified files from current directory to new worktree
     if test -n "$files_to_copy"
