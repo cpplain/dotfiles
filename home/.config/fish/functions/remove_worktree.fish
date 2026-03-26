@@ -1,31 +1,31 @@
 function remove_worktree --description "Remove a git worktree and its backup directory"
-    set -l options h/help r/repo=
+    set -l options h/help
     if not argparse $options -- $argv
         return 1
     end
 
     if test (count $argv) -eq 0
-        echo "Usage: remove_worktree [--repo|-r <path>] <worktree-name>"
+        echo "Usage: remove_worktree <worktree-name-or-path>"
         echo "Example: remove_worktree myrepo-feature-branch"
-        echo "         remove_worktree --repo ~/git/work/myrepo myrepo-feature-branch"
+        echo "         remove_worktree ~/git/worktrees/myrepo-feature-branch"
         return 1
     end
 
-    if set -q _flag_repo
-        set repo_root (git -C "$_flag_repo" rev-parse --show-toplevel 2>/dev/null)
+    if test -d "$argv[1]"
+        set repo_root (git -C "$argv[1]" rev-parse --show-toplevel 2>/dev/null)
         or begin
-            echo "Error: Not a git repository: $_flag_repo"
+            echo "Error: Not a git worktree: $argv[1]"
             return 1
         end
+        set worktree_name (basename "$argv[1]")
     else
         set repo_root (git rev-parse --show-toplevel 2>/dev/null)
         or begin
             echo "Error: Not in a git repository"
             return 1
         end
+        set worktree_name $argv[1]
     end
-
-    set worktree_name $argv[1]
     set target_worktree ""
     set main_worktree ""
 
