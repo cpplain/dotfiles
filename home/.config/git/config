@@ -12,8 +12,11 @@
     helper = osxkeychain
 
 [fetch]
-	prune = true
+    prune = true
 
+[push]
+    autoSetupRemote = true
+        
 [include]
     path = config_local
     path = config_private
