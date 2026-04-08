@@ -1,27 +1,6 @@
-local header = [[
-███   ██ ███████  ██████  ██    ██ ██ ███    ███
-████  ██ ██      ██    ██ ██    ██ ██ ████  ████
-██ ██ ██ █████   ██    ██ ██    ██ ██ ██ ████ ██
-██  ████ ██      ██    ██  ██  ██  ██ ██  ██  ██
-██   ███ ███████  ██████    ████   ██ ██      ██]]
-
 require("snacks").setup({
     explorer = {},
     toggle = {},
-    dashboard = {
-        preset = {
-            header = header,
-            -- stylua: ignore
-            keys = {
-                { icon = " ", key = "f", desc = "Find File", action = "<Leader>ff" },
-                { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-                { icon = " ", key = "g", desc = "Find Text", action = "<Leader>sg" },
-                { icon = " ", key = "r", desc = "Recent Files", action = "<Leader>fr" },
-                { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
-                { icon = " ", key = "q", desc = "Quit", action = ":qa" },
-            },
-        },
-    },
     picker = {
         hidden = true,
         sources = {
@@ -81,7 +60,6 @@ map("n", "<Leader>sj", function() Snacks.picker.jumps() end, { desc = "Search ju
 map("n", "<Leader>sk", function() Snacks.picker.keymaps() end, { desc = "Search keymaps" })
 map("n", "<Leader>sm", function() Snacks.picker.marks() end, { desc = "Search marks" })
 map("n", "<Leader>sM", function() Snacks.picker.man() end, { desc = "Search man pages" })
-map("n", "<Leader>sp", function() Snacks.picker.lazy() end, { desc = "Grep plugin spec" })
 map("n", "<Leader>sq", function() Snacks.picker.qflist() end, { desc = "Search quickfix list" })
 map("n", "<Leader>sr", function() Snacks.picker.resume() end, { desc = "Search resume" })
 map("n", "<Leader>su", function() Snacks.picker.undo() end, { desc = "Search undo history" })

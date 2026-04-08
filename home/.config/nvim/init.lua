@@ -59,7 +59,9 @@ map("n", "<Esc>", function()
     return "<Esc>"
 end, { expr = true, desc = "Escape and clear search highlight" })
 
-map("n", "<Leader>lz", "<Cmd>Lazy<CR>", { desc = "Open lazy" })
+map("n", "<Leader>pu", function()
+    vim.pack.update()
+end, { desc = "Update plugins" })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
     group = vim.api.nvim_create_augroup("UserHighlight", { clear = true }),
@@ -68,43 +70,32 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     end,
 })
 
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.uv.fs_stat(lazypath) then
-    local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-    vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-end
-vim.opt.rtp:prepend(lazypath)
+vim.g.loaded_gzip = 1
+vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_tarPlugin = 1
+vim.g.loaded_tohtml = 1
+vim.g.loaded_tutor = 1
+vim.g.loaded_zipPlugin = 1
 
-local plugins = {
-    { "saghen/blink.cmp", version = "*" },
-    { "stevearc/conform.nvim" },
-    { "lewis6991/gitsigns.nvim" },
-    { "neovim/nvim-lspconfig" },
-    { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
-    { "stevearc/oil.nvim" },
-    { "folke/snacks.nvim", priority = 1000 },
-}
+vim.api.nvim_create_autocmd("PackChanged", {
+    desc = "Run :TSUpdate after nvim-treesitter install/update",
+    callback = function(ev)
+        local data = ev.data
+        if data.spec.name == "nvim-treesitter" and (data.kind == "install" or data.kind == "update") then
+            vim.cmd("TSUpdate")
+        end
+    end,
+})
 
-local lazy_opts = {
-    rocks = { enabled = false },
-    install = { colorscheme = { "flexoki" } },
-    ui = { border = "rounded" },
-    change_detection = { notify = false },
-    performance = {
-        rtp = {
-            disabled_plugins = {
-                "gzip",
-                "netrwPlugin",
-                "tarPlugin",
-                "tohtml",
-                "tutor",
-                "zipPlugin",
-            },
-        },
-    },
-}
-
-require("lazy").setup(plugins, lazy_opts)
+vim.pack.add({
+    { src = "https://github.com/folke/snacks.nvim" },
+    { src = "https://github.com/saghen/blink.cmp", version = vim.version.range("*") },
+    { src = "https://github.com/stevearc/conform.nvim" },
+    { src = "https://github.com/lewis6991/gitsigns.nvim" },
+    { src = "https://github.com/neovim/nvim-lspconfig" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+    { src = "https://github.com/stevearc/oil.nvim" },
+})
 
 require("config.snacks")
 require("config.blink")
