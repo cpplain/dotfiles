@@ -100,4 +100,11 @@ function M.get_inactive()
     return " %t%=%l:%c "
 end
 
+function M.build()
+    if vim.g.statusline_winid == vim.api.nvim_get_current_win() then
+        return M.get_active()
+    end
+    return M.get_inactive()
+end
+
 return M

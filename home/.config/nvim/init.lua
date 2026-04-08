@@ -106,43 +106,19 @@ require("config.lsp")
 require("config.nvim_treesitter")
 require("config.oil")
 
+vim.o.statusline = "%!v:lua.require('config.statusline').build()"
+
 local statusline_group = vim.api.nvim_create_augroup("UserStatusline", { clear = true })
 
 vim.api.nvim_create_autocmd("DiagnosticChanged", {
     group = statusline_group,
-    callback = function()
-        vim.wo.statusline = require("config.statusline").get_active()
-    end,
-    desc = "Refresh statusline when diagnostics change",
-})
-
-vim.api.nvim_create_autocmd("ModeChanged", {
-    group = statusline_group,
-    callback = function()
-        vim.wo.statusline = require("config.statusline").get_active()
-    end,
-    desc = "Refresh statusline when mode changes",
+    command = "redrawstatus!",
+    desc = "Redraw statusline when diagnostics change",
 })
 
 vim.api.nvim_create_autocmd("User", {
     group = statusline_group,
-    pattern = "GitSignsChanged",
-    callback = function()
-        vim.wo.statusline = require("config.statusline").get_active()
-    end,
-    desc = "Refresh statusline when git status changes",
-})
-
-vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
-    group = statusline_group,
-    callback = function()
-        vim.wo.statusline = require("config.statusline").get_active()
-    end,
-})
-
-vim.api.nvim_create_autocmd("WinLeave", {
-    group = statusline_group,
-    callback = function()
-        vim.wo.statusline = require("config.statusline").get_inactive()
-    end,
+    pattern = "GitSignsUpdate",
+    command = "redrawstatus!",
+    desc = "Redraw statusline when gitsigns updates",
 })
