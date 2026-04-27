@@ -87,7 +87,10 @@ if hostname.start_with? "christopher"
   mas "Xcode", id: 497799835
 else
   tap "homebrew/services"
+  brew "awscli"
   brew "node-build"
+  brew "hashicorp/tap/terraform"
+  brew "terragrunt"
   cask "intellij-idea"
   mas "Okta Extension App", id: 1439967473
 end
