@@ -86,7 +86,6 @@ if hostname.start_with? "christopher"
   mas "Speedtest", id: 1153157709
   mas "Xcode", id: 497799835
 else
-  tap "homebrew/services"
   brew "awscli"
   brew "node-build"
   brew "hashicorp/tap/terraform"
