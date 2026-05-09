@@ -1,22 +1,30 @@
 {
   "env": {
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-5",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-5",
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "claude-haiku-4-5",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-6",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-6",
+    "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1",
     "DISABLE_AUTOUPDATER": "1",
     "ENABLE_LSP_TOOL": "1"
   },
-  "includeCoAuthoredBy": false,
-  "permissions": {
-    "allow": ["WebSearch"]
+  "attribution": {
+    "commit": "",
+    "pr": ""
   },
-  "model": "opusplan",
+  "permissions": {
+    "allow": ["WebSearch"],
+    "deny": ["AskUserQuestion"]
+  },
+  "model": "opus",
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
+  },
   "enabledPlugins": {
     "lsp-config@my-plugins": true
   },
   "plansDirectory": ".claude/plans",
-  "statusLine": {
-    "type": "command",
-    "command": "~/.claude/statusline.sh"
-  }
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "auto",
+  "effortLevel": "medium"
 }
