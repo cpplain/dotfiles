@@ -80,7 +80,8 @@ fi
 echo
 echo "Creating configuration symlinks..."
 cd "$DOTFILES_DIR"
-lnk --config "$DOTFILES_DIR/home/.config/lnk/config.json" create
+lnk create "$DOTFILES_DIR/home"
+lnk create "$DOTFILES_DIR/private/home"
 
 # Install Homebrew packages
 echo
@@ -92,4 +93,4 @@ echo "✓ Bootstrap complete!"
 echo
 echo "Next steps:"
 echo "  1. Restart your terminal or run: source ~/.config/fish/config.fish"
-echo "  2. Run 'lnk status' to see managed files"
+echo "  2. Run 'lnk status home' to see managed files"

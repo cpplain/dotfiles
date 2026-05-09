@@ -24,7 +24,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/cpplain/dotfiles/main/bo
 
 # Or if you already have the repo cloned and lnk installed
 cd ~/git/dotfiles
-lnk --config home/.config/lnk/config.json create
+lnk create home && lnk create private/home
 ```
 
 ## Link Management
@@ -36,10 +36,10 @@ See the [full lnk documentation](https://github.com/cpplain/lnk) for detailed us
 Quick commands:
 
 ```bash
-lnk status                                                # Show all managed files
-lnk adopt --path ~/.ssh/config --source-dir home          # Add to dotfiles
-lnk adopt --path ~/.ssh/config --source-dir private/home  # Add to private repo
-lnk orphan --path ~/.config/app                           # Remove from dotfiles
+lnk status home                          # Show all managed files
+lnk adopt home ~/.ssh/config             # Add to dotfiles
+lnk adopt private/home ~/.ssh/config     # Add to private repo
+lnk orphan home ~/.config/app            # Remove from dotfiles
 ```
 
 ## Documentation

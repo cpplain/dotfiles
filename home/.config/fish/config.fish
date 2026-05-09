@@ -50,9 +50,9 @@ abbr gwr remove_worktree
 abbr gws sync_worktree_files
 
 # Link Manager
-abbr lna "lnk adopt --path"
+abbr lna "lnk adopt"
 abbr lnc "lnk create"
-abbr lno "lnk orphan --path"
+abbr lno "lnk orphan"
 abbr lnp "lnk prune"
 abbr lnr "lnk remove"
 abbr lns "lnk status"
