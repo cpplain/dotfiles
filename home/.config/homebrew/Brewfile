@@ -1,3 +1,6 @@
+tap "cpplain/tap", trusted: true
+tap "hashicorp/tap", trusted: true
+
 # Shells
 brew "bash"
 brew "fish"
