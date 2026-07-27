@@ -1,5 +1,4 @@
 tap "cpplain/tap", trusted: true
-tap "hashicorp/tap", trusted: true
 
 # Shells
 brew "bash"
@@ -66,10 +65,9 @@ cask "ghostty"
 # Mac App Store
 mas "1Password for Safari", id: 1569813296
 
-require "socket"
-hostname = Socket.gethostname.downcase
+dotfiles_env = File.read(File.expand_path("~/.dotfilesenv")).strip rescue nil
 
-if hostname.start_with? "christopher"
+if dotfiles_env == "personal"
   cask "arq"
   cask "dropbox"
   cask "fission"
@@ -88,11 +86,7 @@ if hostname.start_with? "christopher"
   mas "Pages", id: 409201541
   mas "Speedtest", id: 1153157709
   mas "Xcode", id: 497799835
-else
-  brew "awscli"
-  brew "node-build"
-  brew "hashicorp/tap/terraform"
-  brew "terragrunt"
-  cask "intellij-idea"
-  mas "Okta Extension App", id: 1439967473
+elsif dotfiles_env == "work"
+  work_brewfile = File.expand_path("~/.config/homebrew/Brewfile.work")
+  instance_eval(File.read(work_brewfile), work_brewfile) if File.exist?(work_brewfile)
 end

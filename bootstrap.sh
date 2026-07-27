@@ -25,7 +25,7 @@ echo
 
 # Ask for machine role
 while true; do                                                                                                                                                         │
-    read -p "Machine role (personal/work)? [DEFAULT_DOTFILES_ENV] " DOTFILES_ENV                                                                                                   │
+    read -p "Machine role (personal/work)? [$DEFAULT_DOTFILES_ENV] " DOTFILES_ENV                                                                                                   │
     DOTFILES_ENV=${DOTFILES_ENV:-$DEFAULT_DOTFILES_ENV}                                                                                                                             │
     if [[ "$DOTFILES_ENV" == "personal" || "$DOTFILES_ENV" == "work" ]]; then                                                                                          │
         break                                                                                                                                                          │
@@ -84,6 +84,8 @@ lnk create "$DOTFILES_DIR/home"
 lnk create "$DOTFILES_DIR/private/home"
 
 # Install Homebrew packages
+export XDG_CONFIG_HOME="$HOME/.config"
+
 echo
 echo "Installing Homebrew packages from Brewfile..."
 brew update && brew bundle --global --verbose --force
