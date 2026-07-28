@@ -7,7 +7,7 @@ set -gx XDG_RUNTIME_DIR $TMPDIR
 set -gx EDITOR nvim
 
 if test -f ~/.dotfilesenv
-    set -gx DOTFILES_ENV (string trim (cat ~/.dotfilesenv))
+    read -gx DOTFILES_ENV <~/.dotfilesenv
 end
 
 set -g fish_greeting # disable fish greeting
@@ -67,7 +67,16 @@ abbr n nvim
 # Homebrew
 if test -d /opt/homebrew
     set -gx HOMEBREW_BUNDLE_NO_LOCK 1
-    /opt/homebrew/bin/brew shellenv | source
+    set -gx HOMEBREW_PREFIX /opt/homebrew
+    set -gx HOMEBREW_CELLAR /opt/homebrew/Cellar
+    set -gx HOMEBREW_REPOSITORY /opt/homebrew
+    fish_add_path -gm /opt/homebrew/bin /opt/homebrew/sbin
+    if test -n "$MANPATH[1]"
+        set -gx MANPATH '' $MANPATH
+    end
+    if not contains /opt/homebrew/share/info $INFOPATH
+        set -gx INFOPATH /opt/homebrew/share/info $INFOPATH
+    end
 
     fish_add_path -gP /opt/homebrew/lib/ruby/gems/3.4.0/bin
 end
@@ -80,24 +89,55 @@ fish_add_path -gP ~/.local/bin
 #
 
 # Go
-if command -q go
-    set -gx GOPATH (go env GOPATH)
-    fish_add_path -gP $GOPATH/bin
-end
+set -gx GOPATH $HOME/go
+fish_add_path -gP $GOPATH/bin
 
 # JavaScript
-if command -q nodenv
-    nodenv init - | source
+if test -d ~/.nodenv
+    fish_add_path -gP ~/.nodenv/shims
+    set -gx NODENV_SHELL fish
+    function nodenv
+        set -l command $argv[1]
+        set -e argv[1]
+        switch "$command"
+            case rehash shell
+                nodenv "sh-$command" $argv | source
+            case '*'
+                command nodenv "$command" $argv
+        end
+    end
 end
 
 # Python
-if command -q pyenv
-    pyenv init - | source
+if test -d ~/.pyenv
+    fish_add_path -gP ~/.pyenv/shims
+    set -gx PYENV_SHELL fish
+    function pyenv
+        set -l command $argv[1]
+        set -e argv[1]
+        switch "$command"
+            case rehash shell
+                source (pyenv "sh-$command" $argv | psub)
+            case '*'
+                command pyenv "$command" $argv
+        end
+    end
 end
 
 # Ruby
-if command -q rbenv
-    rbenv init - | source
+if test -d ~/.rbenv
+    fish_add_path -gP ~/.rbenv/shims
+    set -gx RBENV_SHELL fish
+    function rbenv
+        set -l command $argv[1]
+        set -e argv[1]
+        switch "$command"
+            case rehash shell
+                rbenv "sh-$command" $argv | source
+            case '*'
+                command rbenv "$command" $argv
+        end
+    end
 end
 
 # Rust
