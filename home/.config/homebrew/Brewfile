@@ -68,6 +68,8 @@ mas "1Password for Safari", id: 1569813296
 dotfiles_env = File.read(File.expand_path("~/.dotfilesenv")).strip rescue nil
 
 if dotfiles_env == "personal"
+  brew "zig@0.15"
+
   cask "arq"
   cask "dropbox"
   cask "fission"
