@@ -23,6 +23,14 @@
   "enabledPlugins": {
     "lsp-config@my-plugins": true
   },
+  "extraKnownMarketplaces": {
+    "my-plugins": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/christopherplain/git/dotfiles/plugins"
+      }
+    }
+  },
   "effortLevel": "medium",
   "plansDirectory": ".claude/plans",
   "skipDangerousModePermissionPrompt": true,
