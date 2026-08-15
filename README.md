@@ -19,28 +19,37 @@ This repo contains my configuration files and related scripts. Feel free to use 
 ## Installation
 
 ```bash
-# Fresh system bootstrap (installs Homebrew, lnk, and configures everything)
+# Fresh system bootstrap (installs Homebrew and configures everything)
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/cpplain/dotfiles/main/bootstrap.sh)"
 
-# Or if you already have the repo cloned and lnk installed
+# Or if you already have the repo cloned
 cd ~/git/dotfiles
-lnk create home && lnk create private/home
+./scripts/link create
 ```
 
 ## Link Management
 
-This repository uses `lnk`, a Go-based link management tool.
-
-See the [full lnk documentation](https://github.com/cpplain/lnk) for detailed usage.
-
-Quick commands:
+Symlinks are managed by `scripts/link` from the `links` manifest. Each regular file under `home/` and `private/home/` is linked to the same path under `~`. Directory prefixes expand to file-level links so public, private, and local files can share a directory. `create` also links `scripts/link` to `~/.local/bin/dotlink`; the `lna` / `lnc` / `lnp` / `lns` fish abbreviations call that.
 
 ```bash
-lnk status home                          # Show all managed files
-lnk adopt home ~/.ssh/config             # Add to dotfiles
-lnk adopt private/home ~/.ssh/config     # Add to private repo
-lnk orphan home ~/.config/app            # Remove from dotfiles
+./scripts/link create                          # Create or refresh links
+./scripts/link create -n                       # Dry-run
+./scripts/link status                          # Show link status
+./scripts/link adopt home ~/.config/app/file   # Add a file to home/
+./scripts/link adopt private/home ~/.ssh/config
+./scripts/link prune                           # Remove leftover repo-pointing symlinks
+./scripts/link prune -n                        # Dry-run prune
 ```
+
+`create` applies nothing if any target is a regular file or a symlink that does not already point into this repo. `create` does not remove leftovers.
+
+`status` lines: `ok`, `missing`, `wrong`, `broken`, `leftover`. Leftover means the symlink still points into the repo but is not in the current plan (deleted source, or `when:` no longer matches). Leftovers are found from the last successful `create` plan plus a scoped scan of planned-target ancestors and their non-home siblings — not a walk of all of `$HOME`. Exit 1 when any planned row is not `ok` or a leftover exists.
+
+`prune` removes leftover symlinks only. Planned `broken` or `wrong` rows are left for `create` / `status`.
+
+Optional `when:personal` / `when:work` on a manifest row links that source only when `~/.dotfilesenv` matches. Explicit file rows override the directory walk for the same source, so an env-specific file under `home/` is not linked on the other machine.
+
+A leftover Homebrew `lnk` from the previous linker is not removed by `brew bundle`. Use `brew bundle cleanup --global` (`bbc`).
 
 ## Documentation
 

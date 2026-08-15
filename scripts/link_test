@@ -1,0 +1,266 @@
+#!/usr/bin/env zsh
+# Fixture tests for scripts/link. No extra deps.
+# Usage: scripts/link_test
+
+set -euo pipefail
+
+LINK=${0:A:h}/link
+typeset -g ROOT HOME_T
+
+fail() {
+    print -u2 "FAIL: $*"
+    exit 1
+}
+
+assert_eq() {
+    local got=$1 want=$2 msg=$3
+    [[ $got == $want ]] || fail "$msg (got ${(q)got}, want ${(q)want})"
+}
+
+assert_contains() {
+    local hay=$1 needle=$2 msg=$3
+    [[ $hay == *$needle* ]] || fail "$msg (missing ${(q)needle} in:\n$hay)"
+}
+
+assert_not_contains() {
+    local hay=$1 needle=$2 msg=$3
+    [[ $hay != *$needle* ]] || fail "$msg (unexpected ${(q)needle} in:\n$hay)"
+}
+
+run() {
+    LINK_ROOT=$ROOT LINK_HOME=$HOME_T LINK_ENV=$HOME_T/.dotfilesenv \
+        LINK_MANIFEST=$ROOT/links "$LINK" "$@"
+}
+
+setup() {
+    cleanup
+    ROOT=$(mktemp -d)
+    HOME_T=$(mktemp -d)
+    mkdir -p "$ROOT/scripts" "$ROOT/home/.config" "$ROOT/private/home/.config"
+    print -r -- '#!/bin/sh\necho fixture' >"$ROOT/scripts/link"
+    chmod +x "$ROOT/scripts/link"
+    echo personal >"$HOME_T/.dotfilesenv"
+}
+
+cleanup() {
+    if [[ -n ${ROOT:-} ]]; then
+        rm -rf "$ROOT"
+    fi
+    if [[ -n ${HOME_T:-} ]]; then
+        rm -rf "$HOME_T"
+    fi
+}
+
+trap cleanup EXIT
+
+write_manifest() {
+    cat >"$ROOT/links"
+}
+
+# --- when: override ---
+setup
+echo shared >"$ROOT/home/.config/shared"
+echo 'work-only' >"$ROOT/home/.gitconfig"
+write_manifest <<'EOF'
+home/                       ~/
+private/home/               ~/
+home/.gitconfig             ~/.gitconfig    when:work
+EOF
+
+out=$(run status 2>&1) && fail "personal status should be dirty (missing)" || true
+assert_contains "$out" "missing ~/.config/shared" "personal plans shared"
+assert_not_contains "$out" ".gitconfig" "personal does not plan when:work file"
+
+echo work >"$HOME_T/.dotfilesenv"
+out=$(run status 2>&1) && fail "work status should be dirty" || true
+assert_contains "$out" "missing ~/.gitconfig" "work plans when:work file"
+print "ok: when: override"
+
+# --- conflict ---
+setup
+echo pub >"$ROOT/home/.config/conflict"
+echo priv >"$ROOT/private/home/.config/conflict"
+write_manifest <<'EOF'
+home/                       ~/
+private/home/               ~/
+EOF
+out=$(run create -n 2>&1) && fail "conflict should die" || true
+assert_contains "$out" "two sources map to" "conflict names both sources"
+print "ok: conflict"
+
+# --- create all-or-nothing: regular file blocks other creates ---
+setup
+echo a >"$ROOT/home/a"
+echo b >"$ROOT/home/b"
+write_manifest <<'EOF'
+home/                       ~/
+EOF
+mkdir -p "$HOME_T"
+echo local >"$HOME_T/a"
+out=$(run create 2>&1) && fail "regular file should fail create" || true
+assert_contains "$out" "already exists and is not a symlink" "regular file error"
+assert_contains "$out" "refusing to create" "all-or-nothing message"
+[[ -e $HOME_T/b || -L $HOME_T/b ]] && fail "blocked create must not link sibling"
+print "ok: regular file blocks create"
+
+# --- unmanaged symlink is not replaced ---
+setup
+echo a >"$ROOT/home/a"
+write_manifest <<'EOF'
+home/                       ~/
+EOF
+ln -s /tmp/unmanaged "$HOME_T/a"
+out=$(run create 2>&1) && fail "unmanaged symlink should fail create" || true
+assert_contains "$out" "unmanaged symlink" "unmanaged error"
+assert_eq "$(readlink "$HOME_T/a")" /tmp/unmanaged "unmanaged symlink left in place"
+print "ok: unmanaged symlink refused"
+
+# --- managed wrong symlink is replaced when the rest is clean ---
+setup
+echo a >"$ROOT/home/a"
+echo b >"$ROOT/home/b"
+write_manifest <<'EOF'
+home/                       ~/
+EOF
+mkdir -p "$HOME_T"
+ln -s "$ROOT/home/b" "$HOME_T/a"
+run create >/dev/null
+assert_eq "$(readlink "$HOME_T/a")" "$ROOT/home/a" "managed wrong symlink replaced"
+assert_eq "$(readlink "$HOME_T/b")" "$ROOT/home/b" "sibling created"
+print "ok: managed replace"
+
+# --- adopt ---
+setup
+write_manifest <<'EOF'
+home/                       ~/
+private/home/               ~/
+EOF
+mkdir -p "$HOME_T/.config"
+echo new >"$HOME_T/.config/newfile"
+out=$(run adopt -n home "$HOME_T/.config/newfile")
+assert_contains "$out" "would move" "adopt dry-run move"
+assert_contains "$out" "would link" "adopt dry-run link"
+[[ -f $HOME_T/.config/newfile && ! -L $HOME_T/.config/newfile ]] || fail "dry-run must not move"
+run adopt home "$HOME_T/.config/newfile" >/dev/null
+[[ -L $HOME_T/.config/newfile ]] || fail "adopt should leave a symlink"
+[[ -f $ROOT/home/.config/newfile ]] || fail "adopt should move into repo"
+out=$(run adopt home "$HOME_T/.config/newfile" 2>&1) && fail "adopt symlink should fail" || true
+assert_contains "$out" "is a symlink" "adopt rejects symlink"
+
+echo dotted >"$HOME_T/.config/dotted"
+run adopt home "$HOME_T/./.config/dotted" >/dev/null
+[[ -L $HOME_T/.config/dotted ]] || fail "adopt should normalize /./ path"
+[[ -f $ROOT/home/.config/dotted ]] || fail "adopt /./ should move into repo"
+
+echo rel >"$HOME_T/.config/relfile"
+(
+    cd "$HOME_T"
+    run adopt home .config/relfile >/dev/null
+)
+[[ -L $HOME_T/.config/relfile ]] || fail "adopt should accept PWD-relative path"
+[[ -f $ROOT/home/.config/relfile ]] || fail "adopt relative should move into repo"
+
+mkdir -p "$HOME_T/.config"
+echo priv >"$HOME_T/.config/privfile"
+run adopt private/home "$HOME_T/.config/privfile" >/dev/null
+[[ -L $HOME_T/.config/privfile ]] || fail "adopt private/home should leave a symlink"
+[[ -f $ROOT/private/home/.config/privfile ]] || fail "adopt private/home should move into repo"
+print "ok: adopt"
+
+# --- missing private/home ---
+setup
+echo a >"$ROOT/home/a"
+rm -rf "$ROOT/private"
+write_manifest <<'EOF'
+home/                       ~/
+private/home/               ~/
+EOF
+out=$(run status 2>&1) && fail "missing link should be dirty" || true
+assert_contains "$out" "skipping missing source directory private/home" "missing private warning"
+assert_contains "$out" "missing ~/a" "public files still planned"
+print "ok: missing private"
+
+# --- invalid manifest ---
+setup
+write_manifest <<'EOF'
+home/ ~/ when:laptop
+EOF
+out=$(run status 2>&1) && fail "bad when: should die" || true
+assert_contains "$out" "invalid when:laptop" "bad when message"
+
+write_manifest <<'EOF'
+home/ ~/ when:work extra
+EOF
+out=$(run status 2>&1) && fail "extra field should die" || true
+assert_contains "$out" "unexpected extra field" "extra field message"
+print "ok: manifest validation"
+
+# --- leftover after source removed ---
+setup
+mkdir -p "$ROOT/home/.config/keep" "$ROOT/home/.config/oldapp"
+echo keep >"$ROOT/home/.config/keep/y"
+echo gone >"$ROOT/home/.config/oldapp/x"
+write_manifest <<'EOF'
+home/                       ~/
+EOF
+run create >/dev/null
+rm -f "$ROOT/home/.config/oldapp/x"
+out=$(run status 2>&1) && fail "leftover should make status dirty" || true
+assert_contains "$out" "leftover ~/.config/oldapp/x" "deleted source is leftover"
+assert_contains "$out" "ok      ~/.config/keep/y" "remaining file still ok"
+print "ok: leftover"
+
+# --- explicit scripts/link -> ~/.local/bin/dotlink ---
+setup
+echo a >"$ROOT/home/a"
+write_manifest <<'EOF'
+home/                       ~/
+scripts/link                ~/.local/bin/dotlink
+EOF
+out=$(run status 2>&1) && fail "dotlink missing should be dirty" || true
+assert_contains "$out" "missing ~/.local/bin/dotlink" "dotlink planned"
+run create >/dev/null
+assert_eq "$(readlink "$HOME_T/.local/bin/dotlink")" "$ROOT/scripts/link" "dotlink created"
+out=$(run status 2>&1) || fail "clean status should exit 0"
+assert_contains "$out" "ok      ~/.local/bin/dotlink" "dotlink ok"
+print "ok: explicit dotlink row"
+
+# --- leftover after last file in a top-level prefix is gone ---
+setup
+mkdir -p "$ROOT/home/bin"
+echo foo >"$ROOT/home/bin/foo"
+write_manifest <<'EOF'
+home/                       ~/
+EOF
+run create >/dev/null
+rm -f "$ROOT/home/bin/foo"
+out=$(run status 2>&1) && fail "vanished prefix leftover should be dirty" || true
+assert_contains "$out" "leftover ~/bin/foo" "last-plan finds leftover after prefix emptied"
+
+out=$(run prune -n 2>&1)
+assert_contains "$out" "would remove ~/bin/foo" "prune dry-run names leftover"
+[[ -L $HOME_T/bin/foo ]] || fail "prune dry-run must not remove"
+out=$(run prune 2>&1)
+assert_contains "$out" "removed ~/bin/foo" "prune removes leftover"
+[[ -e $HOME_T/bin/foo || -L $HOME_T/bin/foo ]] && fail "prune must remove leftover symlink"
+out=$(run status 2>&1) || fail "status after prune should be clean"
+assert_not_contains "$out" "leftover" "no leftovers after prune"
+print "ok: vanished prefix leftover and prune"
+
+# --- invoke via symlink without LINK_ROOT (:A resolves repo) ---
+setup
+write_manifest <<'EOF'
+scripts/link                ~/.local/bin/dotlink
+EOF
+mkdir -p "$HOME_T/bin"
+ln -s "$LINK" "$HOME_T/bin/dotlink"
+out=$(
+    LINK_HOME=$HOME_T LINK_ENV=$HOME_T/.dotfilesenv \
+        LINK_MANIFEST=$ROOT/links \
+        LINK_STATE=$HOME_T/.local/state/dotlink/last-plan \
+        "$HOME_T/bin/dotlink" create 2>&1
+) || fail "create via symlink should succeed: $out"
+assert_eq "$(readlink "$HOME_T/.local/bin/dotlink")" "${LINK:A}" "symlink invoke uses real repo"
+print "ok: invoke via symlink"
+
+print "all tests passed"

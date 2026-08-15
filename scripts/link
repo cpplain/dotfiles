@@ -1,0 +1,744 @@
+#!/usr/bin/env zsh
+# File-level symlink manager for this dotfiles repo.
+#
+# Manifest (`links`): whitespace-separated
+#   source  target  [when:personal|when:work]
+# A trailing slash, or an existing directory, expands to one link per
+# regular file. An explicit file row overrides the walk for that source
+# even when the row is skipped by when:.
+#
+# create classifies every planned target, then applies only if none fail.
+# An existing symlink is replaced only when it already points into this repo.
+# create does not remove leftovers.
+#
+# status leftover = symlink into this repo that is not in the current plan
+# (deleted source, or when: no longer matches). Found via last-plan plus a
+# scoped scan: ancestors of planned and last-plan targets, non-home siblings
+# of those dirs. It does not walk all of $HOME. share/cache/state/Library/
+# .Trash are skipped. last-plan is $HOME/.local/state/dotlink/last-plan.
+
+# Usage: scripts/link create|status|adopt|prune [-n] [args]
+
+set -euo pipefail
+setopt EXTENDED_GLOB
+
+REPO=${LINK_ROOT:-${0:A:h:h}}
+MANIFEST=${LINK_MANIFEST:-$REPO/links}
+HOME_DIR=${LINK_HOME:-$HOME}
+ENV_FILE=${LINK_ENV:-$HOME_DIR/.dotfilesenv}
+STATE=${LINK_STATE:-$HOME_DIR/.local/state/dotlink/last-plan}
+
+typeset -g DOTFILES_ENV=""
+typeset -g DRY_RUN=0
+typeset -g ENV_WARNED=0
+
+typeset -a PLAN_SRC PLAN_TGT
+typeset -a MAN_SRC MAN_TGT MAN_WHEN MAN_KIND
+typeset -a LEFTOVER
+
+usage() {
+    cat <<'EOF'
+Usage: scripts/link <command> [flags] [args]
+       dotlink <command> [flags] [args]
+
+Commands:
+  create              Create symlinks from the links manifest.
+                      Applies nothing if any target is a regular file
+                      or a symlink that does not already point into this repo.
+  status              Show planned links and leftover repo-pointing symlinks.
+                      Lines: ok, missing, wrong, broken, leftover.
+                      leftover = points into the repo but is not in the plan.
+                      Exits 1 when any planned row is not ok or a leftover exists.
+  adopt <src> <file>  Move a file into <src> (home or private/home) and link it.
+                      <file> is a path in ~ (absolute, ~/, or relative to PWD).
+  prune               Remove leftover repo-pointing symlinks. Does not touch
+                      planned broken or wrong rows.
+
+Flags:
+  -n, --dry-run       Preview changes without making them
+  -h, --help          Show this help
+EOF
+}
+
+err() {
+    print -u2 "error: $*"
+}
+
+warn() {
+    print -u2 "warning: $*"
+}
+
+die() {
+    err "$@"
+    exit 1
+}
+
+expand_tilde() {
+    local p=$1
+    case $p in
+        '~')  print -r -- "$HOME_DIR" ;;
+        '~/'*) print -r -- "$HOME_DIR/${p#'~/'}" ;;
+        *)    print -r -- "$p" ;;
+    esac
+}
+
+abs_path() {
+    local p
+    p=$(expand_tilde "$1")
+    if [[ $p == /* ]]; then
+        print -r -- "$p"
+    else
+        print -r -- "$REPO/$p"
+    fi
+}
+
+normalize_src() {
+    local s=$1
+    s=${s#./}
+    s=${s%/}
+    print -r -- "$s"
+}
+
+# Absolute path of a symlink's target without requiring the target to exist.
+resolve_link() {
+    local link=$1
+    local raw
+    raw=$(readlink "$link") || return 1
+    if [[ $raw != /* ]]; then
+        raw="${link:h}/$raw"
+    fi
+    print -r -- "${raw:a}"
+}
+
+is_repo_path() {
+    local p=$1
+    [[ $p == $REPO || $p == $REPO/* ]]
+}
+
+is_scan_skip_name() {
+    [[ $1 == Library || $1 == .Trash || $1 == share || $1 == cache || $1 == state ]]
+}
+
+# Home-file path for adopt: ~/ , absolute, or relative to PWD. Not repo-relative.
+resolve_home_file() {
+    local p
+    p=$(expand_tilde "$1")
+    if [[ $p != /* ]]; then
+        p=$PWD/$p
+    fi
+    print -r -- "${p:a}"
+}
+
+mark_hot_ancestors() {
+    local tgt=$1
+    local d=$tgt
+    while true; do
+        d=${d:h}
+        [[ $d == $HOME_DIR || $d == $HOME_DIR/* ]] || break
+        HOT_DIR[$d]=1
+        [[ $d == $HOME_DIR ]] && break
+    done
+}
+
+write_last_plan() {
+    typeset -A keep
+    local t dest
+    for t in $PLAN_TGT; do
+        keep[$t]=1
+    done
+    if [[ -f $STATE ]]; then
+        while IFS= read -r t || [[ -n $t ]]; do
+            [[ -n $t ]] || continue
+            [[ -n ${keep[$t]:-} ]] && continue
+            [[ -L $t ]] || continue
+            dest=$(resolve_link "$t") || continue
+            is_repo_path "$dest" || continue
+            keep[$t]=1
+        done <"$STATE"
+    fi
+    mkdir -p -- "${STATE:h}"
+    {
+        for t in ${(ko)keep}; do
+            print -r -- "$t"
+        done
+    } >"$STATE"
+}
+
+load_env() {
+    DOTFILES_ENV=""
+    if [[ -f $ENV_FILE ]]; then
+        DOTFILES_ENV=$(<"$ENV_FILE")
+        DOTFILES_ENV=${DOTFILES_ENV%%$'\n'*}
+        DOTFILES_ENV=${DOTFILES_ENV%%[[:space:]]#}
+        DOTFILES_ENV=${DOTFILES_ENV##[[:space:]]#}
+        if [[ $DOTFILES_ENV != personal && $DOTFILES_ENV != work ]]; then
+            if (( ! ENV_WARNED )); then
+                warn "ignoring invalid $ENV_FILE value ${(q)DOTFILES_ENV}; applying unguarded rows only"
+                ENV_WARNED=1
+            fi
+            DOTFILES_ENV=""
+        fi
+    elif (( ! ENV_WARNED )); then
+        warn "no $ENV_FILE; applying unguarded rows only"
+        ENV_WARNED=1
+    fi
+}
+
+profile_matches() {
+    local when=$1
+    [[ -z $when ]] && return 0
+    [[ -n $DOTFILES_ENV && $when == $DOTFILES_ENV ]] && return 0
+    return 1
+}
+
+should_skip() {
+    local rel=$1
+    local base=${rel:t}
+    [[ $base == .DS_Store || $base == *.swp || $base == *.tmp ]] && return 0
+    [[ $rel == .git || $rel == .git/* || $rel == */.git || $rel == */.git/* ]] && return 0
+    return 1
+}
+
+# Sets REPLY to "dir" or "file".
+row_kind() {
+    local spec=$1
+    local abs
+    if [[ $spec == */ ]]; then
+        REPLY=dir
+        return
+    fi
+    abs=$(abs_path "$spec")
+    if [[ -d $abs ]]; then
+        REPLY=dir
+    else
+        REPLY=file
+    fi
+}
+
+parse_manifest() {
+    MAN_SRC=()
+    MAN_TGT=()
+    MAN_WHEN=()
+    MAN_KIND=()
+
+    [[ -f $MANIFEST ]] || die "manifest not found: $MANIFEST"
+
+    local line src tgt when field rest kind
+    local -i lineno=0
+    while IFS= read -r line || [[ -n $line ]]; do
+        lineno+=1
+        line=${line%%\#*}
+        line=${line##[[:space:]]#}
+        line=${line%%[[:space:]]#}
+        [[ -z $line ]] && continue
+
+        src=${line%%[[:space:]]*}
+        rest=${line#${src}}
+        rest=${rest##[[:space:]]#}
+        [[ -n $rest ]] || die "$MANIFEST:$lineno: missing target"
+
+        tgt=${rest%%[[:space:]]*}
+        rest=${rest#${tgt}}
+        rest=${rest##[[:space:]]#}
+
+        when=""
+        if [[ -n $rest ]]; then
+            field=${rest%%[[:space:]]*}
+            rest=${rest#${field}}
+            rest=${rest##[[:space:]]#}
+            [[ -z $rest ]] || die "$MANIFEST:$lineno: unexpected extra field"
+            if [[ $field == when:* ]]; then
+                when=${field#when:}
+            else
+                die "$MANIFEST:$lineno: invalid field ${(q)field} (expected when:personal or when:work)"
+            fi
+            if [[ $when != personal && $when != work ]]; then
+                die "$MANIFEST:$lineno: invalid when:${when} (expected personal or work)"
+            fi
+        fi
+
+        row_kind "$src"
+        kind=$REPLY
+
+        MAN_SRC+=("$src")
+        MAN_TGT+=("$tgt")
+        MAN_WHEN+=("$when")
+        MAN_KIND+=("$kind")
+    done <"$MANIFEST"
+}
+
+collect_dir_files() {
+    local abs_src=$1
+    local -a files
+    files=()
+    # -type f: regular files only (not dirs, not symlinks)
+    while IFS= read -r f; do
+        [[ -n $f ]] && files+=("$f")
+    done < <(find "$abs_src" \( -name .git -type d -prune \) -o -type f -print | sort)
+
+    REPLY_FILES=("${files[@]}")
+}
+
+# $1 = 1 to keep missing explicit sources in the plan (status); 0 to skip (create).
+build_plan() {
+    local include_missing=${1:-0}
+    PLAN_SRC=()
+    PLAN_TGT=()
+    load_env
+    parse_manifest
+
+    typeset -A explicit_src
+    explicit_src=()
+
+    local i src tgt when kind abs_src abs_tgt rel dest
+    local -a files
+    typeset -g -a REPLY_FILES
+
+    for (( i = 1; i <= $#MAN_SRC; i++ )); do
+        src=$MAN_SRC[i]
+        tgt=$MAN_TGT[i]
+        when=$MAN_WHEN[i]
+        kind=$MAN_KIND[i]
+        [[ $kind == dir ]] || continue
+        profile_matches "$when" || continue
+
+        abs_src=$(abs_path "${src%/}")
+        if [[ ! -d $abs_src ]]; then
+            warn "skipping missing source directory ${src%/}"
+            continue
+        fi
+
+        abs_tgt=$(abs_path "$tgt")
+        abs_tgt=${abs_tgt%/}
+        collect_dir_files "$abs_src"
+        files=("${REPLY_FILES[@]}")
+
+        for f in "${files[@]}"; do
+            rel=${f#${abs_src}/}
+            should_skip "$rel" && continue
+            dest=$abs_tgt/$rel
+            PLAN_SRC+=("$f")
+            PLAN_TGT+=("$dest")
+        done
+    done
+
+    # Record explicit sources so they override walked identity pairs,
+    # even when the explicit row is skipped by when:.
+    local -a keep_src keep_tgt
+    for (( i = 1; i <= $#MAN_SRC; i++ )); do
+        [[ $MAN_KIND[i] == file ]] || continue
+        abs_src=$(abs_path "${MAN_SRC[i]%/}")
+        explicit_src[$abs_src]=1
+    done
+
+    keep_src=()
+    keep_tgt=()
+    for (( i = 1; i <= $#PLAN_SRC; i++ )); do
+        if [[ -n ${explicit_src[$PLAN_SRC[i]]:-} ]]; then
+            continue
+        fi
+        keep_src+=("$PLAN_SRC[i]")
+        keep_tgt+=("$PLAN_TGT[i]")
+    done
+    PLAN_SRC=("${keep_src[@]}")
+    PLAN_TGT=("${keep_tgt[@]}")
+
+    for (( i = 1; i <= $#MAN_SRC; i++ )); do
+        [[ $MAN_KIND[i] == file ]] || continue
+        profile_matches "$MAN_WHEN[i]" || continue
+        abs_src=$(abs_path "${MAN_SRC[i]%/}")
+        abs_tgt=$(abs_path "$MAN_TGT[i]")
+        if [[ ! -f $abs_src ]]; then
+            if (( ! include_missing )); then
+                warn "skipping missing source file ${MAN_SRC[i]}"
+                continue
+            fi
+        fi
+        PLAN_SRC+=("$abs_src")
+        PLAN_TGT+=("$abs_tgt")
+    done
+
+    typeset -A seen_tgt
+    seen_tgt=()
+    for (( i = 1; i <= $#PLAN_TGT; i++ )); do
+        dest=$PLAN_TGT[i]
+        if [[ -n ${seen_tgt[$dest]:-} ]]; then
+            die "two sources map to $dest:\n  ${seen_tgt[$dest]}\n  $PLAN_SRC[i]"
+        fi
+        seen_tgt[$dest]=$PLAN_SRC[i]
+    done
+}
+
+display_path() {
+    local p=$1
+    if [[ $p == $HOME_DIR || $p == $HOME_DIR/* ]]; then
+        print -r -- "~${p#$HOME_DIR}"
+    else
+        print -r -- "$p"
+    fi
+}
+
+# Sets REPLY to skip, create, replace, or fail.
+classify_one() {
+    local src=$1 tgt=$2
+    local existing resolved
+
+    if [[ -L $tgt ]]; then
+        existing=$(readlink "$tgt")
+        resolved=$(resolve_link "$tgt") || resolved=""
+        if [[ $existing == $src || $resolved == $src || $resolved == ${src:a} ]]; then
+            REPLY=skip
+            return 0
+        fi
+        if [[ -n $resolved ]] && is_repo_path "$resolved"; then
+            REPLY=replace
+            return 0
+        fi
+        err "$(display_path "$tgt"): unmanaged symlink (does not point into the repo)"
+        REPLY=fail
+        return 0
+    elif [[ -e $tgt ]]; then
+        err "$(display_path "$tgt"): already exists and is not a symlink"
+        REPLY=fail
+        return 0
+    fi
+
+    REPLY=create
+    return 0
+}
+
+apply_one() {
+    local src=$1 tgt=$2 action=$3
+    local parent=${tgt:h}
+
+    if (( DRY_RUN )); then
+        if [[ $action == replace ]]; then
+            print "would replace $(display_path "$tgt") -> $(display_path "$src")"
+        else
+            print "would link $(display_path "$tgt") -> $(display_path "$src")"
+        fi
+        return 0
+    fi
+
+    if [[ $action == replace ]]; then
+        rm -- "$tgt"
+    fi
+    mkdir -p -- "$parent"
+    ln -s -- "$src" "$tgt"
+    if [[ $action == replace ]]; then
+        print "replaced $(display_path "$tgt") -> $(display_path "$src")"
+    else
+        print "created $(display_path "$tgt") -> $(display_path "$src")"
+    fi
+}
+
+cmd_create() {
+    (( $# == 0 )) || die "create takes no arguments"
+    build_plan 0
+
+    if (( $#PLAN_SRC == 0 )); then
+        print "no files to link"
+        return 0
+    fi
+
+    local i
+    local -a act
+    local -i created=0 replaced=0 skipped=0 failed=0
+    act=()
+    for (( i = 1; i <= $#PLAN_SRC; i++ )); do
+        classify_one "$PLAN_SRC[i]" "$PLAN_TGT[i]"
+        act[i]=$REPLY
+        if [[ $REPLY == fail ]]; then
+            failed+=1
+        fi
+    done
+
+    if (( failed )); then
+        print "refusing to create: $failed target(s) blocked"
+        return 1
+    fi
+
+    for (( i = 1; i <= $#PLAN_SRC; i++ )); do
+        case $act[i] in
+            skip) skipped+=1 ;;
+            create)
+                apply_one "$PLAN_SRC[i]" "$PLAN_TGT[i]" create
+                created+=1
+                ;;
+            replace)
+                apply_one "$PLAN_SRC[i]" "$PLAN_TGT[i]" replace
+                replaced+=1
+                ;;
+        esac
+    done
+
+    if (( DRY_RUN )); then
+        print "dry-run: $created to create, $replaced to replace, $skipped already linked"
+    else
+        write_last_plan
+        print "created $created, replaced $replaced, skipped $skipped"
+    fi
+    return 0
+}
+
+link_points_at_src() {
+    local tgt=$1 src=$2
+    local existing resolved
+    existing=$(readlink "$tgt")
+    resolved=$(resolve_link "$tgt") || resolved=""
+    [[ $existing == $src || $resolved == $src || $resolved == ${src:a} ]]
+}
+
+consider_leftover() {
+    local entry=$1
+    local dest
+    [[ -n ${PLANNED_TGT[$entry]:-} ]] && return 0
+    [[ -n ${SEEN_LEFTOVER[$entry]:-} ]] && return 0
+    dest=$(resolve_link "$entry") || return 0
+    is_repo_path "$dest" || return 0
+    SEEN_LEFTOVER[$entry]=1
+    LEFTOVER+=("$entry")
+}
+
+collect_find_links() {
+    local dir=$1
+    local f
+    while IFS= read -r f; do
+        [[ -n $f ]] && consider_leftover "$f"
+    done < <(find "$dir" \
+        \( -name Library -type d -prune \) -o \
+        \( -name .Trash -type d -prune \) -o \
+        \( -name share -type d -prune \) -o \
+        \( -name cache -type d -prune \) -o \
+        \( -name state -type d -prune \) -o \
+        -type l -print 2>/dev/null)
+}
+
+scan_leftover_dir() {
+    local dir=$1
+    local at_home=0
+    [[ $dir == $HOME_DIR ]] && at_home=1
+
+    local -a entries
+    entries=()
+    entries=($dir/*(DN)) 2>/dev/null || return 0
+
+    local entry name
+    for entry in $entries; do
+        name=${entry:t}
+        is_scan_skip_name "$name" && continue
+        if [[ $entry == $REPO || $entry == $REPO/* ]]; then
+            continue
+        fi
+
+        if [[ -L $entry ]]; then
+            consider_leftover "$entry"
+        elif [[ -d $entry ]]; then
+            if [[ -n ${HOT_DIR[$entry]:-} ]]; then
+                scan_leftover_dir "$entry"
+            elif (( ! at_home )); then
+                collect_find_links "$entry"
+            fi
+        fi
+    done
+}
+
+collect_leftovers() {
+    LEFTOVER=()
+    typeset -g -A PLANNED_TGT HOT_DIR SEEN_LEFTOVER
+    PLANNED_TGT=()
+    HOT_DIR=()
+    SEEN_LEFTOVER=()
+
+    local i tgt
+    HOT_DIR[$HOME_DIR]=1
+    for (( i = 1; i <= $#PLAN_TGT; i++ )); do
+        tgt=$PLAN_TGT[i]
+        PLANNED_TGT[$tgt]=1
+        mark_hot_ancestors "$tgt"
+    done
+
+    if [[ -f $STATE ]]; then
+        while IFS= read -r tgt || [[ -n $tgt ]]; do
+            [[ -n $tgt ]] || continue
+            [[ $tgt == $HOME_DIR || $tgt == $HOME_DIR/* ]] || continue
+            if [[ -z ${PLANNED_TGT[$tgt]:-} ]]; then
+                consider_leftover "$tgt"
+            fi
+            mark_hot_ancestors "$tgt"
+        done <"$STATE"
+    fi
+
+    scan_leftover_dir "$HOME_DIR"
+
+    if (( $#LEFTOVER > 1 )); then
+        local -a sorted
+        sorted=("${(@o)LEFTOVER}")
+        LEFTOVER=("${sorted[@]}")
+    fi
+}
+
+cmd_status() {
+    (( $# == 0 )) || die "status takes no arguments"
+    build_plan 1
+    collect_leftovers
+
+    if (( $#PLAN_SRC == 0 && $#LEFTOVER == 0 )); then
+        print "no planned links"
+        return 0
+    fi
+
+    local i src tgt
+    local -i ok=0 missing=0 wrong=0 broken=0 leftover=0
+
+    for (( i = 1; i <= $#PLAN_SRC; i++ )); do
+        src=$PLAN_SRC[i]
+        tgt=$PLAN_TGT[i]
+        if [[ -L $tgt ]]; then
+            if link_points_at_src "$tgt" "$src"; then
+                if [[ -e $src ]]; then
+                    print "ok      $(display_path "$tgt")"
+                    ok+=1
+                else
+                    print "broken  $(display_path "$tgt")"
+                    broken+=1
+                fi
+            else
+                print "wrong   $(display_path "$tgt")"
+                wrong+=1
+            fi
+        elif [[ -e $tgt ]]; then
+            print "wrong   $(display_path "$tgt")"
+            wrong+=1
+        else
+            print "missing $(display_path "$tgt")"
+            missing+=1
+        fi
+    done
+
+    for tgt in $LEFTOVER; do
+        print "leftover $(display_path "$tgt")"
+        leftover+=1
+    done
+
+    print "\n$ok ok, $missing missing, $wrong wrong, $broken broken, $leftover leftover"
+    (( missing == 0 && wrong == 0 && broken == 0 && leftover == 0 ))
+}
+
+cmd_prune() {
+    (( $# == 0 )) || die "prune takes no arguments"
+    build_plan 1
+    collect_leftovers
+
+    if (( $#LEFTOVER == 0 )); then
+        print "no leftovers"
+        return 0
+    fi
+
+    local tgt
+    if (( DRY_RUN )); then
+        for tgt in $LEFTOVER; do
+            print "would remove $(display_path "$tgt")"
+        done
+        print "dry-run: $#LEFTOVER leftover(s)"
+        return 0
+    fi
+
+    for tgt in $LEFTOVER; do
+        rm -- "$tgt"
+        print "removed $(display_path "$tgt")"
+    done
+    write_last_plan
+    print "removed $#LEFTOVER leftover(s)"
+    return 0
+}
+
+is_manifest_dir_src() {
+    local want=$1
+    local i spec
+    want=$(normalize_src "$want")
+    for (( i = 1; i <= $#MAN_SRC; i++ )); do
+        [[ $MAN_KIND[i] == dir ]] || continue
+        spec=$(normalize_src "$MAN_SRC[i]")
+        if [[ $spec == $want ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+cmd_adopt() {
+    (( $# == 2 )) || die "usage: scripts/link adopt <source-dir> <file>"
+    local source_dir=$1
+    local file=$2
+
+    parse_manifest
+    source_dir=$(normalize_src "$source_dir")
+    is_manifest_dir_src "$source_dir" || die "$source_dir is not a directory source in $MANIFEST"
+
+    file=$(resolve_home_file "$file")
+    if [[ ! -e $file ]]; then
+        die "file not found: $(display_path "$file")"
+    fi
+    if [[ -L $file ]]; then
+        die "$(display_path "$file") is a symlink; adopt regular files only"
+    fi
+    if [[ -d $file ]]; then
+        die "$(display_path "$file") is a directory; adopt a single file"
+    fi
+    if [[ $file != $HOME_DIR/* ]]; then
+        die "$(display_path "$file") is not inside $(display_path "$HOME_DIR")"
+    fi
+
+    local rel=${file#$HOME_DIR/}
+    local dest=$REPO/$source_dir/$rel
+    if [[ -e $dest || -L $dest ]]; then
+        die "destination already exists: ${dest#$REPO/}"
+    fi
+
+    if (( DRY_RUN )); then
+        print "would move $(display_path "$file") -> ${dest#$REPO/}"
+        print "would link $(display_path "$file") -> ${dest#$REPO/}"
+        return 0
+    fi
+
+    mkdir -p -- "${dest:h}"
+    mv -- "$file" "$dest"
+    ln -s -- "$dest" "$file"
+    print "adopted $(display_path "$file") -> ${dest#$REPO/}"
+}
+
+# --- main ---
+
+typeset -a pos shift_args
+pos=()
+for arg in "$@"; do
+    case $arg in
+        -n|--dry-run) DRY_RUN=1 ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        -*)
+            die "unknown flag $arg"
+            ;;
+        *)
+            pos+=("$arg")
+            ;;
+    esac
+done
+
+(( $#pos >= 1 )) || { usage >&2; exit 2 }
+
+cmd=$pos[1]
+shift_args=("${pos[@]:1}")
+
+case $cmd in
+    create) cmd_create "${shift_args[@]}" ;;
+    status) cmd_status "${shift_args[@]}" ;;
+    adopt)  cmd_adopt  "${shift_args[@]}" ;;
+    prune)  cmd_prune  "${shift_args[@]}" ;;
+    *)
+        die "unknown command $cmd"
+        ;;
+esac

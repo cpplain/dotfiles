@@ -17,21 +17,20 @@ DOTFILES_REPO="https://github.com/cpplain/dotfiles.git"
 echo "This script will:"
 echo "  1. Set machine role (personal or work)"
 echo "  2. Install Homebrew"
-echo "  3. Install lnk via Homebrew"
-echo "  4. Clone the dotfiles repository"
-echo "  5. Create configuration symlinks"
-echo "  6. Install Homebrew packages from Brewfile"
+echo "  3. Clone the dotfiles repository"
+echo "  4. Create configuration symlinks"
+echo "  5. Install Homebrew packages from Brewfile"
 echo
 
 # Ask for machine role
-while true; do                                                                                                                                                         │
-    read -p "Machine role (personal/work)? [$DEFAULT_DOTFILES_ENV] " DOTFILES_ENV                                                                                                   │
-    DOTFILES_ENV=${DOTFILES_ENV:-$DEFAULT_DOTFILES_ENV}                                                                                                                             │
-    if [[ "$DOTFILES_ENV" == "personal" || "$DOTFILES_ENV" == "work" ]]; then                                                                                          │
-        break                                                                                                                                                          │
-    fi                                                                                                                                                                 │
-    echo "Invalid role. Please enter 'personal' or 'work'."                                                                                                            │
-done                                                                                                                                                                   │
+while true; do
+    read -p "Machine role (personal/work)? [$DEFAULT_DOTFILES_ENV] " DOTFILES_ENV
+    DOTFILES_ENV=${DOTFILES_ENV:-$DEFAULT_DOTFILES_ENV}
+    if [[ "$DOTFILES_ENV" == "personal" || "$DOTFILES_ENV" == "work" ]]; then
+        break
+    fi
+    echo "Invalid role. Please enter 'personal' or 'work'."
+done
 echo
 
 # Ask for dotfiles directory
@@ -63,10 +62,6 @@ if [[ -d "/opt/homebrew" ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-# Install lnk
-echo "Installing lnk..."
-brew install cpplain/tap/lnk
-
 # Clone dotfiles repository
 if [[ -d "$DOTFILES_DIR/.git" ]]; then
     echo "✓ Repository already exists at $DOTFILES_DIR"
@@ -79,9 +74,7 @@ fi
 # Create configuration symlinks
 echo
 echo "Creating configuration symlinks..."
-cd "$DOTFILES_DIR"
-lnk create "$DOTFILES_DIR/home"
-lnk create "$DOTFILES_DIR/private/home"
+"$DOTFILES_DIR/scripts/link" create
 
 # Install Homebrew packages
 export XDG_CONFIG_HOME="$HOME/.config"
@@ -95,4 +88,5 @@ echo "✓ Bootstrap complete!"
 echo
 echo "Next steps:"
 echo "  1. Restart your terminal or run: source ~/.config/fish/config.fish"
-echo "  2. Run 'lnk status home' to see managed files"
+echo "  2. Run 'dotlink status' to see managed files"
+echo "  3. Run 'dotlink prune' if status reports leftovers"

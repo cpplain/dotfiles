@@ -1,0 +1,4 @@
+# source (repo-relative)    target    [when:personal|when:work]
+home/                       ~/
+private/home/               ~/
+scripts/link                ~/.local/bin/dotlink
