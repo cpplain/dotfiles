@@ -1,4 +1,15 @@
-# source (repo-relative)    target    [when:personal|when:work]
-home/                       ~/
-private/home/               ~/
+# source (repo-relative)    target [when:personal|when:work]
+bash/                       ~/
+claude/                     ~/.claude/
+fish/                       ~/.config/fish/
+ghostty/                    ~/.config/ghostty/
+git/                        ~/.config/git/
+homebrew/                   ~/.config/homebrew/
+nvim/                       ~/.config/nvim/
+private/fish/               ~/.config/fish/
+private/git/                ~/.config/git/
+private/homebrew/           ~/.config/homebrew/
+private/zsh/                ~/
+rubocop/                    ~/.config/rubocop/
 scripts/link                ~/.local/bin/dotlink
+zsh/                        ~/
