@@ -1,10 +1,8 @@
-[marketplace]
-default_skills_installs_purged = true
-official_marketplace_auto_installed = true
-
-[[marketplace.sources]]
-name = "xAI Official"
-git = "https://github.com/xai-org/plugin-marketplace.git"
+[mcp_servers.xcode]
+command = "xcrun"
+args = ["mcpbridge"]
+enabled = true
+startup_timeout_sec = 90
 
 [ui]
 max_thoughts_width = 120
@@ -14,14 +12,22 @@ compact_mode = false
 permission_mode = "always-approve"
 theme = "auto"
 
-[mcp_servers.xcode]
-command = "xcrun"
-args = ["mcpbridge"]
-enabled = true
-startup_timeout_sec = 90
-
 [cli]
 installer = "internal"
 
 [features]
 lsp_tools = true
+
+[plugins]
+disabled = ["user/b21d5444/lsp-config"]
+
+[compat.claude]
+skills = false
+rules = false
+agents = false
+mcps = false
+hooks = false
+
+[marketplace]
+default_skills_installs_purged = true
+official_marketplace_auto_installed = true

@@ -8,10 +8,13 @@ git/                             ~/.config/git/
 grok/                            ~/.grok/
 homebrew/                        ~/.config/homebrew/
 nvim/                            ~/.config/nvim/
+plugins/lsp-config/.lsp.json     ~/.grok/lsp.json
 private/fish/                    ~/.config/fish/
 private/git/                     ~/.config/git/
 private/homebrew/                ~/.config/homebrew/
 private/zsh/                     ~/
 rubocop/                         ~/.config/rubocop/
 scripts/link                     ~/.local/bin/dotlink
+skills/                          ~/.claude/skills/
+skills/                          ~/.grok/skills/
 zsh/                             ~/
