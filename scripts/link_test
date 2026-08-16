@@ -165,6 +165,26 @@ echo priv >"$HOME_T/.config/privfile"
 run adopt private/home "$HOME_T/.config/privfile" >/dev/null
 [[ -L $HOME_T/.config/privfile ]] || fail "adopt private/home should leave a symlink"
 [[ -f $ROOT/private/home/.config/privfile ]] || fail "adopt private/home should move into repo"
+
+# Source whose target is not ~/: dest is relative to the mapped target.
+mkdir -p "$ROOT/grok" "$HOME_T/.grok/docs"
+echo cfg >"$HOME_T/.grok/config.toml"
+echo md >"$HOME_T/.grok/docs/user.md"
+write_manifest <<'EOF'
+home/                       ~/
+private/home/               ~/
+grok/                       ~/.grok/
+EOF
+run adopt grok "$HOME_T/.grok/config.toml" >/dev/null
+[[ -L $HOME_T/.grok/config.toml ]] || fail "adopt grok should leave a symlink"
+[[ -f $ROOT/grok/config.toml ]] || fail "adopt grok should strip the target prefix"
+[[ -e $ROOT/grok/.grok/config.toml ]] && fail "adopt grok must not nest .grok under grok/"
+run adopt grok "$HOME_T/.grok/docs/user.md" >/dev/null
+[[ -f $ROOT/grok/docs/user.md ]] || fail "adopt grok should keep path under the target"
+
+echo stray >"$HOME_T/stray"
+out=$(run adopt grok "$HOME_T/stray" 2>&1) && fail "adopt outside target should fail" || true
+assert_contains "$out" "is not inside" "adopt rejects file outside source target"
 print "ok: adopt"
 
 # --- missing private/home ---

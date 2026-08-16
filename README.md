@@ -29,17 +29,23 @@ cd ~/git/dotfiles
 
 ## Link Management
 
-Symlinks are managed by `scripts/link` from the `links` manifest. Each regular file under `home/` and `private/home/` is linked to the same path under `~`. Directory prefixes expand to file-level links so public, private, and local files can share a directory. `create` also links `scripts/link` to `~/.local/bin/dotlink`; the `lna` / `lnc` / `lnp` / `lns` fish abbreviations call that.
+Symlinks are managed by `scripts/link` from the `links` manifest. Each row is `source  target  [when:personal|when:work]`.
+
+A directory source (trailing `/`, or an existing directory) expands to one link per regular file. The path under `source` is appended to `target` (`nvim/init.lua` → `~/.config/nvim/init.lua`). Public and private trees can share a target (`fish/` and `private/fish/` both map to `~/.config/fish/`). An explicit file row maps one file and overrides the walk for that source, even when `when:` skips the row.
+
+`create` also links `scripts/link` to `~/.local/bin/dotlink`; the `lna` / `lnc` / `lnp` / `lns` fish abbreviations call that.
 
 ```bash
-./scripts/link create                          # Create or refresh links
-./scripts/link create -n                       # Dry-run
-./scripts/link status                          # Show link status
-./scripts/link adopt home ~/.config/app/file   # Add a file to home/
-./scripts/link adopt private/home ~/.ssh/config
-./scripts/link prune                           # Remove leftover repo-pointing symlinks
-./scripts/link prune -n                        # Dry-run prune
+./scripts/link create                           # Create or refresh links
+./scripts/link create -n                        # Dry-run
+./scripts/link status                           # Show link status
+./scripts/link adopt grok ~/.grok/config.toml   # → grok/config.toml
+./scripts/link adopt nvim ~/.config/nvim/init.lua
+./scripts/link prune                            # Remove leftover repo-pointing symlinks
+./scripts/link prune -n                         # Dry-run prune
 ```
+
+`adopt` requires `<src>` to already be a directory source in `links`. The file must live under that source's target; it is stored with the path relative to the target, not relative to `~`.
 
 `create` applies nothing if any target is a regular file or a symlink that does not already point into this repo. `create` does not remove leftovers.
 
@@ -47,7 +53,7 @@ Symlinks are managed by `scripts/link` from the `links` manifest. Each regular f
 
 `prune` removes leftover symlinks only. Planned `broken` or `wrong` rows are left for `create` / `status`.
 
-Optional `when:personal` / `when:work` on a manifest row links that source only when `~/.dotfilesenv` matches. Explicit file rows override the directory walk for the same source, so an env-specific file under `home/` is not linked on the other machine.
+Optional `when:personal` / `when:work` on a manifest row links that source only when `~/.dotfilesenv` matches. Explicit file rows override the directory walk for the same source, so `claude/settings.personal.json` is not linked as `~/.claude/settings.json` on a work machine.
 
 A leftover Homebrew `lnk` from the previous linker is not removed by `brew bundle`. Use `brew bundle cleanup --global` (`bbc`).
 

@@ -4,8 +4,11 @@
 # Manifest (`links`): whitespace-separated
 #   source  target  [when:personal|when:work]
 # A trailing slash, or an existing directory, expands to one link per
-# regular file. An explicit file row overrides the walk for that source
-# even when the row is skipped by when:.
+# regular file. The path under source is appended to target.
+# An explicit file row overrides the walk for that source even when
+# the row is skipped by when:.
+# adopt dest is relative to the source's target, not ~. <src> must
+# already be a directory row in the manifest.
 #
 # create classifies every planned target, then applies only if none fail.
 # An existing symlink is replaced only when it already points into this repo.
@@ -49,8 +52,13 @@ Commands:
                       Lines: ok, missing, wrong, broken, leftover.
                       leftover = points into the repo but is not in the plan.
                       Exits 1 when any planned row is not ok or a leftover exists.
-  adopt <src> <file>  Move a file into <src> (home or private/home) and link it.
-                      <file> is a path in ~ (absolute, ~/, or relative to PWD).
+  adopt <src> <file>  Move <file> into a manifest directory source
+                      and link it back. <src> must already be a
+                      directory row in links. Dest is relative to
+                      that row's target, not ~.
+                      Example: adopt grok ~/.grok/config.toml
+                      stores grok/config.toml.
+                      <file>: absolute, ~/, or relative to PWD.
   prune               Remove leftover repo-pointing symlinks. Does not touch
                       planned broken or wrong rows.
 
@@ -653,18 +661,27 @@ cmd_prune() {
     return 0
 }
 
-is_manifest_dir_src() {
+# Sets REPLY to the absolute target directory for a dir source.
+# Dies if the same source maps to two different targets.
+manifest_dir_target() {
     local want=$1
-    local i spec
+    local i spec t
+    local found=""
     want=$(normalize_src "$want")
     for (( i = 1; i <= $#MAN_SRC; i++ )); do
         [[ $MAN_KIND[i] == dir ]] || continue
         spec=$(normalize_src "$MAN_SRC[i]")
-        if [[ $spec == $want ]]; then
-            return 0
+        [[ $spec == $want ]] || continue
+        t=$(abs_path "$MAN_TGT[i]")
+        t=${t%/}
+        if [[ -n $found && $found != $t ]]; then
+            die "$want maps to multiple targets in $MANIFEST"
         fi
+        found=$t
     done
-    return 1
+    [[ -n $found ]] || return 1
+    REPLY=$found
+    return 0
 }
 
 cmd_adopt() {
@@ -674,7 +691,8 @@ cmd_adopt() {
 
     parse_manifest
     source_dir=$(normalize_src "$source_dir")
-    is_manifest_dir_src "$source_dir" || die "$source_dir is not a directory source in $MANIFEST"
+    manifest_dir_target "$source_dir" || die "$source_dir is not a directory source in $MANIFEST"
+    local abs_tgt=$REPLY
 
     file=$(resolve_home_file "$file")
     if [[ ! -e $file ]]; then
@@ -686,11 +704,11 @@ cmd_adopt() {
     if [[ -d $file ]]; then
         die "$(display_path "$file") is a directory; adopt a single file"
     fi
-    if [[ $file != $HOME_DIR/* ]]; then
-        die "$(display_path "$file") is not inside $(display_path "$HOME_DIR")"
+    if [[ $file != $abs_tgt/* ]]; then
+        die "$(display_path "$file") is not inside $(display_path "$abs_tgt") (target of $source_dir)"
     fi
 
-    local rel=${file#$HOME_DIR/}
+    local rel=${file#$abs_tgt/}
     local dest=$REPO/$source_dir/$rel
     if [[ -e $dest || -L $dest ]]; then
         die "destination already exists: ${dest#$REPO/}"
