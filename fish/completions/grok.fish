@@ -77,8 +77,8 @@ complete -c grok -n "__fish_grok_needs_command" -l restore-code -d 'Restore the 
 complete -c grok -n "__fish_grok_needs_command" -l no-plan -d 'Disable plan mode'
 complete -c grok -n "__fish_grok_needs_command" -l no-subagents -d 'Disable subagent spawning'
 complete -c grok -n "__fish_grok_needs_command" -l no-ask-user -d 'Disable structured question prompts from the agent'
-complete -c grok -n "__fish_grok_needs_command" -l experimental-memory -d 'Enable cross-session memory'
-complete -c grok -n "__fish_grok_needs_command" -l no-memory -d 'Disable cross-session memory for this session'
+complete -c grok -n "__fish_grok_needs_command" -l experimental-memory -d 'Legacy compatibility flag for enabling cross-session memory'
+complete -c grok -n "__fish_grok_needs_command" -l no-memory -d 'Legacy compatibility flag for disabling cross-session memory'
 complete -c grok -n "__fish_grok_needs_command" -l disable-web-search -d 'Disable web search and web fetch tools'
 complete -c grok -n "__fish_grok_needs_command" -l no-wait-for-background -d 'Exit as soon as the first agent turn ends, without waiting for pending background bash/monitor tasks or background subagents (headless only). Default for all `grok -p` runs is to wait (up to `--background-wait-timeout`) so eval harnesses see full task completion. Use this for fast scripts that only need the first turn\'s text. Does not wait for server-side auto-wake output or persistent monitors (those hit the timeout)'
 complete -c grok -n "__fish_grok_needs_command" -l terminal -d 'Enable terminal support for the agent'
@@ -116,6 +116,8 @@ complete -c grok -n "__fish_grok_needs_command" -a "version" -d 'Print version i
 complete -c grok -n "__fish_grok_needs_command" -a "v" -d 'Print version information'
 complete -c grok -n "__fish_grok_needs_command" -a "completions" -d 'Generate shell completion scripts (bash, zsh, fish, powershell, ...)'
 complete -c grok -n "__fish_grok_needs_command" -a "worktree" -d 'Manage git worktrees'
+complete -c grok -n "__fish_grok_needs_command" -a "du" -d 'Show what the grok home (~/.grok) uses on disk'
+complete -c grok -n "__fish_grok_needs_command" -a "disk-usage" -d 'Show what the grok home (~/.grok) uses on disk'
 complete -c grok -n "__fish_grok_needs_command" -a "workspace" -d 'Expose this workspace to the Computer Hub (via the leader)'
 complete -c grok -n "__fish_grok_needs_command" -a "dashboard" -d 'Open the Agent Dashboard view at startup'
 complete -c grok -n "__fish_grok_needs_command" -a "help" -d 'Print this message or the help of the given subcommand(s)'
@@ -453,6 +455,7 @@ complete -c grok -n "__fish_grok_using_subcommand trace" -l json -d 'Emit machin
 complete -c grok -n "__fish_grok_using_subcommand trace" -l debug -d 'Enable debug logging'
 complete -c grok -n "__fish_grok_using_subcommand trace" -s h -l help -d 'Print help'
 complete -c grok -n "__fish_grok_using_subcommand update" -l version -d 'Install a specific version (e.g. 0.1.150 or 0.1.151-alpha.2)' -r
+complete -c grok -n "__fish_grok_using_subcommand update" -l trigger -d 'Internal: what spawned this `grok update` (`user_command`, `auto_background`, `leader_converge`). Hidden' -r
 complete -c grok -n "__fish_grok_using_subcommand update" -l leader-socket -d 'Use a custom leader socket path instead of the default `~/.grok/leader.sock`' -r -F
 complete -c grok -n "__fish_grok_using_subcommand update" -l debug-file -d 'Write debug logs to FILE' -r -F
 complete -c grok -n "__fish_grok_using_subcommand update" -l check -d 'Check for updates without installing'
@@ -461,6 +464,7 @@ complete -c grok -n "__fish_grok_using_subcommand update" -l force-reinstall -d 
 complete -c grok -n "__fish_grok_using_subcommand update" -l alpha -d 'Switch to the alpha release channel (faster updates, may have bugs)'
 complete -c grok -n "__fish_grok_using_subcommand update" -l stable -d 'Switch to the stable release channel (default, weekly releases)'
 complete -c grok -n "__fish_grok_using_subcommand update" -l enterprise -d 'Switch to the enterprise release channel'
+complete -c grok -n "__fish_grok_using_subcommand update" -l auto -d 'Internal compat alias for `--trigger=auto_background` (older parents still spawn children with it)'
 complete -c grok -n "__fish_grok_using_subcommand update" -l debug -d 'Enable debug logging'
 complete -c grok -n "__fish_grok_using_subcommand update" -s h -l help -d 'Print help'
 complete -c grok -n "__fish_grok_using_subcommand version" -l leader-socket -d 'Use a custom leader socket path instead of the default `~/.grok/leader.sock`' -r -F
@@ -485,7 +489,7 @@ complete -c grok -n "__fish_grok_using_subcommand worktree; and not __fish_seen_
 complete -c grok -n "__fish_grok_using_subcommand worktree; and not __fish_seen_subcommand_from list ls show rm gc db help" -f -a "ls" -d 'List tracked worktrees'
 complete -c grok -n "__fish_grok_using_subcommand worktree; and not __fish_seen_subcommand_from list ls show rm gc db help" -f -a "show" -d 'Show details for a specific worktree'
 complete -c grok -n "__fish_grok_using_subcommand worktree; and not __fish_seen_subcommand_from list ls show rm gc db help" -f -a "rm" -d 'Remove worktrees'
-complete -c grok -n "__fish_grok_using_subcommand worktree; and not __fish_seen_subcommand_from list ls show rm gc db help" -f -a "gc" -d 'Garbage-collect orphaned/stale worktrees'
+complete -c grok -n "__fish_grok_using_subcommand worktree; and not __fish_seen_subcommand_from list ls show rm gc db help" -f -a "gc" -d 'Remove expired worktrees, keeping any whose work would not survive'
 complete -c grok -n "__fish_grok_using_subcommand worktree; and not __fish_seen_subcommand_from list ls show rm gc db help" -f -a "db" -d 'Database maintenance'
 complete -c grok -n "__fish_grok_using_subcommand worktree; and not __fish_seen_subcommand_from list ls show rm gc db help" -f -a "help" -d 'Print this message or the help of the given subcommand(s)'
 complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from list" -l repo -r
@@ -514,11 +518,11 @@ complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subc
 complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from rm" -l dry-run
 complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from rm" -l debug -d 'Enable debug logging'
 complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from rm" -s h -l help -d 'Print help'
-complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from gc" -l max-age -r
+complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from gc" -l max-age -d 'Expire worktrees idle longer than this, e.g. `7d`. Without it, nothing expires' -r
 complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from gc" -l leader-socket -d 'Use a custom leader socket path instead of the default `~/.grok/leader.sock`' -r -F
 complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from gc" -l debug-file -d 'Write debug logs to FILE' -r -F
-complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from gc" -l dry-run
-complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from gc" -s f -l force
+complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from gc" -l dry-run -d 'Report what would be removed without removing it'
+complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from gc" -s f -l force -d 'Skip the live-process and protected-path guards. This does not override the safety check; use `grok worktree rm` for that'
 complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from gc" -l debug -d 'Enable debug logging'
 complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from gc" -s h -l help -d 'Print help'
 complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from db" -l leader-socket -d 'Use a custom leader socket path instead of the default `~/.grok/leader.sock`' -r -F
@@ -532,9 +536,19 @@ complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subc
 complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from help" -f -a "list" -d 'List tracked worktrees'
 complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from help" -f -a "show" -d 'Show details for a specific worktree'
 complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from help" -f -a "rm" -d 'Remove worktrees'
-complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from help" -f -a "gc" -d 'Garbage-collect orphaned/stale worktrees'
+complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from help" -f -a "gc" -d 'Remove expired worktrees, keeping any whose work would not survive'
 complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from help" -f -a "db" -d 'Database maintenance'
 complete -c grok -n "__fish_grok_using_subcommand worktree; and __fish_seen_subcommand_from help" -f -a "help" -d 'Print this message or the help of the given subcommand(s)'
+complete -c grok -n "__fish_grok_using_subcommand du" -l leader-socket -d 'Use a custom leader socket path instead of the default `~/.grok/leader.sock`' -r -F
+complete -c grok -n "__fish_grok_using_subcommand du" -l debug-file -d 'Write debug logs to FILE' -r -F
+complete -c grok -n "__fish_grok_using_subcommand du" -l json -d 'Emit machine-readable JSON output'
+complete -c grok -n "__fish_grok_using_subcommand du" -l debug -d 'Enable debug logging'
+complete -c grok -n "__fish_grok_using_subcommand du" -s h -l help -d 'Print help'
+complete -c grok -n "__fish_grok_using_subcommand disk-usage" -l leader-socket -d 'Use a custom leader socket path instead of the default `~/.grok/leader.sock`' -r -F
+complete -c grok -n "__fish_grok_using_subcommand disk-usage" -l debug-file -d 'Write debug logs to FILE' -r -F
+complete -c grok -n "__fish_grok_using_subcommand disk-usage" -l json -d 'Emit machine-readable JSON output'
+complete -c grok -n "__fish_grok_using_subcommand disk-usage" -l debug -d 'Enable debug logging'
+complete -c grok -n "__fish_grok_using_subcommand disk-usage" -s h -l help -d 'Print help'
 complete -c grok -n "__fish_grok_using_subcommand workspace; and not __fish_seen_subcommand_from start pause resume stop restart status list help" -l leader-socket -d 'Use a custom leader socket path instead of the default `~/.grok/leader.sock`' -r -F
 complete -c grok -n "__fish_grok_using_subcommand workspace; and not __fish_seen_subcommand_from start pause resume stop restart status list help" -l debug-file -d 'Write debug logs to FILE' -r -F
 complete -c grok -n "__fish_grok_using_subcommand workspace; and not __fish_seen_subcommand_from start pause resume stop restart status list help" -l debug -d 'Enable debug logging'
@@ -606,29 +620,30 @@ complete -c grok -n "__fish_grok_using_subcommand dashboard" -l leader-socket -d
 complete -c grok -n "__fish_grok_using_subcommand dashboard" -l debug-file -d 'Write debug logs to FILE' -r -F
 complete -c grok -n "__fish_grok_using_subcommand dashboard" -l debug -d 'Enable debug logging'
 complete -c grok -n "__fish_grok_using_subcommand dashboard" -s h -l help -d 'Print help (see more with \'--help\')'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "agent" -d 'Run Grok without the interactive UI'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "inspect" -d 'Show the configuration Grok discovers for this directory'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "doctor" -d 'Check terminal, clipboard, color, and input support without starting Grok'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "leader" -d 'Manage running leader processes'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "logout" -d 'Sign out and clear cached credentials'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "login" -d 'Sign in to Grok'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "mcp" -d 'Manage MCP server configurations'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "plugin" -d 'Manage plugins and marketplace sources'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "memory" -d 'Manage cross-session memory'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "models" -d 'List available models and exit'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "sessions" -d 'List, search, or restore sessions'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "setup" -d 'Fetch and install managed configuration'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "share" -d 'Share a session and print the share URL'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "wrap" -d 'Run any command with local clipboard support (OSC 52 → system clipboard)'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "export" -d 'Export a session transcript as Markdown'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "trace" -d 'Export or upload session trace data'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "update" -d 'Check for updates or install a specific version'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "version" -d 'Print version information'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "completions" -d 'Generate shell completion scripts (bash, zsh, fish, powershell, ...)'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "worktree" -d 'Manage git worktrees'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "workspace" -d 'Expose this workspace to the Computer Hub (via the leader)'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "dashboard" -d 'Open the Agent Dashboard view at startup'
-complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree workspace dashboard help" -f -a "help" -d 'Print this message or the help of the given subcommand(s)'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "agent" -d 'Run Grok without the interactive UI'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "inspect" -d 'Show the configuration Grok discovers for this directory'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "doctor" -d 'Check terminal, clipboard, color, and input support without starting Grok'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "leader" -d 'Manage running leader processes'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "logout" -d 'Sign out and clear cached credentials'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "login" -d 'Sign in to Grok'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "mcp" -d 'Manage MCP server configurations'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "plugin" -d 'Manage plugins and marketplace sources'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "memory" -d 'Manage cross-session memory'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "models" -d 'List available models and exit'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "sessions" -d 'List, search, or restore sessions'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "setup" -d 'Fetch and install managed configuration'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "share" -d 'Share a session and print the share URL'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "wrap" -d 'Run any command with local clipboard support (OSC 52 → system clipboard)'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "export" -d 'Export a session transcript as Markdown'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "trace" -d 'Export or upload session trace data'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "update" -d 'Check for updates or install a specific version'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "version" -d 'Print version information'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "completions" -d 'Generate shell completion scripts (bash, zsh, fish, powershell, ...)'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "worktree" -d 'Manage git worktrees'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "du" -d 'Show what the grok home (~/.grok) uses on disk'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "workspace" -d 'Expose this workspace to the Computer Hub (via the leader)'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "dashboard" -d 'Open the Agent Dashboard view at startup'
+complete -c grok -n "__fish_grok_using_subcommand help; and not __fish_seen_subcommand_from agent inspect doctor leader logout login mcp plugin memory models sessions setup share wrap export trace update version completions worktree du workspace dashboard help" -f -a "help" -d 'Print this message or the help of the given subcommand(s)'
 complete -c grok -n "__fish_grok_using_subcommand help; and __fish_seen_subcommand_from agent" -f -a "stdio" -d 'Run the agent over stdio'
 complete -c grok -n "__fish_grok_using_subcommand help; and __fish_seen_subcommand_from agent" -f -a "headless" -d 'Run the agent headlessly over the Grok WebSocket relay'
 complete -c grok -n "__fish_grok_using_subcommand help; and __fish_seen_subcommand_from agent" -f -a "serve" -d 'Run the agent as a WebSocket server'
@@ -660,7 +675,7 @@ complete -c grok -n "__fish_grok_using_subcommand help; and __fish_seen_subcomma
 complete -c grok -n "__fish_grok_using_subcommand help; and __fish_seen_subcommand_from worktree" -f -a "list" -d 'List tracked worktrees'
 complete -c grok -n "__fish_grok_using_subcommand help; and __fish_seen_subcommand_from worktree" -f -a "show" -d 'Show details for a specific worktree'
 complete -c grok -n "__fish_grok_using_subcommand help; and __fish_seen_subcommand_from worktree" -f -a "rm" -d 'Remove worktrees'
-complete -c grok -n "__fish_grok_using_subcommand help; and __fish_seen_subcommand_from worktree" -f -a "gc" -d 'Garbage-collect orphaned/stale worktrees'
+complete -c grok -n "__fish_grok_using_subcommand help; and __fish_seen_subcommand_from worktree" -f -a "gc" -d 'Remove expired worktrees, keeping any whose work would not survive'
 complete -c grok -n "__fish_grok_using_subcommand help; and __fish_seen_subcommand_from worktree" -f -a "db" -d 'Database maintenance'
 complete -c grok -n "__fish_grok_using_subcommand help; and __fish_seen_subcommand_from workspace" -f -a "start" -d 'Start (or update) the workspace→hub exposure'
 complete -c grok -n "__fish_grok_using_subcommand help; and __fish_seen_subcommand_from workspace" -f -a "pause" -d 'Drain and disconnect from the hub, keeping the exposure warm'
