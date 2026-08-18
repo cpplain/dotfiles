@@ -20,7 +20,7 @@ This repo contains my configuration files and related scripts. Feel free to use 
 
 ```bash
 # Fresh system bootstrap (installs Homebrew and configures everything)
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/cpplain/dotfiles/main/bootstrap.sh)"
+zsh -c "$(curl -fsSL https://raw.githubusercontent.com/cpplain/dotfiles/main/bootstrap.sh)"
 
 # Or if you already have the repo cloned
 cd ~/git/dotfiles

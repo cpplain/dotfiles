@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 # Bootstrap script for fresh macOS installation
 # This script sets up the dotfiles repository and configuration management
 
@@ -24,7 +24,7 @@ echo
 
 # Ask for machine role
 while true; do
-    read -p "Machine role (personal/work)? [$DEFAULT_DOTFILES_ENV] " DOTFILES_ENV
+    read "DOTFILES_ENV?Machine role (personal/work)? [$DEFAULT_DOTFILES_ENV] "
     DOTFILES_ENV=${DOTFILES_ENV:-$DEFAULT_DOTFILES_ENV}
     if [[ "$DOTFILES_ENV" == "personal" || "$DOTFILES_ENV" == "work" ]]; then
         break
@@ -34,7 +34,7 @@ done
 echo
 
 # Ask for dotfiles directory
-read -p "Where should dotfiles be cloned? [$DEFAULT_DOTFILES_DIR] " DOTFILES_DIR
+read "DOTFILES_DIR?Where should dotfiles be cloned? [$DEFAULT_DOTFILES_DIR] "
 DOTFILES_DIR=${DOTFILES_DIR:-$DEFAULT_DOTFILES_DIR}
 echo
 
@@ -43,7 +43,7 @@ echo "Configuration:"
 echo "  Machine role: $DOTFILES_ENV"
 echo "  Dotfiles directory: $DOTFILES_DIR"
 echo
-read -p "Continue? [Y/n] " -n 1 -r
+read -k 1 -r "REPLY?Continue? [Y/n] "
 echo
 if [[ ! $REPLY =~ ^[Yy]$ ]] && [[ ! -z $REPLY ]]; then
     echo "Bootstrap cancelled."
