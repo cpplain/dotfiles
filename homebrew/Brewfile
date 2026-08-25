@@ -60,6 +60,7 @@ cask "font-jetbrains-mono"
 cask "font-sf-mono"
 cask "font-symbols-only-nerd-font"
 cask "ghostty"
+cask "grok-build"
 
 # Mac App Store
 mas "1Password for Safari", id: 1569813296
@@ -72,7 +73,6 @@ if dotfiles_env == "personal"
   cask "arq"
   cask "dropbox"
   cask "fission"
-  cask "grok-build"
   cask "powerphotos"
   cask "sf-symbols"
 

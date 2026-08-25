@@ -6,11 +6,14 @@ fish/                                ~/.config/fish/
 ghostty/                             ~/.config/ghostty/
 git/                                 ~/.config/git/
 grok/                                ~/.grok/
+grok/config.personal.toml            ~/.grok/config.toml when:personal
 homebrew/                            ~/.config/homebrew/
 nvim/                                ~/.config/nvim/
 plugins/lsp-config/.lsp.json         ~/.grok/lsp.json
 private/claude/settings.work.json    ~/.claude/settings.json when:work
 private/fish/                        ~/.config/fish/
+private/grok/bedrock-token           ~/.grok/bedrock-token when:work
+private/grok/config.work.toml        ~/.grok/config.toml when:work
 private/git/                         ~/.config/git/
 private/homebrew/                    ~/.config/homebrew/
 private/zsh/                         ~/
