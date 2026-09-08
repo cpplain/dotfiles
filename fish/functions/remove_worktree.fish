@@ -1,44 +1,69 @@
-function remove_worktree --description "Remove a git worktree and its backup directory"
-    set -l options h/help
+function remove_worktree --description "Remove a git worktree"
+    set -l options h/help r/repo=
     if not argparse $options -- $argv
         return 1
     end
 
-    if test (count $argv) -eq 0
-        echo "Usage: remove_worktree <worktree-name-or-path>"
-        echo "Example: remove_worktree myrepo-feature-branch"
-        echo "         remove_worktree ~/git/worktrees/myrepo-feature-branch"
+    if set -q _flag_help; or test (count $argv) -eq 0
+        echo "Usage: remove_worktree [--repo|-r <path>] <worktree-name-or-path>"
+        echo "Examples:"
+        echo "  remove_worktree feature/new-widget"
+        echo "  remove_worktree ~/git/worktrees/myrepo/feature/new-widget"
+        echo "  remove_worktree --repo ~/git/work/myrepo feature/new-widget"
         return 1
     end
 
-    if test -d "$argv[1]"
-        set repo_root (git -C "$argv[1]" rev-parse --show-toplevel 2>/dev/null)
-        or begin
-            echo "Error: Not a git worktree: $argv[1]"
-            return 1
-        end
-        set worktree_name (basename "$argv[1]")
-    else
-        set repo_root (git rev-parse --show-toplevel 2>/dev/null)
-        or begin
-            echo "Error: Not in a git repository"
-            return 1
-        end
-        set worktree_name $argv[1]
+    set query $argv[1]
+    if test -d $query
+        set query (path resolve $query)
     end
-    set target_worktree ""
+
+    if set -q _flag_repo
+        set lookup $_flag_repo
+    else if test -d $query
+        set lookup $query
+    else
+        set lookup .
+    end
+
+    set repo_root (git -C $lookup rev-parse --show-toplevel 2>/dev/null)
+    or begin
+        if set -q _flag_repo
+            echo "Error: Not a git repository: $_flag_repo"
+        else if test -d $query
+            echo "Error: Not a git worktree: $query"
+        else
+            echo "Error: Not in a git repository"
+        end
+        return 1
+    end
+
+    set git_common (git -C $repo_root rev-parse --path-format=absolute --git-common-dir)
+    set main_root (dirname $git_common)
+    set repo_name (basename $main_root)
+    set prefix ~/git/worktrees/$repo_name/
+
+    set -l matches
     set main_worktree ""
+    set -l available
 
     for line in (git -C $repo_root worktree list --porcelain | grep "^worktree ")
         set path (string replace "worktree " "" $line)
-        set name (basename $path)
 
         if test -d "$path/.git"
             set main_worktree $path
         end
 
-        if test "$name" = "$worktree_name"
-            set target_worktree $path
+        if test "$path" != "$main_worktree"
+            if string match -q -- "$prefix*" $path
+                set -a available (string replace -- $prefix "" $path)
+            else
+                set -a available $path
+            end
+        end
+
+        if test "$path" = "$query"; or string match -q -- "*/$query" $path
+            set -a matches $path
         end
     end
 
@@ -47,15 +72,26 @@ function remove_worktree --description "Remove a git worktree and its backup dir
         return 1
     end
 
-    if test -z "$target_worktree"
-        echo "Error: Worktree '$worktree_name' not found"
-        echo "Available worktrees:"
-        for line in (git -C $repo_root worktree list --porcelain | grep "^worktree ")
-            set path (string replace "worktree " "" $line)
-            echo "  - "(basename $path)
+    if test (count $matches) -eq 0
+        echo "Error: Worktree '$argv[1]' not found"
+        if test (count $available) -gt 0
+            echo "Available worktrees:"
+            for name in $available
+                echo "  - $name"
+            end
         end
         return 1
     end
+
+    if test (count $matches) -gt 1
+        echo "Error: '$argv[1]' matches multiple worktrees:"
+        for path in $matches
+            echo "  - $path"
+        end
+        return 1
+    end
+
+    set target_worktree $matches[1]
 
     if test "$target_worktree" = "$main_worktree"
         echo "Error: Cannot remove main worktree"
@@ -70,5 +106,13 @@ function remove_worktree --description "Remove a git worktree and its backup dir
         return 1
     end
 
-    echo "Successfully removed worktree: $worktree_name"
+    set parent (dirname $target_worktree)
+    set stop ~/git/worktrees
+    while test "$parent" != "$stop"; and test "$parent" != /; and test -d "$parent"
+        rmdir $parent 2>/dev/null
+        or break
+        set parent (dirname $parent)
+    end
+
+    echo "Successfully removed worktree: $target_worktree"
 end
