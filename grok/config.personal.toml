@@ -6,7 +6,6 @@ startup_timeout_sec = 90
 
 [ui]
 max_thoughts_width = 120
-fork_secondary_model = "grok-4.5"
 yolo = false
 compact_mode = false
 permission_mode = "always-approve"
