@@ -81,6 +81,11 @@ function add_worktree --description "Add a git worktree with standardized naming
     echo "To navigate to it: cd $worktree_path"
     echo "To remove it later: remove_worktree $worktree_path"
 
+    set link_lsp ~/.grok/hooks/link-ignored-lsp.sh
+    if test -x $link_lsp
+        $link_lsp $worktree_path
+    end
+
     if test -n "$files_to_copy"
         echo ""
         echo "Copying files to new worktree..."

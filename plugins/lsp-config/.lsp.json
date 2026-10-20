@@ -6,7 +6,9 @@
       ".sh": "shellscript",
       ".bash": "shellscript",
       ".zsh": "shellscript",
-      ".ksh": "shellscript"
+      ".ksh": "shellscript",
+      ".inc": "shellscript",
+      ".command": "shellscript"
     }
   },
   "css-language-server": {
@@ -28,7 +30,8 @@
     "command": "vscode-html-language-server",
     "args": ["--stdio"],
     "extensionToLanguage": {
-      ".html": "html"
+      ".html": "html",
+      ".htm": "html"
     }
   },
   "lua-language-server": {
@@ -64,7 +67,8 @@
     "extensionToLanguage": {
       ".rb": "ruby",
       ".rake": "ruby",
-      ".gemspec": "ruby"
+      ".gemspec": "ruby",
+      ".ru": "ruby"
     }
   },
   "sourcekit-lsp": {

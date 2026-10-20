@@ -61,5 +61,6 @@ git worktree list
 - Worktrees are always created under `~/git/worktrees/` regardless of where the source repo lives
 - Repo name comes from the main clone, even when the command is run from a linked worktree
 - Scripts check for existing local branch, then remote, then create new
+- When `.grok/lsp.json` is gitignored in the main clone, `add_worktree` and Grok session start symlink it into the new tree. Do not `--copy` that file.
 - Use `git worktree remove --force <path>` if uncommitted changes block removal
 - Relocate an existing worktree with `git worktree move <path> ~/git/worktrees/<repo>/<branch>`
