@@ -14,6 +14,7 @@ fork_secondary_model = "grok-4.6"
 
 [cli]
 installer = "internal"
+auto_update = false
 
 [features]
 lsp_tools = true
