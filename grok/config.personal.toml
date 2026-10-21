@@ -10,6 +10,7 @@ yolo = false
 compact_mode = false
 permission_mode = "always-approve"
 theme = "auto"
+fork_secondary_model = "grok-4.6"
 
 [cli]
 installer = "internal"
@@ -30,3 +31,7 @@ hooks = false
 [marketplace]
 default_skills_installs_purged = true
 official_marketplace_auto_installed = true
+
+[models]
+default = "grok-4.6"
+default_reasoning_effort = "high"
