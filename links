@@ -1,5 +1,6 @@
 # source (repo-relative)             target [when:personal|when:work]
 bash/                                ~/
+claude/                              ~/.claude/
 fish/                                ~/.config/fish/
 ghostty/                             ~/.config/ghostty/
 git/                                 ~/.config/git/
@@ -13,20 +14,14 @@ rubocop/                             ~/.config/rubocop/
 scripts/link                         ~/.local/bin/dotlink
 zsh/                                 ~/
 
-#
 # personal
-#
-
 # claude/settings.personal.json        ~/.claude/settings.json when:personal
 grok/                                ~/.grok/ when:personal
 grok/config.personal.toml            ~/.grok/config.toml when:personal
 skills/                              ~/.grok/skills/ when:personal
 
-#
 # work
-#
-
-claude/                              ~/.claude/ when:work
+private/claude/                      ~/.claude/ when:work
 private/claude/settings.work.json    ~/.claude/settings.json when:work
 # private/grok/bedrock-token           ~/.grok/bedrock-token when:work
 # private/grok/config.work.toml        ~/.grok/config.toml when:work
