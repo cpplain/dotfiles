@@ -4,7 +4,7 @@ description: Claude Code-specific reference for writing and editing skills — f
 argument-hint: "[skill-name]"
 metadata:
   author: cpplain
-  version: "2.0"
+  version: "2.1"
 ---
 
 # Skill Builder
@@ -20,6 +20,7 @@ Read these before writing the parts they cover. They are kept out of this file o
 - [references/frontmatter.md](references/frontmatter.md) — every field, its values, and Claude Code vs. Agent Skills spec constraints
 - [references/dynamic-content.md](references/dynamic-content.md) — argument and path substitutions, shell injection, extended-thinking keyword
 - [references/examples.md](references/examples.md) — complete example skills, including skill-scoped hooks
+- [references/review-checklist.md](references/review-checklist.md) — pass/fail items and process rules for reviewing a skill
 
 ## Structure and locations
 
@@ -99,6 +100,10 @@ Control whether Claude may invoke skills with permission rules in `settings.json
 - `Skill` in deny — disable the Skill tool entirely
 
 The `disableSkillShellExecution` setting disables shell injection for user, project, plugin, and added-directory skills (bundled and managed skills are unaffected).
+
+## Review
+
+Review a skill only against [references/review-checklist.md](references/review-checklist.md) plus the skill's own `references/review-checklist.md` if present, and follow its process rules. Reviews report checklist failures with fixes, nothing open-ended, and end when every item passes.
 
 ## Validate and test
 
