@@ -30,7 +30,7 @@
   },
   "skillOverrides": {
     "anthropic-skills:deep-research": "user-invocable-only",
-    "anthropic-skills:skill-creator": "name-only",
+    "anthropic-skills:skill-creator": "off",
     "anthropic-skills:docs": "off",
     "anthropic-skills:morning": "user-invocable-only",
     "anthropic-skills:computer-use": "user-invocable-only",

@@ -11,7 +11,7 @@ metadata:
 
 Target skill (may be empty): $ARGUMENTS
 
-This skill covers what is specific to Claude Code. For the full create → test → iterate workflow (test cases, baseline runs without the skill, description tuning), use the `skill-creator` skill if it is available and use this one alongside it for Claude Code details.
+This skill covers what is specific to Claude Code.
 
 ## Reference files
 
@@ -109,6 +109,6 @@ Review a skill only against [references/review-checklist.md](references/review-c
 
 1. `claude plugin validate <skills-dir>` — finds SKILL.md files whose frontmatter doesn't parse. Pass the skills directory, not a single skill.
 2. `skills-ref validate ./skill-name` — Agent Skills spec conformance (from github.com/agentskills/agentskills).
-3. Behavior: write a few realistic test prompts first, run them with and without the skill, and compare. `skill-creator` drives this loop inside a conversation. For a skill shipped in a plugin, `claude plugin eval` runs a similar comparison in its own format (not interchangeable with skill-creator's) and can gate CI.
+3. Behavior: write a few realistic test prompts first, run them with and without the skill, and compare. For a skill shipped in a plugin, `claude plugin eval` runs this comparison and can gate CI.
 4. Test with the models that will run the skill — smaller models need more explicit guidance.
 5. `/skill-doctor` shows each skill's context cost and usage; use it to find skills whose descriptions are too long or never trigger.
