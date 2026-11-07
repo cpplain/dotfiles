@@ -39,7 +39,7 @@ A directory source (trailing `/`, or an existing directory) expands to one link 
 ./scripts/link create                           # Create or refresh links
 ./scripts/link create -n                        # Dry-run
 ./scripts/link status                           # Show link status
-./scripts/link adopt grok ~/.grok/config.toml   # → grok/config.toml
+./scripts/link adopt git ~/.config/git/config   # → git/config
 ./scripts/link adopt nvim ~/.config/nvim/init.lua
 ./scripts/link prune                            # Remove leftover repo-pointing symlinks
 ./scripts/link prune -n                         # Dry-run prune

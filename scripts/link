@@ -56,8 +56,8 @@ Commands:
                       and link it back. <src> must already be a
                       directory row in links. Dest is relative to
                       that row's target, not ~.
-                      Example: adopt grok ~/.grok/config.toml
-                      stores grok/config.toml.
+                      Example: adopt git ~/.config/git/config
+                      stores git/config.
                       <file>: absolute, ~/, or relative to PWD.
   prune               Remove leftover repo-pointing symlinks. Does not touch
                       planned broken or wrong rows.

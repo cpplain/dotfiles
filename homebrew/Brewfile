@@ -73,7 +73,6 @@ if dotfiles_env == "personal"
   cask "arq"
   cask "dropbox"
   cask "fission"
-  cask "grok-build"
   cask "powerphotos"
   cask "sf-symbols"
 
