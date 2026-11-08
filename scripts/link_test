@@ -138,8 +138,7 @@ EOF
 mkdir -p "$HOME_T/.config"
 echo new >"$HOME_T/.config/newfile"
 out=$(run adopt -n home "$HOME_T/.config/newfile")
-assert_contains "$out" "would move" "adopt dry-run move"
-assert_contains "$out" "would link" "adopt dry-run link"
+assert_contains "$out" "would adopt ~/.config/newfile -> home/.config/newfile" "adopt dry-run"
 [[ -f $HOME_T/.config/newfile && ! -L $HOME_T/.config/newfile ]] || fail "dry-run must not move"
 run adopt home "$HOME_T/.config/newfile" >/dev/null
 [[ -L $HOME_T/.config/newfile ]] || fail "adopt should leave a symlink"
@@ -225,7 +224,7 @@ home/                       ~/
 EOF
 run create >/dev/null
 rm -f "$ROOT/home/.config/oldapp/x"
-out=$(run status 2>&1) && fail "leftover should make status dirty" || true
+out=$(run status -a 2>&1) && fail "leftover should make status dirty" || true
 assert_contains "$out" "leftover ~/.config/oldapp/x" "deleted source is leftover"
 assert_contains "$out" "ok      ~/.config/keep/y" "remaining file still ok"
 print "ok: leftover"
@@ -242,6 +241,8 @@ assert_contains "$out" "missing ~/.local/bin/dotlink" "dotlink planned"
 run create >/dev/null
 assert_eq "$(readlink "$HOME_T/.local/bin/dotlink")" "$ROOT/scripts/link" "dotlink created"
 out=$(run status 2>&1) || fail "clean status should exit 0"
+assert_not_contains "$out" "ok      ~/" "status hides ok lines by default"
+out=$(run status -a 2>&1) || fail "clean status -a should exit 0"
 assert_contains "$out" "ok      ~/.local/bin/dotlink" "dotlink ok"
 print "ok: explicit dotlink row"
 
@@ -282,5 +283,214 @@ out=$(
 ) || fail "create via symlink should succeed: $out"
 assert_eq "$(readlink "$HOME_T/.local/bin/dotlink")" "${LINK:A}" "symlink invoke uses real repo"
 print "ok: invoke via symlink"
+
+# --- adopt directory, multiple paths, all-or-nothing ---
+setup
+write_manifest <<'EOF'
+home/                       ~/
+private/home/               ~/
+EOF
+mkdir -p "$HOME_T/.config/app/sub" "$HOME_T/.config/other"
+echo a >"$HOME_T/.config/app/a"
+echo b >"$HOME_T/.config/app/sub/b"
+echo junk >"$HOME_T/.config/app/.DS_Store"
+ln -s /tmp/elsewhere "$HOME_T/.config/app/ext"
+out=$(run adopt home "$HOME_T/.config/app" 2>&1)
+assert_contains "$out" "skipping symlink ~/.config/app/ext" "adopt dir warns on foreign symlink"
+assert_contains "$out" "adopted 2 file(s)" "adopt dir counts regular files"
+[[ -L $HOME_T/.config/app/a && -L $HOME_T/.config/app/sub/b ]] || fail "adopt dir links nested files"
+[[ -f $ROOT/home/.config/app/sub/b ]] || fail "adopt dir keeps nested path"
+[[ -f $HOME_T/.config/app/.DS_Store && ! -L $HOME_T/.config/app/.DS_Store ]] || fail "adopt dir leaves .DS_Store"
+[[ -e $ROOT/home/.config/app/.DS_Store ]] && fail "adopt dir must not move .DS_Store"
+[[ -L $HOME_T/.config/app/ext ]] || fail "adopt dir leaves foreign symlink"
+out=$(run adopt home "$HOME_T/.config/app" 2>&1) && fail "adopt of already-adopted dir should fail" || true
+assert_contains "$out" "nothing to adopt" "adopt dir skips repo links"
+
+echo x >"$HOME_T/.config/other/x"
+echo y >"$HOME_T/.config/other/y"
+mkdir -p "$ROOT/home/.config/other"
+echo taken >"$ROOT/home/.config/other/y"
+out=$(run adopt home "$HOME_T/.config/other/x" "$HOME_T/.config/other/y" 2>&1) && fail "blocked multi adopt should fail" || true
+assert_contains "$out" "destination already exists: home/.config/other/y" "multi adopt names blocked dest"
+[[ -f $HOME_T/.config/other/x && ! -L $HOME_T/.config/other/x ]] || fail "blocked multi adopt must move nothing"
+rm "$ROOT/home/.config/other/y"
+run adopt home "$HOME_T/.config/other/x" "$HOME_T/.config/other/y" >/dev/null
+[[ -L $HOME_T/.config/other/x && -L $HOME_T/.config/other/y ]] || fail "multi adopt links all paths"
+
+echo s >"$HOME_T/.config/other/z.swp"
+out=$(run adopt home "$HOME_T/.config/other/z.swp" 2>&1) && fail "skip-pattern adopt should fail" || true
+assert_contains "$out" "matches a skip pattern" "adopt rejects skip pattern"
+
+echo abs >"$HOME_T/.config/absrc"
+run adopt "$ROOT/home/" "$HOME_T/.config/absrc" >/dev/null
+[[ -f $ROOT/home/.config/absrc ]] || fail "adopt accepts absolute repo src"
+echo dot >"$HOME_T/.config/dotsrc"
+run adopt ./home "$HOME_T/.config/dotsrc" >/dev/null
+[[ -f $ROOT/home/.config/dotsrc ]] || fail "adopt accepts ./src"
+print "ok: adopt dir and multi"
+
+# --- adopt guards: when:, plan collisions, file rows ---
+setup
+echo priv >"$ROOT/private/home/.config/dup"
+write_manifest <<'EOF'
+home/                       ~/
+private/home/               ~/
+scripts/link                ~/.local/bin/dotlink
+work/                       ~/.work/ when:work
+EOF
+mkdir -p "$ROOT/work" "$HOME_T/.work" "$HOME_T/.config"
+echo w >"$HOME_T/.work/w"
+out=$(run adopt work "$HOME_T/.work/w" 2>&1) && fail "when: mismatch adopt should fail" || true
+assert_contains "$out" "is when:work" "adopt refuses when: mismatch"
+[[ -f $HOME_T/.work/w && ! -L $HOME_T/.work/w ]] || fail "when: mismatch must not move"
+
+echo mine >"$HOME_T/.config/dup"
+out=$(run adopt home "$HOME_T/.config/dup" 2>&1) && fail "collision adopt should fail" || true
+assert_contains "$out" "already provided by private/home/.config/dup" "adopt refuses planned collision"
+
+out=$(run adopt scripts/link "$HOME_T/.config/dup" 2>&1) && fail "file row adopt should fail" || true
+assert_contains "$out" "is a file row" "adopt names file row"
+
+out=$(run adopt -w work home "$HOME_T/.config/dup" 2>&1) && fail "--when on existing row should fail" || true
+assert_contains "$out" "only apply to a new source" "--when needs new source"
+print "ok: adopt guards"
+
+# --- adopt into a new source ---
+setup
+write_manifest <<'EOF'
+# source                    target
+bash/                       ~/
+zsh/                        ~/
+
+# work
+private/work/               ~/.work/ when:work
+EOF
+mkdir -p "$ROOT/bash" "$ROOT/zsh" "$HOME_T/.config/newapp/themes"
+echo c >"$HOME_T/.config/newapp/config"
+echo t >"$HOME_T/.config/newapp/themes/dark"
+out=$(run adopt -n newapp "$HOME_T/.config/newapp")
+assert_contains "$out" "would add row: newapp/ ~/.config/newapp/" "new src dry-run row"
+assert_not_contains "$(<"$ROOT/links")" "newapp" "dry-run leaves manifest alone"
+run adopt newapp "$HOME_T/.config/newapp" >/dev/null
+[[ -f $ROOT/newapp/themes/dark ]] || fail "new src stores path under inferred target"
+lines=("${(@f)$(<"$ROOT/links")}")
+assert_eq "$lines[3]" "newapp/                              ~/.config/newapp/" "new row sorted into first block"
+out=$(run status 2>&1) || fail "status after new-src adopt should be clean: $out"
+
+echo rc >"$HOME_T/.toolrc"
+run adopt tool "$HOME_T/.toolrc" >/dev/null
+assert_contains "$(<"$ROOT/links")" "tool/                                ~/" "new file src targets parent"
+[[ -f $ROOT/tool/.toolrc ]] || fail "new file src stores file"
+
+echo pw >"$HOME_T/.config/pw"
+echo work >"$HOME_T/.dotfilesenv"
+run adopt -w work -t "$HOME_T" private/pw "$HOME_T/.config/pw" >/dev/null
+lines=("${(@f)$(<"$ROOT/links")}")
+assert_eq "$lines[-1]" "private/pw/                          ~/ when:work" "when: row appended under # work"
+[[ -f $ROOT/private/pw/.config/pw ]] || fail "--target sets dest root"
+
+mkdir -p "$ROOT/docs"
+echo d >"$ROOT/docs/readme"
+echo z >"$HOME_T/.zz"
+out=$(run adopt docs "$HOME_T/.zz" 2>&1) && fail "existing unlisted repo dir should fail" || true
+assert_contains "$out" "already exists in the repo" "adopt refuses unlisted repo dir"
+out=$(run adopt bash/sub "$HOME_T/.zz" 2>&1) && fail "nested new src should fail" || true
+assert_contains "$out" "overlaps manifest source bash/" "adopt refuses nested new src"
+print "ok: adopt new source"
+
+# --- prune removes emptied dirs ---
+setup
+mkdir -p "$ROOT/home/.config/oldapp/deep" "$ROOT/home/.config/mixed"
+echo x >"$ROOT/home/.config/oldapp/deep/x"
+echo m >"$ROOT/home/.config/mixed/m"
+echo top >"$ROOT/home/top"
+write_manifest <<'EOF'
+home/                       ~/
+EOF
+run create >/dev/null
+echo mine >"$HOME_T/.config/mixed/mine"
+echo ds >"$HOME_T/.config/oldapp/.DS_Store"
+rm -rf "$ROOT/home/.config/oldapp" "$ROOT/home/.config/mixed/m" "$ROOT/home/top"
+out=$(run create 2>&1)
+assert_contains "$out" "3 leftover(s); run" "create hints at prune"
+out=$(run prune -n 2>&1)
+assert_contains "$out" "would remove dir ~/.config/oldapp/deep/" "prune dry-run lists deep dir"
+assert_contains "$out" "would remove dir ~/.config/oldapp/" "prune dry-run lists parent dir"
+assert_not_contains "$out" "dir ~/.config/mixed" "prune keeps dir with other content"
+[[ -d $HOME_T/.config/oldapp/deep ]] || fail "prune dry-run must not remove dirs"
+out=$(run prune 2>&1)
+assert_contains "$out" "removed dir ~/.config/oldapp/" "prune removes emptied dir"
+[[ -e $HOME_T/.config/oldapp ]] && fail "emptied dir should be gone"
+[[ -f $HOME_T/.config/mixed/mine ]] || fail "prune keeps unrelated files"
+[[ -d $HOME_T/.config ]] || fail "prune keeps non-empty ancestors"
+[[ -d $HOME_T ]] || fail "prune never removes home"
+print "ok: prune empty dirs"
+
+# --- status details and create hints ---
+setup
+echo a >"$ROOT/home/a"
+echo b >"$ROOT/home/b"
+write_manifest <<'EOF'
+home/                       ~/
+home/gone                   ~/.gone
+EOF
+echo local >"$HOME_T/a"
+ln -s /tmp/elsewhere "$HOME_T/b"
+out=$(run status 2>&1) && fail "dirty status should exit 1" || true
+assert_contains "$out" "profile: personal" "status shows profile"
+assert_contains "$out" "wrong   ~/a (regular file)" "wrong regular file detail"
+assert_contains "$out" "wrong   ~/b (-> /tmp/elsewhere)" "wrong symlink detail"
+assert_contains "$out" "nosource ~/.gone (src missing: home/gone)" "missing explicit source"
+out=$(run create 2>&1) && fail "blocked create should fail" || true
+assert_contains "$out" "compare with home/a" "create blocked hint"
+print "ok: status details"
+
+# --- CLI ---
+setup
+write_manifest <<'EOF'
+home/                       ~/
+EOF
+out=$(run bogus 2>&1) && fail "unknown command should fail" || true
+assert_contains "$out" "--help" "unknown command points at help"
+out=$(run create -a 2>&1) && fail "create -a should fail" || true
+assert_contains "$out" "does not take -a" "create rejects -a"
+mkdir -p "$HOME_T/.config"
+echo dash >"$HOME_T/.config/-dash"
+(
+    cd "$HOME_T/.config"
+    run adopt home -- -dash >/dev/null
+)
+[[ -L $HOME_T/.config/-dash ]] || fail "-- allows dash-leading paths"
+print "ok: cli"
+
+# --- adopt skips other sources' targets; confirms large adopts ---
+setup
+mkdir -p "$ROOT/tool"
+write_manifest <<'EOF'
+home/                       ~/
+tool/                       ~/.config/tool/
+EOF
+mkdir -p "$HOME_T/.config/tool" "$HOME_T/.config/mine"
+echo t >"$HOME_T/.config/tool/t"
+echo m >"$HOME_T/.config/mine/m"
+out=$(run adopt home "$HOME_T/.config" 2>&1)
+assert_contains "$out" "skipping ~/.config/tool/ (target of tool/" "walk warns on nested source target"
+[[ -L $HOME_T/.config/mine/m ]] || fail "walk adopts unowned files"
+[[ -f $HOME_T/.config/tool/t && ! -L $HOME_T/.config/tool/t ]] || fail "walk must not adopt nested source files"
+out=$(run adopt home "$HOME_T/.config/tool/t" 2>&1) && fail "file under nested target should fail" || true
+assert_contains "$out" "the target of tool/; adopt into that source" "explicit nested file hint"
+
+mkdir -p "$HOME_T/.config/many"
+for n in {1..21}; do echo $n >"$HOME_T/.config/many/f$n"; done
+out=$(run adopt home "$HOME_T/.config/many" 2>&1 </dev/null) && fail "large adopt without -y should fail" || true
+assert_contains "$out" "21 files to adopt; rerun with -n to review, then -y" "large adopt needs -y"
+[[ -L $HOME_T/.config/many/f1 ]] && fail "refused large adopt must move nothing"
+out=$(run adopt -n home "$HOME_T/.config/many" 2>&1 </dev/null)
+assert_contains "$out" "dry-run: 21 file(s) to adopt" "large dry-run needs no -y"
+run adopt -y home "$HOME_T/.config/many" >/dev/null </dev/null
+[[ -L $HOME_T/.config/many/f21 ]] || fail "large adopt with -y adopts"
+out=$(run status -y 2>&1) && fail "status -y should fail" || true
+assert_contains "$out" "does not take --yes" "-y only for adopt"
+print "ok: adopt nested sources and confirmation"
 
 print "all tests passed"

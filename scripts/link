@@ -7,8 +7,10 @@
 # regular file. The path under source is appended to target.
 # An explicit file row overrides the walk for that source even when
 # the row is skipped by when:.
-# adopt dest is relative to the source's target, not ~. <src> must
-# already be a directory row in the manifest.
+# adopt dest is relative to the source's target, not ~. A <src> not yet in
+# the manifest gets a new directory row; its target defaults to the adopted
+# directory, or the common parent of the adopted files.
+# adopt checks every file before moving any of them.
 #
 # create classifies every planned target, then applies only if none fail.
 # An existing symlink is replaced only when it already points into this repo.
@@ -19,8 +21,10 @@
 # scoped scan: ancestors of planned and last-plan targets, non-home siblings
 # of those dirs. It does not walk all of $HOME. share/cache/state/Library/
 # .Trash are skipped. last-plan is $HOME/.local/state/dotlink/last-plan.
+# prune also removes directories it leaves empty (ignoring .DS_Store),
+# never $HOME itself.
 
-# Usage: scripts/link create|status|adopt|prune [-n] [args]
+# Usage: scripts/link create|status|adopt|prune [flags] [args]
 
 set -euo pipefail
 setopt EXTENDED_GLOB
@@ -31,40 +35,55 @@ HOME_DIR=${LINK_HOME:-$HOME}
 ENV_FILE=${LINK_ENV:-$HOME_DIR/.dotfilesenv}
 STATE=${LINK_STATE:-$HOME_DIR/.local/state/dotlink/last-plan}
 
+PROG=${0:t}
+
 typeset -g DOTFILES_ENV=""
 typeset -g DRY_RUN=0
 typeset -g ENV_WARNED=0
+typeset -g SHOW_ALL=0
+typeset -g OPT_TARGET=""
+typeset -g OPT_WHEN=""
+typeset -g OPT_YES=0
+typeset -g PLAN_QUIET=0
 
 typeset -a PLAN_SRC PLAN_TGT
 typeset -a MAN_SRC MAN_TGT MAN_WHEN MAN_KIND
 typeset -a LEFTOVER
 
 usage() {
-    cat <<'EOF'
-Usage: scripts/link <command> [flags] [args]
-       dotlink <command> [flags] [args]
+    cat <<EOF
+Usage: $PROG <command> [flags] [args]
 
 Commands:
   create              Create symlinks from the links manifest.
                       Applies nothing if any target is a regular file
                       or a symlink that does not already point into this repo.
-  status              Show planned links and leftover repo-pointing symlinks.
-                      Lines: ok, missing, wrong, broken, leftover.
+  status [-a]         Show problems and leftover repo-pointing symlinks.
+                      Lines: ok, missing, wrong, broken, nosource, leftover.
+                      ok lines are shown only with -a.
                       leftover = points into the repo but is not in the plan.
                       Exits 1 when any planned row is not ok or a leftover exists.
-  adopt <src> <file>  Move <file> into a manifest directory source
-                      and link it back. <src> must already be a
-                      directory row in links. Dest is relative to
-                      that row's target, not ~.
-                      Example: adopt git ~/.config/git/config
-                      stores git/config.
-                      <file>: absolute, ~/, or relative to PWD.
-  prune               Remove leftover repo-pointing symlinks. Does not touch
+  adopt <src> <path>...
+                      Move files into repo source <src> and link them back.
+                      A directory <path> adopts every regular file under it.
+                      Dest is relative to <src>'s target, not ~.
+                      Example: adopt git ~/.config/git/config stores git/config.
+                      If <src> is not in links, a row is added for it:
+                        -t, --target <dir>   target (default: the directory
+                                             adopted, or the files' parent)
+                        -w, --when <env>     personal or work
+                      Files under another source's target are skipped.
+                      More than 20 files asks for confirmation:
+                        -y, --yes            skip the confirmation
+                      <path>: absolute, ~/, or relative to PWD.
+  prune               Remove leftover repo-pointing symlinks and the
+                      directories they leave empty. Does not touch
                       planned broken or wrong rows.
 
 Flags:
   -n, --dry-run       Preview changes without making them
   -h, --help          Show this help
+  --                  End of flags
 EOF
 }
 
@@ -100,10 +119,17 @@ abs_path() {
     fi
 }
 
+# Repo-relative source spec. Accepts repo-relative, ./, ~/, or an absolute
+# path inside the repo; strips trailing slashes.
 normalize_src() {
-    local s=$1
+    local s
+    s=$(expand_tilde "$1")
+    if [[ $s == /* ]]; then
+        s=${s:a}
+        [[ $s == $REPO/* ]] && s=${s#$REPO/}
+    fi
     s=${s#./}
-    s=${s%/}
+    s=${s%%/#}
     print -r -- "$s"
 }
 
@@ -312,7 +338,7 @@ build_plan() {
 
         abs_src=$(abs_path "${src%/}")
         if [[ ! -d $abs_src ]]; then
-            warn "skipping missing source directory ${src%/}"
+            (( PLAN_QUIET )) || warn "skipping missing source directory ${src%/}"
             continue
         fi
 
@@ -358,7 +384,7 @@ build_plan() {
         abs_tgt=$(abs_path "$MAN_TGT[i]")
         if [[ ! -f $abs_src ]]; then
             if (( ! include_missing )); then
-                warn "skipping missing source file ${MAN_SRC[i]}"
+                (( PLAN_QUIET )) || warn "skipping missing source file ${MAN_SRC[i]}"
                 continue
             fi
         fi
@@ -403,10 +429,12 @@ classify_one() {
             return 0
         fi
         err "$(display_path "$tgt"): unmanaged symlink (does not point into the repo)"
+        print -u2 "  -> $(display_path "${resolved:-$existing}"); remove it to link ${src#$REPO/}"
         REPLY=fail
         return 0
     elif [[ -e $tgt ]]; then
         err "$(display_path "$tgt"): already exists and is not a symlink"
+        print -u2 "  compare with ${src#$REPO/}, then move it aside and rerun create"
         REPLY=fail
         return 0
     fi
@@ -440,12 +468,20 @@ apply_one() {
     fi
 }
 
+report_leftovers() {
+    collect_leftovers
+    if (( $#LEFTOVER )); then
+        print "$#LEFTOVER leftover(s); run '$PROG prune' to remove them"
+    fi
+}
+
 cmd_create() {
     (( $# == 0 )) || die "create takes no arguments"
     build_plan 0
 
     if (( $#PLAN_SRC == 0 )); then
         print "no files to link"
+        report_leftovers
         return 0
     fi
 
@@ -486,6 +522,7 @@ cmd_create() {
         write_last_plan
         print "created $created, replaced $replaced, skipped $skipped"
     fi
+    report_leftovers
     return 0
 }
 
@@ -586,51 +623,99 @@ collect_leftovers() {
     fi
 }
 
+status_line() {
+    printf '%-7s %s\n' "$1" "$2"
+}
+
+# What occupies a wrong target, for status.
+wrong_detail() {
+    local tgt=$1
+    if [[ -L $tgt ]]; then
+        print -r -- "(-> $(display_path "$(readlink "$tgt")"))"
+    elif [[ -d $tgt ]]; then
+        print -r -- "(directory)"
+    else
+        print -r -- "(regular file)"
+    fi
+}
+
 cmd_status() {
     (( $# == 0 )) || die "status takes no arguments"
     build_plan 1
     collect_leftovers
 
+    print "profile: ${DOTFILES_ENV:-none}"
     if (( $#PLAN_SRC == 0 && $#LEFTOVER == 0 )); then
         print "no planned links"
         return 0
     fi
 
     local i src tgt
-    local -i ok=0 missing=0 wrong=0 broken=0 leftover=0
+    local -i ok=0 missing=0 wrong=0 broken=0 nosource=0 leftover=0
 
     for (( i = 1; i <= $#PLAN_SRC; i++ )); do
         src=$PLAN_SRC[i]
         tgt=$PLAN_TGT[i]
-        if [[ -L $tgt ]]; then
-            if link_points_at_src "$tgt" "$src"; then
-                if [[ -e $src ]]; then
-                    print "ok      $(display_path "$tgt")"
-                    ok+=1
-                else
-                    print "broken  $(display_path "$tgt")"
-                    broken+=1
-                fi
+        if [[ -L $tgt ]] && link_points_at_src "$tgt" "$src"; then
+            if [[ -e $src ]]; then
+                (( SHOW_ALL )) && status_line ok "$(display_path "$tgt")"
+                ok+=1
             else
-                print "wrong   $(display_path "$tgt")"
-                wrong+=1
+                status_line broken "$(display_path "$tgt")"
+                broken+=1
             fi
-        elif [[ -e $tgt ]]; then
-            print "wrong   $(display_path "$tgt")"
+        elif [[ ! -e $src ]]; then
+            status_line nosource "$(display_path "$tgt") (src missing: ${src#$REPO/})"
+            nosource+=1
+        elif [[ -L $tgt || -e $tgt ]]; then
+            status_line wrong "$(display_path "$tgt") $(wrong_detail "$tgt")"
             wrong+=1
         else
-            print "missing $(display_path "$tgt")"
+            status_line missing "$(display_path "$tgt")"
             missing+=1
         fi
     done
 
     for tgt in $LEFTOVER; do
-        print "leftover $(display_path "$tgt")"
+        status_line leftover "$(display_path "$tgt")"
         leftover+=1
     done
 
-    print "\n$ok ok, $missing missing, $wrong wrong, $broken broken, $leftover leftover"
-    (( missing == 0 && wrong == 0 && broken == 0 && leftover == 0 ))
+    print "\n$ok ok, $missing missing, $wrong wrong, $broken broken, $nosource nosource, $leftover leftover"
+    (( missing == 0 && wrong == 0 && broken == 0 && nosource == 0 && leftover == 0 ))
+}
+
+# Sets REPLY_DIRS to the directories under $HOME_DIR that removing
+# $LEFTOVER would leave empty (ignoring .DS_Store), deepest first.
+plan_empty_dirs() {
+    typeset -A gone cand
+    local t d e
+    local -a entries sorted
+    REPLY_DIRS=()
+
+    for t in $LEFTOVER; do
+        gone[$t]=1
+        d=${t:h}
+        while [[ $d == $HOME_DIR/* ]]; do
+            cand[$d]=1
+            d=${d:h}
+        done
+    done
+    (( $#cand )) || return 0
+
+    # A child path is always longer than its parent.
+    sorted=("${(@f)$(print -rl -- ${(k)cand} | awk '{ print length($0) "\t" $0 }' | sort -rn | cut -f2-)}")
+
+    for d in $sorted; do
+        [[ -d $d && ! -L $d ]] || continue
+        entries=($d/*(DN))
+        for e in $entries; do
+            [[ -n ${gone[$e]:-} || ${e:t} == .DS_Store ]] && continue
+            continue 2
+        done
+        gone[$d]=1
+        REPLY_DIRS+=("$d")
+    done
 }
 
 cmd_prune() {
@@ -643,12 +728,20 @@ cmd_prune() {
         return 0
     fi
 
-    local tgt
+    typeset -g -a REPLY_DIRS
+    plan_empty_dirs
+    local -a dirs
+    dirs=("${REPLY_DIRS[@]}")
+
+    local tgt d
     if (( DRY_RUN )); then
         for tgt in $LEFTOVER; do
             print "would remove $(display_path "$tgt")"
         done
-        print "dry-run: $#LEFTOVER leftover(s)"
+        for d in $dirs; do
+            print "would remove dir $(display_path "$d")/"
+        done
+        print "dry-run: $#LEFTOVER leftover(s), $#dirs empty dir(s)"
         return 0
     fi
 
@@ -656,94 +749,392 @@ cmd_prune() {
         rm -- "$tgt"
         print "removed $(display_path "$tgt")"
     done
+    for d in $dirs; do
+        rm -f -- "$d/.DS_Store"
+        rmdir -- "$d"
+        print "removed dir $(display_path "$d")/"
+    done
     write_last_plan
-    print "removed $#LEFTOVER leftover(s)"
+    print "removed $#LEFTOVER leftover(s), $#dirs empty dir(s)"
     return 0
 }
 
-# Sets REPLY to the absolute target directory for a dir source.
+# Looks up a normalized source spec in the parsed manifest.
+# Sets REPLY (absolute target) and REPLY_WHEN for a directory row.
+# Returns 1 if the source is not in the manifest, 2 if it is only a file row.
 # Dies if the same source maps to two different targets.
-manifest_dir_target() {
+manifest_find_src() {
     local want=$1
     local i spec t
-    local found=""
-    want=$(normalize_src "$want")
+    local found="" found_when=""
+    local -i file_row=0
     for (( i = 1; i <= $#MAN_SRC; i++ )); do
-        [[ $MAN_KIND[i] == dir ]] || continue
         spec=$(normalize_src "$MAN_SRC[i]")
         [[ $spec == $want ]] || continue
+        if [[ $MAN_KIND[i] != dir ]]; then
+            file_row=1
+            continue
+        fi
         t=$(abs_path "$MAN_TGT[i]")
         t=${t%/}
-        if [[ -n $found && $found != $t ]]; then
+        if [[ -n $found && ( $found != $t || $found_when != $MAN_WHEN[i] ) ]]; then
             die "$want maps to multiple targets in $MANIFEST"
         fi
         found=$t
+        found_when=$MAN_WHEN[i]
     done
-    [[ -n $found ]] || return 1
-    REPLY=$found
-    return 0
+    if [[ -n $found ]]; then
+        REPLY=$found
+        REPLY_WHEN=$found_when
+        return 0
+    fi
+    (( file_row )) && return 2
+    return 1
+}
+
+# Inserts a directory row into the manifest. Unguarded rows go into the
+# first block in sorted order; when: rows go at the end of the block under
+# a matching "# <env>" header, which is created if missing.
+manifest_add_row() {
+    local src=$1 tgt=$2 when=$3
+    local row
+    row=$(printf '%-36s %s' "$src" "$tgt")
+    [[ -n $when ]] && row+=" when:$when"
+
+    local -a lines
+    lines=("${(@f)$(<"$MANIFEST")}")
+    local -i i n=$#lines at=0 start=0
+    local line field
+
+    if [[ -z $when ]]; then
+        for (( i = 1; i <= n; i++ )); do
+            line=${lines[i]##[[:space:]]#}
+            if [[ -z $line || $line == \#* ]]; then
+                (( start )) && break
+                continue
+            fi
+            (( start )) || start=i
+            field=${line%%[[:space:]]*}
+            if [[ $src < $field ]]; then
+                at=i
+                break
+            fi
+        done
+        (( at )) || at=$(( start ? i : n + 1 ))
+    else
+        for (( i = 1; i <= n; i++ )); do
+            [[ ${lines[i]} == \#[[:space:]]#${when}[[:space:]]# ]] || continue
+            for (( i = i + 1; i <= n; i++ )); do
+                [[ -n ${lines[i]##[[:space:]]#} ]] || break
+            done
+            at=i
+            break
+        done
+        if (( ! at )); then
+            [[ -n ${lines[n]:-} ]] && lines+=("")
+            lines+=("# $when")
+            at=$(( $#lines + 1 ))
+        fi
+    fi
+
+    lines[at,at-1]=("$row")
+    local tmp=$MANIFEST.tmp.$$
+    print -rl -- "${lines[@]}" >"$tmp"
+    mv -- "$tmp" "$MANIFEST"
 }
 
 cmd_adopt() {
-    (( $# == 2 )) || die "usage: scripts/link adopt <source-dir> <file>"
-    local source_dir=$1
-    local file=$2
+    (( $# >= 2 )) || die "usage: $PROG adopt [-y] [-t <dir>] [-w personal|work] <src> <path>..."
+    local raw_src=$1
+    shift
+    local -a paths
+    paths=("$@")
 
+    load_env
     parse_manifest
-    source_dir=$(normalize_src "$source_dir")
-    manifest_dir_target "$source_dir" || die "$source_dir is not a directory source in $MANIFEST"
-    local abs_tgt=$REPLY
 
-    file=$(resolve_home_file "$file")
-    if [[ ! -e $file ]]; then
-        die "file not found: $(display_path "$file")"
-    fi
-    if [[ -L $file ]]; then
-        die "$(display_path "$file") is a symlink; adopt regular files only"
-    fi
-    if [[ -d $file ]]; then
-        die "$(display_path "$file") is a directory; adopt a single file"
-    fi
-    if [[ $file != $abs_tgt/* ]]; then
-        die "$(display_path "$file") is not inside $(display_path "$abs_tgt") (target of $source_dir)"
+    local src
+    src=$(normalize_src "$raw_src")
+    if [[ -z $src || $src == (.|..|../*|*/..|*/../*|/*) ]]; then
+        die "<src> must be a directory inside $(display_path "$REPO"): $raw_src"
     fi
 
-    local rel=${file#$abs_tgt/}
-    local dest=$REPO/$source_dir/$rel
-    if [[ -e $dest || -L $dest ]]; then
-        die "destination already exists: ${dest#$REPO/}"
+    local abs_tgt when spec
+    local -i i rc=0 new_row=0
+    manifest_find_src "$src" || rc=$?
+    case $rc in
+        0)
+            abs_tgt=$REPLY
+            when=$REPLY_WHEN
+            if [[ -n $OPT_TARGET || -n $OPT_WHEN ]]; then
+                die "--target and --when only apply to a new source; $src is already in $MANIFEST"
+            fi
+            ;;
+        2) die "$src is a file row in $MANIFEST; adopt needs a directory source" ;;
+        *) new_row=1 ;;
+    esac
+
+    local p
+    local -a abs_paths
+    abs_paths=()
+    for p in "${paths[@]}"; do
+        p=$(resolve_home_file "$p")
+        [[ -e $p || -L $p ]] || die "not found: $(display_path "$p")"
+        is_repo_path "$p" && die "$(display_path "$p") is inside the repo"
+        [[ $p == $HOME_DIR ]] && die "refusing to adopt all of ~"
+        abs_paths+=("$p")
+    done
+
+    local abs_src=$REPO/$src
+    if (( new_row )); then
+        for (( i = 1; i <= $#MAN_SRC; i++ )); do
+            [[ $MAN_KIND[i] == dir ]] || continue
+            spec=$(normalize_src "$MAN_SRC[i]")
+            if [[ $src == $spec/* || $spec == $src/* ]]; then
+                die "$src overlaps manifest source $spec/; adopt into $spec instead"
+            fi
+        done
+        if [[ -L $abs_src || ( -e $abs_src && ! -d $abs_src ) ]]; then
+            die "$src exists in the repo and is not a directory"
+        fi
+        local -a existing
+        existing=($abs_src/*(DN))
+        if (( $#existing )); then
+            die "$src/ already exists in the repo but is not in $MANIFEST; add a row for it first"
+        fi
+
+        if [[ -n $OPT_TARGET ]]; then
+            abs_tgt=$(resolve_home_file "$OPT_TARGET")
+        elif (( $#abs_paths == 1 )) && [[ -d $abs_paths[1] && ! -L $abs_paths[1] ]]; then
+            abs_tgt=$abs_paths[1]
+        else
+            abs_tgt=${abs_paths[1]:h}
+            for p in $abs_paths; do
+                [[ ${p:h} == $abs_tgt ]] || die "paths have different parents; pass --target <dir> for new source $src"
+            done
+        fi
+        if [[ $abs_tgt != $HOME_DIR && $abs_tgt != $HOME_DIR/* ]]; then
+            die "target must be under ~: $(display_path "$abs_tgt")"
+        fi
+        when=$OPT_WHEN
     fi
 
+    if ! profile_matches "$when"; then
+        die "$src is when:$when but this machine's profile is ${DOTFILES_ENV:-unset}; the adopted links would be leftovers that prune removes"
+    fi
+
+    # Targets of other directory rows nested inside this one belong to
+    # those sources; a walk must not sweep them into <src>.
+    local t
+    typeset -g -a INNER_SRC INNER_TGT
+    INNER_SRC=()
+    INNER_TGT=()
+    for (( i = 1; i <= $#MAN_SRC; i++ )); do
+        [[ $MAN_KIND[i] == dir ]] || continue
+        t=$(abs_path "$MAN_TGT[i]")
+        t=${t%/}
+        [[ $t == $abs_tgt/* ]] || continue
+        INNER_SRC+=("$(normalize_src "$MAN_SRC[i]")")
+        INNER_TGT+=("$t")
+    done
+
+    # Expand paths to (home file, repo dest) pairs.
+    local f rel dest
+    local -a cand_home cand_dest
+    typeset -A seen warned
+    cand_home=()
+    cand_dest=()
+    seen=()
+    warned=()
+    for p in $abs_paths; do
+        if [[ $p != $abs_tgt/* && ! ( -d $p && $p == $abs_tgt ) ]]; then
+            die "$(display_path "$p") is not inside $(display_path "$abs_tgt") (target of $src)"
+        fi
+        if [[ ! -L $p ]] && inner_owner "$p"; then
+            die "$(display_path "$p") is under $(display_path "$REPLY_TGT")/, the target of $REPLY/; adopt into that source"
+        fi
+        if [[ -L $p ]]; then
+            die "$(display_path "$p") is a symlink; adopt regular files or directories"
+        elif [[ -d $p ]]; then
+            while IFS= read -r f; do
+                [[ -n $f ]] || continue
+                inner_owner "$f" && continue
+                dest=$(resolve_link "$f") || dest=""
+                is_repo_path "$dest" || warn "skipping symlink $(display_path "$f")"
+            done < <(find "$p" \( -name .git -type d -prune \) -o -type l -print)
+            collect_dir_files "$p"
+            for f in $REPLY_FILES; do
+                rel=${f#$abs_tgt/}
+                should_skip "$rel" && continue
+                is_repo_path "$f" && continue
+                if inner_owner "$f"; then
+                    if [[ -z ${warned[$REPLY_TGT]:-} ]]; then
+                        warned[$REPLY_TGT]=1
+                        warn "skipping $(display_path "$REPLY_TGT")/ (target of $REPLY/; adopt into that source)"
+                    fi
+                    continue
+                fi
+                [[ -n ${seen[$f]:-} ]] && continue
+                seen[$f]=1
+                cand_home+=("$f")
+                cand_dest+=("$abs_src/$rel")
+            done
+        elif [[ -f $p ]]; then
+            rel=${p#$abs_tgt/}
+            if should_skip "$rel"; then
+                die "$(display_path "$p") matches a skip pattern (.DS_Store, *.swp, *.tmp, .git); create would not link it"
+            fi
+            [[ -n ${seen[$p]:-} ]] && continue
+            seen[$p]=1
+            cand_home+=("$p")
+            cand_dest+=("$abs_src/$rel")
+        else
+            die "$(display_path "$p") is not a regular file or directory"
+        fi
+    done
+    (( $#cand_home )) || die "nothing to adopt"
+
+    # Check every file before moving any.
+    PLAN_QUIET=1
+    build_plan 1
+    PLAN_QUIET=0
+    typeset -A planned
+    planned=()
+    for (( i = 1; i <= $#PLAN_TGT; i++ )); do
+        planned[$PLAN_TGT[i]]=$PLAN_SRC[i]
+    done
+
+    local -i problems=0
+    for (( i = 1; i <= $#cand_home; i++ )); do
+        f=$cand_home[i]
+        dest=$cand_dest[i]
+        if [[ -e $dest || -L $dest ]]; then
+            err "destination already exists: ${dest#$REPO/}"
+            problems+=1
+        elif [[ -n ${planned[$f]:-} ]]; then
+            err "$(display_path "$f") is already provided by ${planned[$f]#$REPO/}"
+            problems+=1
+        fi
+    done
+    (( problems == 0 )) || die "adopted nothing: $problems problem(s)"
+
+    local row_tgt
+    row_tgt=$(display_path "$abs_tgt")/
+    if (( ! DRY_RUN && ! OPT_YES && $#cand_home > 20 )); then
+        [[ -t 0 ]] || die "$#cand_home files to adopt; rerun with -n to review, then -y to confirm"
+        for f in "${(@)cand_home[1,10]}"; do
+            print "  $(display_path "$f")"
+        done
+        print "  ... and $(( $#cand_home - 10 )) more"
+        local reply=""
+        read -r "reply?adopt $#cand_home files into $src/? [y/N] " || reply=""
+        [[ $reply == (y|Y|yes|YES) ]] || die "adopted nothing"
+    fi
     if (( DRY_RUN )); then
-        print "would move $(display_path "$file") -> ${dest#$REPO/}"
-        print "would link $(display_path "$file") -> ${dest#$REPO/}"
+        (( new_row )) && print "would add row: $src/ $row_tgt${when:+ when:$when}"
+        for (( i = 1; i <= $#cand_home; i++ )); do
+            print "would adopt $(display_path "$cand_home[i]") -> ${cand_dest[i]#$REPO/}"
+        done
+        print "dry-run: $#cand_home file(s) to adopt"
         return 0
     fi
 
-    mkdir -p -- "${dest:h}"
-    mv -- "$file" "$dest"
-    ln -s -- "$dest" "$file"
-    print "adopted $(display_path "$file") -> ${dest#$REPO/}"
+    if (( new_row )); then
+        manifest_add_row "$src/" "$row_tgt" "$when"
+        print "added row: $src/ $row_tgt${when:+ when:$when}"
+    fi
+    for (( i = 1; i <= $#cand_home; i++ )); do
+        f=$cand_home[i]
+        dest=$cand_dest[i]
+        mkdir -p -- "${dest:h}"
+        mv -- "$f" "$dest"
+        if ! ln -s -- "$dest" "$f"; then
+            mv -- "$dest" "$f"
+            die "could not link $(display_path "$f"); restored it"
+        fi
+        print "adopted $(display_path "$f") -> ${dest#$REPO/}"
+    done
+
+    PLAN_QUIET=1
+    build_plan 0
+    write_last_plan
+    print "adopted $#cand_home file(s)"
+}
+
+# Sets REPLY to the source spec and REPLY_TGT to the target of the nested
+# directory row (INNER_*) whose target contains path $1.
+inner_owner() {
+    local p=$1
+    local -i j
+    for (( j = 1; j <= $#INNER_TGT; j++ )); do
+        if [[ $p == $INNER_TGT[j] || $p == $INNER_TGT[j]/* ]]; then
+            REPLY=$INNER_SRC[j]
+            REPLY_TGT=$INNER_TGT[j]
+            return 0
+        fi
+    done
+    return 1
+}
+
+# Dies if the command was given a flag it does not take.
+check_opts() {
+    local cmd=$1
+    shift
+    local -a allow
+    allow=("$@")
+    if (( SHOW_ALL )) && (( ! ${allow[(Ie)-a]} )); then
+        die "$cmd does not take -a"
+    fi
+    if [[ -n $OPT_TARGET ]] && (( ! ${allow[(Ie)-t]} )); then
+        die "$cmd does not take --target"
+    fi
+    if [[ -n $OPT_WHEN ]] && (( ! ${allow[(Ie)-w]} )); then
+        die "$cmd does not take --when"
+    fi
+    if (( OPT_YES )) && (( ! ${allow[(Ie)-y]} )); then
+        die "$cmd does not take --yes"
+    fi
 }
 
 # --- main ---
 
 typeset -a pos shift_args
+typeset -i end_opts=0
 pos=()
-for arg in "$@"; do
-    case $arg in
+while (( $# )); do
+    if (( end_opts )); then
+        pos+=("$1")
+        shift
+        continue
+    fi
+    case $1 in
+        --) end_opts=1 ;;
         -n|--dry-run) DRY_RUN=1 ;;
+        -a|--all) SHOW_ALL=1 ;;
+        -y|--yes) OPT_YES=1 ;;
+        -t|--target)
+            (( $# >= 2 )) || die "$1 needs a directory"
+            OPT_TARGET=$2
+            shift
+            ;;
+        -w|--when)
+            (( $# >= 2 )) || die "$1 needs personal or work"
+            [[ $2 == personal || $2 == work ]] || die "invalid --when ${(q)2} (expected personal or work)"
+            OPT_WHEN=$2
+            shift
+            ;;
         -h|--help)
             usage
             exit 0
             ;;
-        -*)
-            die "unknown flag $arg"
+        -?*)
+            die "unknown flag $1 (run '$PROG --help')"
             ;;
         *)
-            pos+=("$arg")
+            pos+=("$1")
             ;;
     esac
+    shift
 done
 
 (( $#pos >= 1 )) || { usage >&2; exit 2 }
@@ -752,11 +1143,11 @@ cmd=$pos[1]
 shift_args=("${pos[@]:1}")
 
 case $cmd in
-    create) cmd_create "${shift_args[@]}" ;;
-    status) cmd_status "${shift_args[@]}" ;;
-    adopt)  cmd_adopt  "${shift_args[@]}" ;;
-    prune)  cmd_prune  "${shift_args[@]}" ;;
+    create) check_opts create;       cmd_create "${shift_args[@]}" ;;
+    status) check_opts status -a;    cmd_status "${shift_args[@]}" ;;
+    adopt)  check_opts adopt -t -w -y; cmd_adopt  "${shift_args[@]}" ;;
+    prune)  check_opts prune;        cmd_prune  "${shift_args[@]}" ;;
     *)
-        die "unknown command $cmd"
+        die "unknown command $cmd (run '$PROG --help')"
         ;;
 esac
