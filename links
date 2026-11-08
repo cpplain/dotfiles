@@ -16,6 +16,8 @@ zsh/                                 ~/
 
 # personal
 claude/settings.personal.json        ~/.claude/settings.json when:personal
+claude/skills/commit/                ~/Library/Developer/Xcode/CodingAssistant/ClaudeAgentConfig/skills/commit/ when:personal
+claude/settings.xcode.json           ~/Library/Developer/Xcode/CodingAssistant/ClaudeAgentConfig/settings.json when:personal
 
 # work
 private/claude/                      ~/.claude/ when:work
