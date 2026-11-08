@@ -47,7 +47,6 @@ abbr gs "git status"
 abbr gwa add_worktree
 abbr gwl "git worktree list"
 abbr gwr remove_worktree
-abbr gws sync_worktree_files
 
 # Link Manager
 abbr lna "dotlink adopt"
@@ -64,7 +63,6 @@ abbr n nvim
 
 # Homebrew
 if test -d /opt/homebrew
-    set -gx HOMEBREW_BUNDLE_NO_LOCK 1
     set -gx HOMEBREW_PREFIX /opt/homebrew
     set -gx HOMEBREW_CELLAR /opt/homebrew/Cellar
     set -gx HOMEBREW_REPOSITORY /opt/homebrew
@@ -76,7 +74,10 @@ if test -d /opt/homebrew
         set -gx INFOPATH /opt/homebrew/share/info $INFOPATH
     end
 
-    fish_add_path -gP /opt/homebrew/lib/ruby/gems/3.4.0/bin
+    set -l gem_dirs /opt/homebrew/lib/ruby/gems/*
+    if set -q gem_dirs[1]
+        fish_add_path -gP $gem_dirs[-1]/bin
+    end
 end
 
 # Local binaries
