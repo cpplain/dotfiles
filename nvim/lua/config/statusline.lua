@@ -28,13 +28,6 @@ local function mode()
     return " [?] "
 end
 
--- local function git_head()
---     if not vim.b.gitsigns_head then
---         return ""
---     end
---     return vim.b.gitsigns_head .. "  "
--- end
-
 local function git_status()
     local status = vim.b.gitsigns_status_dict
     if not status then
@@ -83,7 +76,6 @@ function M.get_active()
     return table.concat({
         mode(),
         "%t%m%r  ",
-        -- git_head(),
         git_status(),
         diagnostics(),
         "%=",
