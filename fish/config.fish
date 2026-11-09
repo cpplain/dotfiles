@@ -45,6 +45,7 @@ abbr gpush "git push"
 abbr gr "git rebase"
 abbr gs "git status"
 abbr gwa add_worktree
+abbr gwc cd_worktree
 abbr gwl "git worktree list"
 abbr gwr remove_worktree
 
