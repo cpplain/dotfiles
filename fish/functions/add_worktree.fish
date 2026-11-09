@@ -6,7 +6,7 @@ function add_worktree --description "Add a git worktree with standardized naming
 
     if set -q _flag_help; or test (count $argv) -eq 0
         echo "Usage: add_worktree [--repo|-r <path>] <branch-name> [--copy|-c file1 file2 ...]"
-        echo "Worktrees are created at ~/git/worktrees/<repo>/<branch>"
+        echo "Worktrees are created at <repo>/.worktrees/<branch>"
         echo "Examples:"
         echo "  add_worktree feature/new-widget"
         echo "  add_worktree --repo ~/git/work/myrepo feature/new-widget"
@@ -33,7 +33,7 @@ function add_worktree --description "Add a git worktree with standardized naming
     set git_common (git -C $copy_root rev-parse --path-format=absolute --git-common-dir)
     set repo_root (dirname $git_common)
     set repo_name (basename $repo_root)
-    set worktrees_dir ~/git/worktrees
+    set worktrees_dir $repo_root/.worktrees
 
     set branch_name $argv[1]
     if test -z "$branch_name"; or string match -q '/*' $branch_name; or string match -q '*..*' $branch_name
@@ -48,7 +48,7 @@ function add_worktree --description "Add a git worktree with standardized naming
         end
     end
 
-    set worktree_path "$worktrees_dir/$repo_name/$branch_name"
+    set worktree_path "$worktrees_dir/$branch_name"
 
     echo "Creating worktree:"
     echo "  Repository: $repo_name"

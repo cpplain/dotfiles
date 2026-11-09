@@ -8,7 +8,7 @@ function remove_worktree --description "Remove a git worktree"
         echo "Usage: remove_worktree [--repo|-r <path>] <worktree-name-or-path>"
         echo "Examples:"
         echo "  remove_worktree feature/new-widget"
-        echo "  remove_worktree ~/git/worktrees/myrepo/feature/new-widget"
+        echo "  remove_worktree ~/git/myrepo/.worktrees/feature/new-widget"
         echo "  remove_worktree --repo ~/git/work/myrepo feature/new-widget"
         return 1
     end
@@ -41,7 +41,7 @@ function remove_worktree --description "Remove a git worktree"
     set git_common (git -C $repo_root rev-parse --path-format=absolute --git-common-dir)
     set main_root (dirname $git_common)
     set repo_name (basename $main_root)
-    set prefix ~/git/worktrees/$repo_name/
+    set prefix $main_root/.worktrees/
 
     set -l matches
     set main_worktree ""
@@ -107,7 +107,7 @@ function remove_worktree --description "Remove a git worktree"
     end
 
     set parent (dirname $target_worktree)
-    set stop ~/git/worktrees
+    set stop $main_root/.worktrees
     while test "$parent" != "$stop"; and test "$parent" != /; and test -d "$parent"
         rmdir $parent 2>/dev/null
         or break
