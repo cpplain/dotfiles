@@ -1,6 +1,7 @@
 .claude/plans/
-.claude/settings.local.json
+.claude/worktrees/
+.worktrees/
 tmp/
 .DS_Store
+.claude/settings.local.json
 .localized
-.worktrees/
