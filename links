@@ -8,7 +8,6 @@ homebrew/                            ~/.config/homebrew/
 nvim/                                ~/.config/nvim/
 private/fish/                        ~/.config/fish/
 private/git/                         ~/.config/git/
-private/homebrew/                    ~/.config/homebrew/
 private/zsh/                         ~/
 rubocop/                             ~/.config/rubocop/
 scripts/link                         ~/.local/bin/dotlink

@@ -1,19 +1,30 @@
+dotfiles_env = File.read(File.expand_path("~/.dotfilesenv")).strip rescue nil
+personal = dotfiles_env == "personal"
+
 tap "cpplain/tap", trusted: true
+tap "hashicorp/tap", trusted: true unless personal
 
 # Shells
 brew "bash"
 brew "fish"
 
 # Core tools
+brew "awscli" unless personal
 brew "fd"
 brew "fzf"
+brew "gh" if personal
 brew "git"
+brew "glab" unless personal
+brew "helm" unless personal
 brew "hugo"
 brew "jq"
 brew "cpplain/tap/lorah"
 brew "mas"
+brew "protobuf" unless personal
 brew "ripgrep"
 brew "sqlite"
+brew "hashicorp/tap/terraform" unless personal
+brew "terragrunt" unless personal
 brew "tree"
 brew "tree-sitter-cli"
 brew "wget"
@@ -24,6 +35,7 @@ brew "neovim"
 # Languages & version managers
 brew "go"
 brew "node"
+brew "node-build" unless personal
 brew "nodenv"
 brew "pyenv"
 brew "python"
@@ -54,40 +66,30 @@ brew "taplo"
 # Casks
 cask "1password"
 cask "1password-cli"
+cask "arq" if personal
 cask "claude-code"
 cask "docker-desktop"
+cask "dropbox" if personal
+cask "fission" if personal
 cask "font-jetbrains-mono"
 cask "font-sf-mono"
 cask "font-symbols-only-nerd-font"
 cask "ghostty"
+cask "powerphotos" if personal
+cask "sf-symbols" if personal
 
 # Mac App Store
 mas "1Password for Safari", id: 1569813296
-
-dotfiles_env = File.read(File.expand_path("~/.dotfilesenv")).strip rescue nil
-
-if dotfiles_env == "personal"
-  brew "gh"
-
-  cask "arq"
-  cask "dropbox"
-  cask "fission"
-  cask "powerphotos"
-  cask "sf-symbols"
-
-  mas "Audiobook Builder", id: 1437681957
-  mas "Developer", id: 640199958
-  mas "GarageBand", id: 682658836
-  mas "iMovie", id: 408981434
-  mas "Keynote", id: 409183694
-  mas "Microsoft Excel", id: 462058435
-  mas "Microsoft Word", id: 462054704
-  mas "Numbers", id: 409203825
-  mas "Outread", id: 778846279
-  mas "Pages", id: 409201541
-  mas "Speedtest", id: 1153157709
-  mas "Xcode", id: 497799835
-elsif dotfiles_env == "work"
-  work_brewfile = File.expand_path("~/.config/homebrew/Brewfile.work")
-  instance_eval(File.read(work_brewfile), work_brewfile) if File.exist?(work_brewfile)
-end
+mas "Audiobook Builder", id: 1437681957 if personal
+mas "Developer", id: 640199958 if personal
+mas "GarageBand", id: 682658836 if personal
+mas "iMovie", id: 408981434 if personal
+mas "Keynote", id: 409183694 if personal
+mas "Microsoft Excel", id: 462058435 if personal
+mas "Microsoft Word", id: 462054704 if personal
+mas "Numbers", id: 409203825 if personal
+mas "Okta Extension App", id: 1439967473 unless personal
+mas "Outread", id: 778846279 if personal
+mas "Pages", id: 409201541 if personal
+mas "Speedtest", id: 1153157709 if personal
+mas "Xcode", id: 497799835 if personal
