@@ -16,7 +16,7 @@ brew "gh" if personal
 brew "git"
 brew "glab" unless personal
 brew "helm" unless personal
-brew "hugo"
+brew "hugo" if personal
 brew "jq"
 brew "cpplain/tap/lorah"
 brew "mas"
