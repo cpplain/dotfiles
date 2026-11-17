@@ -10,26 +10,11 @@
     "pr": ""
   },
   "permissions": {
-    "defaultMode": "auto",
     "allow": ["WebSearch"],
-    "deny": ["AskUserQuestion"]
+    "deny": ["AskUserQuestion"],
+    "defaultMode": "auto"
   },
   "model": "opus",
-  "statusLine": {
-    "type": "command",
-    "command": "~/.claude/statusline.sh"
-  },
-  "enabledPlugins": {
-    "lsp-config@my-plugins": true
-  },
-  "extraKnownMarketplaces": {
-    "my-plugins": {
-      "source": {
-        "source": "directory",
-        "path": "/Users/christopherplain/git/dotfiles/plugins"
-      }
-    }
-  },
   "skillOverrides": {
     "anthropic-skills:deep-research": "user-invocable-only",
     "anthropic-skills:skill-creator": "off",
@@ -58,6 +43,28 @@
     "claude-api": "name-only",
     "artifact-diagramming": "name-only",
     "workflow-authoring": "name-only"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
+  },
+  "enabledPlugins": {
+    "lsp-config@my-plugins": true,
+    "cloudflare@cloudflare": true
+  },
+  "extraKnownMarketplaces": {
+    "my-plugins": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/christopherplain/git/dotfiles/plugins"
+      }
+    },
+    "cloudflare": {
+      "source": {
+        "source": "github",
+        "repo": "cloudflare/skills"
+      }
+    }
   },
   "effortLevel": "medium",
   "plansDirectory": ".claude/plans",
