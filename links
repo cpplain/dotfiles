@@ -1,23 +1,19 @@
 # source (repo-relative)             target [when:personal|when:work]
 bash/                                ~/
 claude/                              ~/.claude/
+claude/settings.personal.json        ~/.claude/settings.json when:personal
+claude/settings.xcode.json           ~/Library/Developer/Xcode/CodingAssistant/ClaudeAgentConfig/settings.json when:personal
+claude/skills/commit/                ~/Library/Developer/Xcode/CodingAssistant/ClaudeAgentConfig/skills/commit/ when:personal
 fish/                                ~/.config/fish/
 ghostty/                             ~/.config/ghostty/
 git/                                 ~/.config/git/
 homebrew/                            ~/.config/homebrew/
 nvim/                                ~/.config/nvim/
+private/claude/                      ~/.claude/ when:work
+private/claude/settings.work.json    ~/.claude/settings.json when:work
 private/fish/                        ~/.config/fish/
 private/git/                         ~/.config/git/
 private/zsh/                         ~/
 rubocop/                             ~/.config/rubocop/
 scripts/link                         ~/.local/bin/dotlink
 zsh/                                 ~/
-
-# personal
-claude/settings.personal.json        ~/.claude/settings.json when:personal
-claude/settings.xcode.json           ~/Library/Developer/Xcode/CodingAssistant/ClaudeAgentConfig/settings.json when:personal
-claude/skills/commit/                ~/Library/Developer/Xcode/CodingAssistant/ClaudeAgentConfig/skills/commit/ when:personal
-
-# work
-private/claude/                      ~/.claude/ when:work
-private/claude/settings.work.json    ~/.claude/settings.json when:work
