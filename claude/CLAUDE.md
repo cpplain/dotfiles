@@ -1,0 +1,1 @@
+- Whenever you create a git worktree, use the `EnterWorktree` tool so it lands in `.claude/worktrees/`. Do not run `git worktree add` yourself.
